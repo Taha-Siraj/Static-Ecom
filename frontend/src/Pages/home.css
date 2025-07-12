@@ -1,0 +1,20 @@
+#home{
+    height: 100%;
+    background-image: url(/public/home.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+#home-user{
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+}
+#nav{
+    background-color: rgba(0, 0, 0,0.3);
+    backdrop-filter: blur(10px);
+}
+
