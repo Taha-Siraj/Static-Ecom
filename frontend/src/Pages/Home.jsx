@@ -105,7 +105,7 @@ const Home = () => {
                 </div>
             </section>
 
-            <main className="container mx-auto px-4 md:px-5 lg:px-16 py-12">
+            <main className="container mx-auto px-4 md:px-8 lg:px-16 py-12">
                 <section className="mb-16">
                     <h2 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">Our Featured Products</h2>
                     <p className="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-10">
@@ -114,11 +114,11 @@ const Home = () => {
                     {loading ? (
                         <Loader className="text-center py-10">Loading amazing products...</Loader>
                     ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                        <div className="flex justify-center md:flex-row flex-wrap gap-x-4 gap-y-4">
                             {homeDisplayProducts.map((product) => (
                                 <div
                                     key={product.product_id}
-                                    className="bg-white rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden group border border-gray-100"
+                                    className="bg-white rounded-xl w-[260px] transform hover:-translate-y-2 transition-all duration-300 overflow-hidden group border border-gray-100"
                                 >
                                     <div className="relative h-60 w-full overflow-hidden">
                                         <img
