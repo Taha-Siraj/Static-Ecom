@@ -288,7 +288,6 @@ app.delete('/api/v1/deletedcategory/:id', async (req, res) => {
 })
 
 //cart Api
-
 app.get('/api/v1/cart/:user_id', async (req, res) => {
   let {user_id} = req.params;
   try {
@@ -304,15 +303,16 @@ app.get('/api/v1/cart/:user_id', async (req, res) => {
 })
 
 app.post('/api/v1/cart', async (req, res) => {
-  let {user_id, product_id, quantity ,price_per_item} = req.body;
-  if(!user_id || !product_id || !quantity || !price_per_item){
+  console.log("req.body", req.body)
+  let {user_id, product_id, quantity ,price_per_item , product_name , product_image, product_category} = req.body;
+  if(!user_id || !product_id || !quantity || !price_per_item || !product_name || !product_image || !product_category){
     res.status(400).send({message: "Allfield Requried"});
     return
   }
   try {
-    let qurey = `INSERT INTO cart( user_id , product_id , quantity , price_per_item)
-     VALUES($1, $2, $3, $4) RETURNING *`;
-    let values = [user_id , product_id , quantity ,price_per_item];
+    let qurey = `INSERT INTO cart( user_id , product_id , quantity , price_per_item, product_name, product_image, product_category)
+     VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *`;
+    let values = [user_id, product_id, quantity, price_per_item, product_name, product_image, product_category];
     let response = await db.query(qurey , values);
     res.status(201).send({message: "Item added to cart", cartItems: response.rows[0]});
   } catch (error) {
@@ -321,6 +321,7 @@ app.post('/api/v1/cart', async (req, res) => {
     
   }
 })
+
 app.delete('/api/v1/deletedcart/:cart_id', async (req , res) => {
   const {cart_id} = req.params;
 try {
@@ -337,6 +338,26 @@ try {
   
 }
 })
+
+app.put('/api/v1/updatedcart/:id', async (req , res) => {
+  const {id} = req.params;
+  const {price_per_item , quantity} = req.body;
+  if(!price_per_item  || !quantity){
+    return res.status(401).send({message: "All fields required"});
+  }
+  try {
+    let qurey = 'UPDATE cart SET quantity = $1, price_per_item = $2 WHERE cart_id = $3 RETURNING *';
+    let values = [quantity, price_per_item, id];
+    let result = await db.query(qurey, values);
+    if(result.rowCount === 0){
+      return res.status(404).send({ message: "Cart item not found" });
+    }
+    res.status(201).send({message: "Cart updated", updatedCart: result.rows[0]});
+  } catch (error) {
+    console.error("Update Error:", error);
+    res.status(500).send({message: "Internal Server Error"});
+  }
+});
 
 const __dirname = path.resolve();
 app.use('/', express.static(path.join(__dirname, './frontend/dist')))

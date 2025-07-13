@@ -59,7 +59,6 @@ const Navbar = () => {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
 
-          {/* Left Side - Logo + Hamburger */}
           <div className="flex items-center gap-x-4">
             <button
               onClick={() => setMenuOpen(!isMenuOpen)}
@@ -72,13 +71,12 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Center - Links (Hidden on small devices) */}
           <div className="hidden lg:flex gap-x-8 items-center">
             {navLinks.map((link) => (
               <Link
                 key={link.title}
                 to={link.path}
-                className="relative group text-gray-600 hover:text-green-700 text-base font-medium transition-colors"
+                className="relative no-underline group text-gray-600 hover:text-green-700 text-base font-medium transition-colors"
               >
                 {link.title}
                 <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-green-700 transition-all duration-300 group-hover:w-full"></span>
@@ -86,7 +84,6 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Right - Icons & Logout */}
           <div className="hidden md:flex gap-x-5 items-center">
             <FaRegHeart className="text-2xl hover:text-green-700 text-gray-600" />
             <Link to="/cart" className="relative">
@@ -106,7 +103,6 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="lg:hidden border-t border-gray-200">
             <div className="px-4 py-3 space-y-2 text-center">
