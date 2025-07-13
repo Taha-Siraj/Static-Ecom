@@ -253,7 +253,6 @@ app.post("/api/v1/category", async(req, res) => {
     console.log(error)
   } 
 });
--
 app.put("/api/v1/category/:id", async(req, res) => {
   let {categoryName , description} = req.body;
   let {id} = req.params;
