@@ -12,6 +12,7 @@ import Allblogs from '../Blog/Allblogs';
 import Admindashbord from '../admin/Admindashbord';
 import Cart from '../Pages/Cart';
 import Loader from '../Pages/Loader';
+import Checkout from '../Pages/Checkout';
 
 const CustomRoutes = () => {
   const { state } = useContext(GlobalContext);
@@ -39,6 +40,7 @@ const CustomRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/product" element={<Products />} />
         <Route path="/blog" element={<Allblogs />} />
+        <Route path="/Checkout" element={<Checkout />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/productsdetails/:id" element={<Productsdetail />} />
         <Route path="*" element={<Navigate to="/" />} />
@@ -50,9 +52,9 @@ const CustomRoutes = () => {
     return (
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/admin" element={<Admindashbord />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/addproduct" element={<AddProducts />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/addcategories" element={<AddCategories />} />
         <Route path="/product" element={<Products />} />
         <Route path="/blog" element={<Allblogs />} />

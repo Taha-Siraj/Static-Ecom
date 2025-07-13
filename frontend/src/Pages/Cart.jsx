@@ -155,9 +155,8 @@ const Cart = () => {
               <p>Total:</p>
               <span>RS: {total.toFixed(2)}</span>
             </div>
-            <button className='bg-green-700 py-3 px-4 w-full rounded-md text-white font-bold capitalize mt-4'>
-              Proceed to Checkout
-            </button>
+             <Link to={'/checkout'} className='bg-green-700 py-3 px-4 w-full rounded-md text-white text-center no-underline font-bold capitalize mt-4'> Proceed to Checkout </Link>
+        
             <Link to={'/product'} className='mt-2 text-blue-600 text-center'>Continue Shopping</Link>
           </div>
         </div>
