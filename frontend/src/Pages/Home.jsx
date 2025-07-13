@@ -1,41 +1,30 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../Context/Context';
-import { useNavigate, Link } from 'react-router-dom'; // Import Link for navigation
-import { MdStarPurple500, MdOutlineStarPurple500 } from 'react-icons/md'; // Use MdStarPurple500 for filled stars
+import { useNavigate, Link } from 'react-router-dom';
+import { MdStarPurple500, MdOutlineStarPurple500 } from 'react-icons/md'; 
 import { FaLuggageCart } from 'react-icons/fa';
-import { toast, Toaster } from 'sonner'; // For toast notifications
-import Allblogs from '../Blog/Allblogs'; // Assuming this is another component you want to render
+import { toast, Toaster } from 'sonner'; 
+import Allblogs from '../Blog/Allblogs'; 
 import Loader from './Loader';
-import api from '../Api'; // Your axios instance
+import api from '../Api'; 
 
 const Home = () => {
     const { state, dispatch } = useContext(GlobalContext);
-    const [allProducts, setAllProducts] = useState([]); // This will hold all fetched products
-    const [homeDisplayProducts, setHomeDisplayProducts] = useState([]); // Products for the main grid
-    const [popularCategories, setPopularCategories] = useState([]); // Products to display as popular categories
-    const [loading, setLoading] = useState(true); // Set initial loading to true
-    const navigate = useNavigate();
-
-    // Fetch Products and Categories
+    const [allProducts, setAllProducts] = useState([]);
+    const [homeDisplayProducts, setHomeDisplayProducts] = useState([]); 
+    const [popularCategories, setPopularCategories] = useState([]); 
+    const [loading, setLoading] = useState(true); 
     const fetchProductsAndCategories = async () => {
         try {
             setLoading(true);
             const res = await api.get(`/allproducts`);
             const fetchedProducts = res.data;
-
-            setAllProducts(fetchedProducts); // Store all fetched products if needed elsewhere
-
-            // Display a diverse set of products on the home page (e.g., first 8-12 products)
+            setAllProducts(fetchedProducts);
             setHomeDisplayProducts(fetchedProducts.slice(0, 12));
-
-            // Populate popular categories.
-            // A more robust solution would be to have a separate API endpoint for categories,
-            // or to group products by category and pick a few top ones.
-            // For now, let's pick some products to represent categories, ensuring uniqueness.
             const uniqueCategories = [];
             const categoryMap = new Map();
             fetchedProducts.forEach(p => {
-                if (!categoryMap.has(p.category_name) && uniqueCategories.length < 6) { // Limit to 6 categories
+                if (!categoryMap.has(p.category_name) && uniqueCategories.length < 6) {
                     categoryMap.set(p.category_name, p);
                     uniqueCategories.push(p);
                 }
@@ -93,8 +82,7 @@ const Home = () => {
                         </p>
                         <Link
                             to="/product" 
-                            className="bg-white text-green-800 py-3 px-8 rounded-full font-bold text-lg hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-xl animate-fade-in-up delay-400"
-                        >
+                            className="bg-white outline-none text-green-800 py-3 px-8 rounded-full font-bold text-lg hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-xl animate-fade-in-up delay-400">
                             Shop Headphones Now!
                         </Link>
                     </div>
@@ -132,15 +120,7 @@ const Home = () => {
                                                 {product.category_name}
                                             </div>
                                         )}
-                                        <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                            <button
-                                                onClick={() => handleAddToCart(product)}
-                                                className="bg-white text-green-700 p-3 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-100 hover:bg-green-700 hover:text-white"
-                                                aria-label={`Add ${product.product_name} to cart`}
-                                            >
-                                                <FaLuggageCart className="text-2xl" />
-                                            </button>
-                                        </div>
+                                        
                                     </div>
                                     <div className="p-4 flex flex-col gap-2">
                                         <Link to={`/product/${product.product_id}`} className="text-xl font-semibold text-gray-800 hover:text-green-700 transition-colors capitalize">
@@ -154,6 +134,15 @@ const Home = () => {
                                             <span className="text-gray-600 text-sm ml-1">(120 Reviews)</span>
                                         </div>
                                         <p className="text-2xl font-bold text-green-700 mt-2">Rs. {product.price?.toLocaleString()}.00</p>
+                                        <div className=" flex items-center capitalize justify-start w-full">
+                                            <button
+                                                onClick={() => handleAddToCart(product)}
+                                                className=" text-green-100 w-full bg-green-600 flex justify-center items-center gap-x-2 p-2 capitalize rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-100 hover:bg-green-700 hover:text-white"
+                                                aria-label={`Add ${product.product_name} to cart`}
+                                            >
+                                                add to cart<FaLuggageCart className="text-2xl text-white" />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
