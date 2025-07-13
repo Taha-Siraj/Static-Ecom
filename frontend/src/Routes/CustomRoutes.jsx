@@ -27,7 +27,7 @@ const CustomRoutes = () => {
   if (!state.isLogin) {
     return (
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
