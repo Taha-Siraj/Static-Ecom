@@ -27,7 +27,7 @@ const CustomRoutes = () => {
   if (!state.isLogin) {
     return (
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
@@ -59,7 +59,7 @@ const CustomRoutes = () => {
         <Route path="/product" element={<Products />} />
         <Route path="/blog" element={<Allblogs />} />
         <Route path="/productsdetails/:id" element={<Productsdetail />} />
-        <Route path="*" element={<Navigate to="/admin" />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     );
   }
