@@ -1,265 +1,300 @@
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom';
-import { toast, Toaster } from 'sonner';
-import { GlobalContext } from '../Context/Context';
-import Loader from '../Pages/Loader'
-import api from '../Api';
+import { Toaster, toast } from 'react-hot-toast';
+import api from '../Api'; // Your configured axios instance
+import { FiUploadCloud, FiEdit, FiTrash2, FiPlus, FiSave } from 'react-icons/fi';
 
-const AddProducts = () => {
-  const {state } = useContext(GlobalContext)
-  
-  const [productform, setproductform] = useState({
-    productName: "",
-    price: "",
-    description: "",
-    categoryId: "",
-    productImg: "",
-  });
-  const [allcategories , setAllcategory] = useState([]);
-  const [allAddProducts , setAllAddproducts] = useState([]);
-  const [productId, setproductId] = useState("");
-  const [loading, setloading] = useState(false);
-  const [deletedProductID , setdeletedProductID] = useState("");
-  const formRef = useRef(null)
-  const handleChange = (e) => {
-    const {name , value} = e.target;
-    setproductform((prev) => ({
-      ...prev,
-      [name]: value
-    }))
-    console.log(name, value)
-  }
-    const fetchCategory = async () => {
-    try {
-      let res = await api.get(`/allcategories`);
-      setAllcategory(res.data)
-      console.log(res.data)
-    } catch (error) {
-      toast.error('Something went wrong!');
-    }
-  }
-  const fetchProducts = async () => {
-    try {
-      setloading(true)
-      let res =  await api.get(`/allproducts`);
-      setAllAddproducts(res.data);
-      console.log(res.data);
-      setloading(false)
-    } catch (error) {
-      console.log(error?.response?.data?.message);
-      setloading(false)
+// --- Reusable Spinner Component ---
+const Spinner = () => (
+  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+);
+
+// --- Skeleton Loader for Product Cards ---
+const SkeletonCard = () => (
+  <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4 flex flex-col shadow-lg animate-pulse">
+    <div className="h-48 w-full bg-slate-700 rounded-lg"></div>
+    <div className="mt-4 flex flex-col gap-3">
+      <div className="h-6 w-3/4 bg-slate-700 rounded"></div>
+      <div className="h-5 w-1/4 bg-slate-700 rounded"></div>
+      <div className="h-4 w-full bg-slate-700 rounded mt-1"></div>
+      <div className="h-4 w-5/6 bg-slate-700 rounded"></div>
+    </div>
+    <div className="mt-auto flex gap-3 pt-4">
+      <div className="h-10 w-full bg-slate-700 rounded-lg"></div>
+      <div className="h-10 w-full bg-slate-700 rounded-lg"></div>
+    </div>
+  </div>
+);
+
+// --- Individual Product Card Component ---
+const ProductCard = ({ product, onEdit, onDelete }) => {
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDelete = async () => {
+    if (window.confirm(`Are you sure you want to delete "${product.product_name}"?`)) {
+      setIsDeleting(true);
+      try {
+        await onDelete(product.product_id);
+        // Toast notification will be shown from the parent component
+      } catch (error) {
+        toast.error("Failed to delete product.");
+      } finally {
+        setIsDeleting(false);
       }
+    }
+  };
+
+  return (
+    <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-4 flex flex-col shadow-lg hover:border-cyan-500/50 transition-all duration-300 group">
+      <img
+        src={product.product_img}
+        alt={product.product_name}
+        className="h-48 w-full object-cover rounded-lg mb-4"
+      />
+      <div className="flex flex-col gap-2">
+        <h3 className="text-lg font-bold text-white truncate group-hover:text-cyan-400 transition-colors">
+          {product.product_name}
+        </h3>
+        <p className="text-xl font-semibold text-green-400">PKR {product.price}</p>
+        <p className="text-sm text-slate-400 line-clamp-2">{product.description}</p>
+      </div>
+      <div className="mt-auto flex gap-3 pt-4">
+        <button
+          onClick={() => onEdit(product)}
+          className="flex-1 bg-sky-600 hover:bg-sky-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+        >
+          <FiEdit /> Edit
+        </button>
+        <button
+          onClick={handleDelete}
+          disabled={isDeleting}
+          className="flex-1 bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:bg-red-800 disabled:cursor-not-allowed"
+        >
+          {isDeleting ? <Spinner /> : <><FiTrash2 /> Delete</>}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+
+// --- Main AddProducts Component ---
+const AddProducts = () => {
+  const initialFormState = {
+    productName: '',
+    price: '',
+    description: '',
+    categoryId: '',
+  };
+
+  const [productForm, setProductForm] = useState(initialFormState);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState('');
+  
+  const [allCategories, setAllCategories] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
+  
+  const [editingProductId, setEditingProductId] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const formRef = useRef(null);
+
+  // --- Fetch Initial Data ---
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      setIsLoading(true);
+      try {
+        const [categoriesRes, productsRes] = await Promise.all([
+          api.get('/allcategories'),
+          api.get('/allproducts'),
+        ]);
+        setAllCategories(categoriesRes.data);
+        setAllProducts(productsRes.data);
+      } catch (error) {
+        toast.error('Failed to load initial data. Please refresh.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchInitialData();
+  }, []);
+
+  // --- Form and Image Handling ---
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setProductForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const resetForm = () => {
+    setProductForm(initialFormState);
+    setImageFile(null);
+    setImagePreview('');
+    setEditingProductId(null);
+    formRef.current.reset(); // Also reset the file input field
+  };
+  
+  // --- CRUD Operations ---
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    const { productName, price, description, categoryId } = productForm;
+
+    if (!productName || !price || !description || !categoryId || (!imageFile && !editingProductId)) {
+      return toast.error('All fields, including image, are required!');
     }
     
-  const addproduct = async (e) => {
-    e.preventDefault();
-    let {productName, price, description, categoryId, productImg} = productform;
-    if(!productName || !price || !description || !categoryId || !productImg){
-      toast.warning("All Field are Requried");
-      return;
-    }
+    setIsSubmitting(true);
+    let imageUrl = imagePreview; // Use existing image URL if editing
 
-    if(productId){
-      try {
-        setloading(true);
-        let res = await api.put(`/product/${productId}`,{
-          productName,
-          price,
-          description,
-          productImg,
-          categoryId
-        })
-        fetchProducts();
-        setproductId("")  
-        setproductform({
-        productName: "",
-        price: "",
-        description: "",
-        categoryId: "",
-        productImg: "",
-        })
-        setloading(false)
-      } catch (error) {
-        console.log(error?.response?.data?.message)
-        setloading(false)
-      }
-    }
-    else{
-      try {
-        setloading(true)
-        let res = await api.post(`/products`,{
-        productName,
-        price,
-        description,
-        productImg,
-        categoryId
-      })
-      console.log(res.data);
-      setproductform({
-        productName: "",
-        price: "",
-        description: "",
-        categoryId: "",
-        productImg: "",
-      })
-      fetchProducts();
-      setloading(false);
-      toast.success("Product Added Successfully!");
-    } catch (error) {
-      toast.error(error.response?.data?.message);
-      setloading(false);
-    }
-    }
-  }  
-
-  const deletedProduct = async (id) => {
     try {
-      setdeletedProductID(id)
-      let res = await api.delete(`/product/${id}`)
-      console.log(res.data);
-      toast.success('Deleted Product!');
-      fetchProducts()
-    } catch (error) {
-      console.log(error)
-      toast.error('Product dit not Deleted!');
+      // Step 1: Upload image if a new one is selected
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append('image', imageFile);
+        
+        // IMPORTANT: Replace with your actual upload endpoint
+        const { data } = await axios.post('http://localhost:5004/api/v1/upload', formData);
+        imageUrl = data.imgUrl;
+        toast.success('Image uploaded successfully!');
+      }
+
+      // Step 2: Create or Update Product Data
+      const productData = { ...productForm, productImg: imageUrl };
+
+      if (editingProductId) {
+        await api.put(`/product/${editingProductId}`, productData);
+        toast.success('Product updated successfully!');
+      } else {
+        await api.post('/products', productData);
+        toast.success('Product added successfully!');
+      }
+
+      // Step 3: Refresh product list and reset form
+      resetForm();
+      const productsRes = await api.get('/allproducts');
+      setAllProducts(productsRes.data);
+
+    } catch (err) {
+      const errorMessage = err.response?.data?.message || 'An error occurred.';
+      toast.error(`Operation failed: ${errorMessage}`);
+    } finally {
+      setIsSubmitting(false);
     }
-  }
-  useEffect(() => {
-    fetchCategory();
-    fetchProducts();
-  },[])
+  };
+
+  const handleEditClick = (product) => {
+    setEditingProductId(product.product_id);
+    setProductForm({
+      productName: product.product_name,
+      price: product.price,
+      description: product.description,
+      categoryId: product.category_id,
+    });
+    setImagePreview(product.product_img);
+    setImageFile(null); // Clear file so it doesn't re-upload unless changed
+    formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  
+  const handleDeleteProduct = async (productId) => {
+    try {
+      await api.delete(`/product/${productId}`);
+      setAllProducts((prev) => prev.filter((p) => p.product_id !== productId));
+      toast.success('Product deleted!');
+    } catch {
+      toast.error('Deletion failed. Please try again.');
+      throw new Error('Deletion failed'); // Propagate error to card component
+    }
+  };
 
 
-  const inputStyle = 'border-[0.5px] py-3 px-4 rounded-md placeholder:text-gray-300 w-full border-[#dadada6e] bg-gray-700 outline-none focus:border-gray-300 transition-all duration-75';
-  const titleStyles = "text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-500  text-center";
+  // --- STYLING CONSTANTS ---
+  const inputStyle = "w-full p-3 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all";
+  const btnStyle = "w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-3 disabled:bg-slate-700 disabled:cursor-wait";
+
   return (
     <>
-    <div className='pt-24 py-10 min:h-screen flex justify-center items-center flex-col gap-y-10'>
-  <Toaster position="top-center" richColors />
-  <form ref={formRef} onSubmit={addproduct} className='flex justify-center flex-col border-[0.2px] border-[#dadada4a] rounded-xl min:h-[400px] w-[400px] bg-gray-400 text-gray-200 gap-y-5 font-poppins px-8 py-8 shadow-2xl'> 
-    <h1 className='text-3xl font-extrabold text-white mb-4'>{productId ? "Update Product" : "Add Product"}</h1> 
-    <input
-      type="text"
-      name='productName'
-      value={productform.productName}
-      onChange={handleChange}
-      placeholder='Product Name'
-      className='w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200' 
-    />
-    <input
-      type="number"
-      name='price'
-      value={productform.price}
-      onChange={handleChange}
-      placeholder='Product price'
-      className='w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200' 
-    />
-    <input
-      type="text"
-      value={productform.description}
-      placeholder='Product description'
-      name='description'
-      onChange={handleChange}
-      className='w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200' 
-    />
-    <input
-      type="text"
-      name='productImg'
-      onChange={handleChange}
-      value={productform.productImg}
-      placeholder='Product Image URL'
-      className='w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200' 
-    />
-    <select
-      className='w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200' 
-      name='categoryId'
-      value={productform.categoryId}
-      onChange={handleChange}
-    >
-      <option value="" className='text-gray-400'>Select A category</option>
-      {allcategories.map((cat) => (
-        <option key={cat.category_id} value={cat.category_id} className='bg-gray-700 text-white'>
-          {cat.category_name}
-        </option>
-      ))}
-    </select>
-    <button
-      className='bg-indigo-600 hover:bg-indigo-700 text-white font-semibold flex justify-center w-full rounded-lg py-3 px-4 items-center mt-4 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50' 
-    >
-      {loading ? <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div> : productId ? "Update Product" : "Add Product"}
-    </button>
-  </form>
+      <Toaster position="top-center" reverseOrder={false} toastOptions={{
+        style: { background: '#1e293b', color: '#fff', border: '1px solid #334155' },
+      }}/>
+      <div className="bg-slate-900 text-slate-100 min-h-screen w-full pt-28 pb-10 px-4">
+        <main className="max-w-7xl mx-auto flex flex-col items-center gap-y-12">
+          
+          {/* --- FORM SECTION --- */}
+          <section className="w-full max-w-2xl">
+            <form
+              ref={formRef}
+              onSubmit={handleFormSubmit}
+              className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-6 sm:p-8 shadow-2xl shadow-black/20 flex flex-col gap-y-5"
+            >
+              <h1 className="text-3xl font-extrabold text-center text-white mb-2">
+                {editingProductId ? 'Update Product Details' : 'Create New Product'}
+              </h1>
 
-  
-  {loading ? <Loader/>
-  : 
-  <div className="flex flex-wrap justify-center gap-8 px-5 w-full py-8">
-    {allAddProducts.map((eachProduct) => (
-      <div
-        key={eachProduct?.product_id}
-        className="bg-gray-500 rounded-xl p-6 w-[320px] flex flex-col shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1 border-[0.2px] border-[#dadada4a]"
-      >
-        <div className="w-full flex justify-center mb-5">
-          <img
-            src={eachProduct?.product_img}
-            alt={eachProduct?.product_name || "Product Image"}
-            className="h-[200px] w-full object-cover rounded-lg border-[0.2px] border-[#dadada4a]"
-          />
-        </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input type="text" name="productName" value={productForm.productName} onChange={handleInputChange} placeholder="Product Name" className={inputStyle} />
+                <input type="number" name="price" value={productForm.price} onChange={handleInputChange} placeholder="Price (PKR)" className={inputStyle} />
+              </div>
 
-        <div className="flex flex-col gap-3 mb-6 flex-grow">
-          <h3 className="text-xl font-bold text-white truncate">
-            {eachProduct?.product_name}
-          </h3>
-          <p className="text-lg font-bold text-green-400">
-            PKR: {eachProduct?.price}
-          </p>
-          <p className="text-sm text-gray-300 line-clamp-3">
-            {eachProduct?.description || "No description available."}
-          </p>
-        </div>
+              <textarea name="description" value={productForm.description} onChange={handleInputChange} placeholder="Product Description" className={`${inputStyle} h-24 resize-none`} />
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                <select name="categoryId" value={productForm.categoryId} onChange={handleInputChange} className={inputStyle}>
+                  <option value="">Select Category</option>
+                  {allCategories.map((c) => (
+                    <option key={c.category_id} value={c.category_id}>{c.category_name}</option>
+                  ))}
+                </select>
 
-        <div className="flex flex-col gap-3 mt-auto">
-          <button
-            className="bg-green-700 hover:bg-green-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-            onClick={() => {
-              setproductId(eachProduct?.product_id);
-              setproductform({
-                productName: eachProduct?.product_name,
-                price: eachProduct?.price,
-                description: eachProduct?.description,
-                productImg: eachProduct?.product_img,
-                categoryId: eachProduct?.category_id,
-              });
-              setTimeout(() => {
-                formRef.current.scrollIntoView({ behavior: "smooth" });
-              }, 100);
-            }}
-          >
-            Edit Product
-          </button>
+                <label htmlFor="file-upload" className={`${inputStyle} cursor-pointer flex items-center justify-center gap-2 text-slate-400`}>
+                  <FiUploadCloud /> {imageFile ? imageFile.name : 'Upload Image'}
+                </label>
+                <input id="file-upload" type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+              </div>
 
-          <button
-            onClick={() => deletedProduct(eachProduct?.product_id)}
-            className="bg-red-700 hover:bg-red-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-          >
-            {deletedProductID === eachProduct.product_id ? (
-              <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>
-            ) : (
-              "Delete Product"
-            )}
-          </button>
-        </div>
+              {imagePreview && (
+                <div className="w-full text-center">
+                  <img src={imagePreview} alt="Preview" className="max-h-48 mx-auto rounded-lg object-contain border-2 border-slate-700" />
+                </div>
+              )}
+
+              <div className="flex gap-4 mt-2">
+                <button type="submit" disabled={isSubmitting} className={btnStyle}>
+                  {isSubmitting ? <Spinner /> : editingProductId ? <><FiSave/> Update Product</> : <><FiPlus/> Add Product</>}
+                </button>
+                {editingProductId && (
+                  <button type="button" onClick={resetForm} className="bg-slate-600 hover:bg-slate-500 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                    Cancel
+                  </button>
+                )}
+              </div>
+            </form>
+          </section>
+
+          {/* --- PRODUCT GRID SECTION --- */}
+          <section className="w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {isLoading ? (
+                Array.from({ length: 8 }).map((_, index) => <SkeletonCard key={index} />)
+              ) : (
+                allProducts.map((p) => (
+                  <ProductCard key={p.product_id} product={p} onEdit={handleEditClick} onDelete={handleDeleteProduct} />
+                ))
+              )}
+            </div>
+          </section>
+
+        </main>
       </div>
-    ))}
-  </div> 
-   }
-
-  
-</div>
     </>
-  )
-}
+  );
+};
 
-export default AddProducts
+export default AddProducts;

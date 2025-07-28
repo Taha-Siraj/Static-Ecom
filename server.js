@@ -6,6 +6,7 @@ import "dotenv/config";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import path from  'path'; 
+import { upload } from "./cloudnary/cloudnary.js";
 
 const app = express();
 app.use(cors({
@@ -105,6 +106,21 @@ app.post("/api/v1/logout", (req, res) => {
   res.status(200).send({message: "User Logout"});
 });
 
+app.post('/api/v1/upload', upload.single('image'), async (req, res) => {
+  try {
+    if(!req.file){
+      return res.status(400).send({message: "no file Upload"});
+    }
+    const imgUrl = req.file.path
+    res.status(201).send({message: "Image uploaded successfully", imgUrl})
+  } catch (error) {
+    res.status(500).json({ message: "Upload failed", error: error.message });  
+    console.error("Upload Error:", error);
+  }
+})
+
+
+
 // jwt token
 app.use('/api/v1/*splat',(req, res , next) => {
   if(!req.cookies?.token){
@@ -162,6 +178,9 @@ app.get('/api/v1/profile', async (req, res) => {
     res.status(500).send({ message: "Internal Server Error" });
   }
 });
+
+// Upload Api
+
 
 
 // products Api

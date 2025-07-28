@@ -16,10 +16,8 @@ import Checkout from '../Pages/Checkout';
 
 const CustomRoutes = () => {
   const { state } = useContext(GlobalContext);
-
   const isAdmin = state.isLogin && state.user?.user_role === 1;
   const isUser = state.isLogin && state.user?.user_role === 4;
-
   if (state.loading || state.isLogin === null) {
     return <Loader />;
   }
@@ -64,7 +62,6 @@ const CustomRoutes = () => {
     );
   }
 
-  // fallback (just in case)
   return <Navigate to="/login" />;
 };
 
