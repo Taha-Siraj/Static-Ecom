@@ -290,10 +290,10 @@ const AddProducts = () => {
               )}
             </div>
           </section>
-
+          
         </main>
       </div>
-    </>
+    </> 
   );
 };
 
