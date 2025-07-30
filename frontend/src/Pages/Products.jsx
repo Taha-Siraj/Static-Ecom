@@ -25,8 +25,8 @@ const Products = () => {
         api.get(`/allproducts`),
         api.get(`/allcategories`)
       ]);
-      setAllProduct(productsRes.data);
-      setFilteredProduct(productsRes.data);
+      setAllProduct(productsRes.data.products);
+      setFilteredProduct(productsRes.data.products);
       setAllcategory(categoriesRes.data);
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to fetch data');

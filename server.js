@@ -185,9 +185,23 @@ app.get('/api/v1/profile', async (req, res) => {
 
 // products Api
 app.get("/api/v1/allproducts", async (req, res) => {
+  let page =  parseInt(req.query.page) || 1;
+  let limit = 10;
+  let skippage = (page - 1) * limit;
   try {
-    let ressult = await db.query(`SELECT p.product_id, p.product_name, p.price, p.product_img, p.description, p.created_at, p.category_id, c.category_name FROM products AS p INNER JOIN categories AS c ON p.category_id = c.category_id ORDER BY p.product_id DESC;`);
-    res.status(200).send(ressult.rows)
+    let countResult = await db.query(`SELECT COUNT(*) FROM products`);
+    let totalProduct = (countResult.rows[0].count);
+    let totalPage = Math.ceil(totalProduct / limit);
+    let qurey = `SELECT p.product_id, p.product_name, p.price, p.product_img, p.description, p.created_at, p.category_id, c.category_name FROM products AS p INNER JOIN categories AS c ON p.category_id = c.category_id ORDER BY p.product_id DESC LIMIT $1 OFFSET $2;`;
+    let result = await db.query(qurey , [limit , skippage])
+    res.status(200).send({
+      page,
+      totalPage,
+      totalProduct,
+      prevPage: page > 1 ? page - 1 : null,
+      nextPage: page < totalPage ? page + 1 : null,
+      products: result.rows
+    });
   } catch (error) {
     console.log(error)
   }
