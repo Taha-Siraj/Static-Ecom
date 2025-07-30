@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Toaster, toast } from 'react-hot-toast';
-import api from '../Api'; // Your configured axios instance
+import api from '../Api'; 
 import { FiUploadCloud, FiEdit, FiTrash2, FiPlus, FiSave } from 'react-icons/fi';
 
-// --- Reusable Spinner Component ---
 const Spinner = () => (
   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
 );
 
-// --- Skeleton Loader for Product Cards ---
 const SkeletonCard = () => (
   <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4 flex flex-col shadow-lg animate-pulse">
     <div className="h-48 w-full bg-slate-700 rounded-lg"></div>
@@ -26,7 +24,7 @@ const SkeletonCard = () => (
   </div>
 );
 
-// --- Individual Product Card Component ---
+
 const ProductCard = ({ product, onEdit, onDelete }) => {
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -35,7 +33,6 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
       setIsDeleting(true);
       try {
         await onDelete(product.product_id);
-        // Toast notification will be shown from the parent component
       } catch (error) {
         toast.error("Failed to delete product.");
       } finally {
@@ -78,7 +75,6 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
 };
 
 
-// --- Main AddProducts Component ---
 const AddProducts = () => {
   const initialFormState = {
     productName: '',
@@ -100,7 +96,6 @@ const AddProducts = () => {
 
   const formRef = useRef(null);
 
-  // --- Fetch Initial Data ---
   useEffect(() => {
     const fetchInitialData = async () => {
       setIsLoading(true);
@@ -120,7 +115,6 @@ const AddProducts = () => {
     fetchInitialData();
   }, []);
 
-  // --- Form and Image Handling ---
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProductForm((prev) => ({ ...prev, [name]: value }));
@@ -139,10 +133,10 @@ const AddProducts = () => {
     setImageFile(null);
     setImagePreview('');
     setEditingProductId(null);
-    formRef.current.reset(); // Also reset the file input field
+    formRef.current.reset(); 
   };
   
-  // --- CRUD Operations ---
+ 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const { productName, price, description, categoryId } = productForm;
@@ -152,21 +146,20 @@ const AddProducts = () => {
     }
     
     setIsSubmitting(true);
-    let imageUrl = imagePreview; // Use existing image URL if editing
+    let imageUrl = imagePreview;
 
     try {
-      // Step 1: Upload image if a new one is selected
+      
       if (imageFile) {
         const formData = new FormData();
         formData.append('image', imageFile);
         
-        // IMPORTANT: Replace with your actual upload endpoint
+      
         const { data } = await axios.post('http://localhost:5004/api/v1/upload', formData);
         imageUrl = data.imgUrl;
         toast.success('Image uploaded successfully!');
       }
 
-      // Step 2: Create or Update Product Data
       const productData = { ...productForm, productImg: imageUrl };
 
       if (editingProductId) {
@@ -177,7 +170,6 @@ const AddProducts = () => {
         toast.success('Product added successfully!');
       }
 
-      // Step 3: Refresh product list and reset form
       resetForm();
       const productsRes = await api.get('/allproducts');
       setAllProducts(productsRes.data);
@@ -199,7 +191,7 @@ const AddProducts = () => {
       categoryId: product.category_id,
     });
     setImagePreview(product.product_img);
-    setImageFile(null); // Clear file so it doesn't re-upload unless changed
+    setImageFile(null);
     formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
   
@@ -210,12 +202,11 @@ const AddProducts = () => {
       toast.success('Product deleted!');
     } catch {
       toast.error('Deletion failed. Please try again.');
-      throw new Error('Deletion failed'); // Propagate error to card component
+      throw new Error('Deletion failed'); 
     }
   };
 
 
-  // --- STYLING CONSTANTS ---
   const inputStyle = "w-full p-3 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all";
   const btnStyle = "w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-3 disabled:bg-slate-700 disabled:cursor-wait";
 
@@ -227,7 +218,6 @@ const AddProducts = () => {
       <div className="bg-slate-900 text-slate-100 min-h-screen w-full pt-28 pb-10 px-4">
         <main className="max-w-7xl mx-auto flex flex-col items-center gap-y-12">
           
-          {/* --- FORM SECTION --- */}
           <section className="w-full max-w-2xl">
             <form
               ref={formRef}
@@ -278,7 +268,6 @@ const AddProducts = () => {
             </form>
           </section>
 
-          {/* --- PRODUCT GRID SECTION --- */}
           <section className="w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {isLoading ? (
