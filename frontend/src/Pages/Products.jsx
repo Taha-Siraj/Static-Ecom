@@ -1,13 +1,9 @@
-import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Toaster, toast } from 'sonner';
+import  { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Toaster, toast } from 'react-hot-toast';
 import Loader from './Loader';
 import { MdOutlineStarPurple500 } from "react-icons/md";
 import { MdStarPurple500 } from "react-icons/md";
-import { FaLuggageCart } from "react-icons/fa";
-import { use } from 'react';
-import { useCol } from 'react-bootstrap/esm/Col';
 import { GlobalContext } from '../Context/Context';
 import api from '../Api';
 const Products = () => {
