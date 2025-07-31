@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { GlobalContext } from '../Context/Context'
 import api from '../Api'
-import { toast, Toaster } from 'sonner'
+import { toast, Toaster } from 'react-hot-toast'
 import { FaMinus, FaPlus, FaTrash } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
