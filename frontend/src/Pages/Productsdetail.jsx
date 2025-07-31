@@ -4,7 +4,7 @@ import { MdOutlineStarPurple500, MdStarPurple500 } from "react-icons/md";
 import { FaLuggageCart } from 'react-icons/fa';
 import { FaHeart, FaRegHeart, FaGroupArrowsRotate } from 'react-icons/fa6';
 import { FaRegQuestionCircle, FaShareAlt } from 'react-icons/fa';
-import { toast, Toaster } from 'sonner';
+import { toast, Toaster } from 'react-hot-toast';
 import { CiDeliveryTruck } from "react-icons/ci";
 import { BsArrowReturnLeft } from "react-icons/bs";
 import { GlobalContext } from '../Context/Context';
@@ -24,7 +24,7 @@ const ProductDetail = () => {
     setLoading(true);
     try {
       const res = await api.get(`/allproducts`);
-      const matched = res.data.find((p) => String(p.product_id) === id); 
+      const matched = res.data.products.find((p) => String(p.product_id) === id); 
       setProduct(matched);
       if (state.user && state.user.wishlist && matched) {
         setWishlist(state.user.wishlist.some(item => String(item.product_id) === id));
