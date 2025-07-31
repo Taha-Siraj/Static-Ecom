@@ -6,7 +6,7 @@ import { FaLuggageCart } from 'react-icons/fa';
 import { toast, Toaster } from 'sonner'; 
 import Allblogs from '../Blog/Allblogs'; 
 import Loader from './Loader';
-import api from '../Api'; 
+import api from '../Api';
 
 const Home = () => {
     const { state, dispatch } = useContext(GlobalContext);
@@ -120,7 +120,7 @@ const Home = () => {
                                                 {product.category_name}
                                             </div>
                                         )}
-                                        
+                                         
                                     </div>
                                     <div className="p-4 flex flex-col gap-2">
                                         <Link to={`/product/${product.product_id}`} className="text-xl font-semibold text-gray-800 hover:text-green-700 transition-colors capitalize">

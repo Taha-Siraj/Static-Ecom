@@ -14,7 +14,6 @@ app.use(cors({
   credentials: true 
 }));
 
-
 app.use(cookieParser());
 app.use(express.json());
 const isDev = process.env.NODE_ENV !== "production";
@@ -118,7 +117,6 @@ app.post('/api/v1/upload', upload.single('image'), async (req, res) => {
     console.error("Upload Error:", error);
   }
 })
-
 
 
 // jwt token
@@ -392,8 +390,8 @@ app.put('/api/v1/updatedcart/:id', async (req , res) => {
 });
 
 const __dirname = path.resolve();
-app.use('/', express.static(path.join(__dirname, './frontend/dist')))
-app.use("/*splat" , express.static(path.join(__dirname, './frontend/dist')))
+app.use('/', express.static(path.join(__dirname, './frontend/dist')));
+app.use("/*splat" , express.static(path.join(__dirname, './frontend/dist')));
 
 app.listen(5004, () => {
     console.log("server Is running 5004");
