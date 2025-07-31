@@ -179,6 +179,7 @@ const Checkout = () => {
                             </button>
                             <p className="text-xs text-gray-500 mt-3 text-center">By placing your order, you agree to our privacy notice and conditions of use.</p>
                             <hr className="my-6" />
+                            
                             <h3 className="text-lg font-semibold mb-4">Order Summary</h3>
                             <div className="space-y-2 text-sm">
                                 <div className="flex justify-between">
