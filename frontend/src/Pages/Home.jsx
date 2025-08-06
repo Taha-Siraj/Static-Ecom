@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../Context/Context';
 import { useNavigate, Link } from 'react-router-dom';
-import { MdStarPurple500, MdOutlineStarPurple500 } from 'react-icons/md'; 
+import { MdStarPurple500, MdOutlineStarPurple500 } from 'react-icons/md';
 import { FaLuggageCart } from 'react-icons/fa';
-import { toast, Toaster } from 'react-hot-toast'; 
-import Allblogs from '../Blog/Allblogs'; 
+import { toast, Toaster } from 'react-hot-toast';
+import Allblogs from '../Blog/Allblogs';
 import Loader from './Loader';
 import api from '../Api';
 
@@ -12,9 +12,9 @@ const Home = () => {
 
     const { state, dispatch } = useContext(GlobalContext);
     const [allProducts, setAllProducts] = useState([]);
-    const [homeDisplayProducts, setHomeDisplayProducts] = useState([]); 
-    const [popularCategories, setPopularCategories] = useState([]); 
-    const [loading, setLoading] = useState(true); 
+    const [homeDisplayProducts, setHomeDisplayProducts] = useState([]);
+    const [popularCategories, setPopularCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
     const fetchProductsAndCategories = async () => {
         try {
             setLoading(true);
@@ -55,7 +55,7 @@ const Home = () => {
                 user_id: state.user.user_id,
                 product_id: product.product_id,
                 price_per_item: product.price,
-                quantity: 1, 
+                quantity: 1,
                 product_name: product.product_name,
                 product_image: product.product_img,
                 product_category: product.category_name,
@@ -70,7 +70,7 @@ const Home = () => {
 
     return (
         <div className="font-poppins bg-white pt-20 overflow-hidden">
-            <Toaster position="top-center" richColors closeButton />
+            <Toaster position="bottom-right" richColors closeButton />
             <section className="px-4 md:px-8 lg:px-16 mb-12">
                 <div className="bg-gradient-to-r from-teal-500 to-green-600 w-full rounded-2xl p-6 sm:p-10 md:p-16 flex flex-col md:flex-row justify-between items-center text-white relative overflow-hidden shadow-2xl">
                     <div className="flex flex-col justify-center items-center md:items-start gap-4 max-w-lg text-center md:text-left z-10">
@@ -82,7 +82,7 @@ const Home = () => {
                             Experience crystal-clear audio and deep bass. Limited time offer!
                         </p>
                         <Link
-                            to="/product" 
+                            to="/product"
                             className="bg-white outline-none text-green-800 py-3 px-8 rounded-full font-bold text-lg hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-xl animate-fade-in-up delay-400">
                             Shop Headphones Now!
                         </Link>
@@ -90,7 +90,7 @@ const Home = () => {
                     <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
                         <img src="banner.webp" alt="Abstract Background" className="w-full h-full object-cover" />
                     </div>
-                   
+
                 </div>
             </section>
 
@@ -103,17 +103,17 @@ const Home = () => {
                     {loading ? (
                         <Loader className="text-center py-10">Loading amazing products...</Loader>
                     ) : (
-                        <div className="flex justify-center md:flex-row flex-wrap gap-x-4 gap-y-4">
+                        <div className="flex justify-center md:flex-row  gap-x-4 gap-y-4">
                             {homeDisplayProducts.map((product) => (
                                 <div
                                     key={product.product_id}
-                                    className="bg-white rounded-xl w-[260px] transform hover:-translate-y-2 transition-all duration-300 overflow-hidden group border border-gray-100"
+                                    className="bg-white rounded-md w-[300px]  overflow-hidden group border border-gray-100"
                                 >
                                     <div className="relative h-60 w-full overflow-hidden">
                                         <img
                                             src={product.product_img || "https://via.placeholder.com/400x300/F3F4F6/9CA3AF?text=No+Image"}
                                             alt={product.product_name}
-                                            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                                            className="w-full h-full object-cover"
                                             onClick={() => navigate(`/product/${product.product_id}`)}
                                         />
                                         {product.category_name && (
@@ -127,14 +127,8 @@ const Home = () => {
                                         <Link to={`/product/${product.product_id}`} className="text-xl font-semibold text-gray-800 hover:text-green-700 transition-colors capitalize">
                                             {product.product_name}
                                         </Link>
-                                        <p className="text-gray-600 text-sm">{product.short_description || "High quality product for daily use."}</p>
-                                        <div className="flex items-center gap-1">
-                                          
-                                            {[...Array(4)].map((_, i) => <MdStarPurple500 key={i} className='text-yellow-500 text-xl' />)}
-                                            <MdOutlineStarPurple500 className='text-yellow-500 text-xl opacity-60' />
-                                            <span className="text-gray-600 text-sm ml-1">(120 Reviews)</span>
-                                        </div>
-                                        <p className="text-2xl font-bold text-green-700 mt-2">Rs. {product.price?.toLocaleString()}.00</p>
+                                        <p className="text-gray-600 m-0 text-sm">{product.short_description || "High quality product for daily use."}</p>
+                                        <p className="text-xl font-bold mt-2">Rs. {product.price?.toLocaleString()}.00</p>
                                         <div className=" flex items-center capitalize justify-start w-full">
                                             <button
                                                 onClick={() => handleAddToCart(product)}
@@ -184,7 +178,7 @@ const Home = () => {
                                             {product.category_name}
                                         </h3>
                                         <p className="text-sm text-gray-600 mt-1">
-                                          
+
                                             {product.items_available ? `${product.items_available} items available` : 'Explore collection'}
                                         </p>
                                     </div>
