@@ -76,7 +76,7 @@ const Home = () => {
                     <div className="flex flex-col justify-center items-center md:items-start gap-4 max-w-lg text-center md:text-left z-10">
                         <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight tracking-tight drop-shadow-lg animate-fade-in-up">
                             Unbeatable Deals! <br />
-                            <span className="text-yellow-300">Save Up To 50%</span> on Premium Headphones
+                            <span className="text-yellow-300">Save Up To 50%</span> on Premium Smart watches & Headphones
                         </h1>
                         <p className="text-lg sm:text-xl text-gray-100 mb-4 animate-fade-in-up delay-200">
                             Experience crystal-clear audio and deep bass. Limited time offer!
