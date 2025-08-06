@@ -105,7 +105,7 @@ const AddProducts = () => {
           api.get('/allproducts'),
         ]);
         setAllCategories(categoriesRes.data);
-        setAllProducts(productsRes.data);
+        setAllProducts(productsRes.data.products);
       } catch (error) {
         toast.error('Failed to load initial data. Please refresh.');
       } finally {
