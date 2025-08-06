@@ -129,7 +129,7 @@ const Home = () => {
                                         </Link>
                                         <p className="text-gray-600 m-0 text-sm">{product.description || "High quality product for daily use."}</p>
                                         <p className="text-xl font-bold mt-2">Rs. {product.price?.toLocaleString()}.00</p>
-                                        <div className=" flex items-center capitalize justify-start w-full">
+                                        {/* <div className=" flex items-center capitalize justify-start w-full">
                                             <button
                                                 onClick={() => handleAddToCart(product)}
                                                 className=" text-green-100 w-full bg-green-600 flex justify-center items-center gap-x-2 p-2 capitalize rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-100 hover:bg-green-700 hover:text-white"
@@ -137,7 +137,7 @@ const Home = () => {
                                             >
                                                 add to cart<FaLuggageCart className="text-2xl text-white" />
                                             </button>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                             ))}
