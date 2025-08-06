@@ -142,13 +142,13 @@ const Home = () => {
                                             </button>
                                         </div>
                                     </div>
-                                </div>
+                             </div>
                             </>
                             ))}
                         </div>
                     )}
                     </div>
-                    
+
                     <div className="text-center mt-12">
                         <Link
                             to="/product"
