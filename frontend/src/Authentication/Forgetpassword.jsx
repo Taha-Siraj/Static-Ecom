@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
+import api from '../Api';
+import { Toaster , toast } from 'react-hot-toast';
 
 const ForgetPassword = () => {
-  // State to manage which step of the process the user is on
-  // 1: Enter email, 2: Enter code, 3: Reset password, 4: Success
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
 
-  const handleSendCode = (e) => {
+  const handleSendCode = async (e) => {
     e.preventDefault();
-    // Add logic here to send verification code to the email
-    console.log('Sending verification code to:', email);
-    setStep(2); // Move to the next step
+    try {
+        let res = await api.post('/forget-password', {email});
+        if (res.status === 200) {
+            toast.success('Verification code sent successfully');
+        } else {
+            toast.error('Failed to send verification code');
+        }
+    } catch (error) {
+        toast(error.response?.data?.message);
+    }
+    setStep(2); 
   };
 
   const handleVerifyCode = (e) => {
@@ -29,6 +37,7 @@ const ForgetPassword = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <Toaster position="top-center" richColors />
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
         
         {/* Step 1: Enter Email */}
