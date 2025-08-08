@@ -138,6 +138,19 @@ app.post('/api/v1/forget-password', async (req, res) => {
     console.log(error)
   }
 })
+
+// verify otp
+app.post('/api/v1/verify-otp', (req, res) => {
+   let {otp} = req.body;
+   if(!otp){
+    return res.status(400).send({message: "otp is Requried"})
+   }
+   try {
+   
+   } catch (error) {
+    
+   }
+})
 // logout Api
 app.post("/api/v1/logout", (req, res) => {
   res.clearCookie('token', {
