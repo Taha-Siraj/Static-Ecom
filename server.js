@@ -10,6 +10,9 @@ import { upload } from "./cloudnary/cloudnary.js";
 import crypto from 'crypto'
 import { sendVerificationEmail } from "./utils/nodemailer.js";
 
+    const token = crypto.randomInt(100000 , 999999).toString();
+
+    console.log(token)
 
 const app = express();
 app.use(cors({
@@ -123,7 +126,7 @@ app.post('/api/v1/forget-password', async (req, res) => {
     res.status(404).send({message: "email not found with this wmail"})
     return
    }  
-    const token = crypto.randomBytes(3).toString("hex");
+    const token = crypto.randomInt(100000 , 9999999 ).toString("hex");
     const expiry = Date.now() + 10 * 60 * 1000;
     await db.query("UPDATE ")
 })
