@@ -9,10 +9,7 @@ import path from  'path';
 import { upload } from "./cloudnary/cloudnary.js";
 import crypto from 'crypto'
 import { sendVerificationEmail } from "./utils/nodemailer.js";
-import { AwsPage } from "twilio/lib/rest/accounts/v1/credential/aws.js";
 
-const token = crypto.randomBytes(3).toString("hex");
-console.log(token);
 
 const app = express();
 app.use(cors({
@@ -111,6 +108,8 @@ app.post('/api/v1/login', async (req , res) => {
     }
     
 });
+
+// forget password
 app.post('/api/v1/forget-password', async (req, res) => {
    const {email} = req.body;
    if(!email){
@@ -124,6 +123,9 @@ app.post('/api/v1/forget-password', async (req, res) => {
     res.status(404).send({message: "email not found with this wmail"})
     return
    }  
+    const token = crypto.randomBytes(3).toString("hex");
+    const expiry = Date.now() + 10 * 60 * 1000;
+    await db.query("UPDATE ")
 })
 // logout Api
 app.post("/api/v1/logout", (req, res) => {
