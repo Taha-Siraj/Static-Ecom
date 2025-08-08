@@ -8,12 +8,12 @@ export const transporter = nodemailer.createTransport({
   }
 });
 
-export const sendVerificationEmail = async (email , otp) => {
+export const sendVerificationEmail = async (email , token) => {
   await transporter.sendMail({
     from: process.env.EMAIL,
     to: email,
     subject: "Your OTP Code",
-    html: `<h3>Your OTP is: <b>${otp}</b></h3>
+    html: `<h3>Your OTP is: <b>${token}</b></h3>
            <p>This OTP will expire in 10 minutes.</p>`
   });
 };

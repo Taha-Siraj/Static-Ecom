@@ -10,7 +10,8 @@ import { upload } from "./cloudnary/cloudnary.js";
 import crypto from 'crypto'
 import { sendVerificationEmail } from "./utils/nodemailer.js";
 
-const token = crypto.randomBytes(10).toString("hex");
+const token = crypto.randomBytes(3).toString("hex");
+console.log(token);
 
 const app = express();
 app.use(cors({
@@ -22,6 +23,17 @@ app.use(cookieParser());
 app.use(express.json());
 const isDev = process.env.NODE_ENV !== "production";
 let SECRET = process.env.SECRET_key; 
+
+
+app.get('/get-user', async (req, res) =>{
+   try {
+    let user = await db.query("SELECT * FROM users")
+    res.send({message: user.rows})
+   } catch (error) {
+    res.send({message: "internel server error"})
+     console.log(error)
+   }
+})
 
 // Signup api
 app.post('/api/v1/signup',async (req , res) => {
@@ -98,7 +110,14 @@ app.post('/api/v1/login', async (req , res) => {
     }
     
 });
-
+app.post('/api/v1/forget-password', async (req, res) => {
+   const {email} = req.body;
+   if(!email){
+    res.status(404).send({message: "email is Requried"})
+    return
+   }
+   
+})
 // logout Api
 app.post("/api/v1/logout", (req, res) => {
   res.clearCookie('token', {
@@ -121,6 +140,7 @@ app.post('/api/v1/upload', upload.single('image'), async (req, res) => {
     console.error("Upload Error:", error);
   }
 })
+
 
 
 // jwt token
@@ -393,9 +413,9 @@ app.put('/api/v1/updatedcart/:id', async (req , res) => {
   }
 });
 
-const __dirname = path.resolve();
-app.use('/', express.static(path.join(__dirname, './frontend/dist')));
-app.use("/*splat" , express.static(path.join(__dirname, './frontend/dist')));
+// const __dirname = path.resolve();
+// app.use('/', express.static(path.join(__dirname, './frontend/dist')));
+// app.use("/*splat" , express.static(path.join(__dirname, './frontend/dist')));
 
 app.listen(5004, () => {
     console.log("server Is running 5004");
