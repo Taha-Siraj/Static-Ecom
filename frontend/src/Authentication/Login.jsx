@@ -96,6 +96,8 @@ const Login = () => {
           )}
         </div>
 
+      <Link className='text-center m-0 p-0 hover:text-gray-700' to={'/forgetpassword'}>Forget Password?</Link>
+
         <div className=" flex justify-center items-center  gap-x-2 text-md
          text-[#747686]">
           Don’t have an account?{' '}
