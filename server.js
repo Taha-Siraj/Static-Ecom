@@ -9,6 +9,7 @@ import path from  'path';
 import { upload } from "./cloudnary/cloudnary.js";
 import crypto from 'crypto'
 import { sendVerificationEmail } from "./utils/nodemailer.js";
+import { AwsPage } from "twilio/lib/rest/accounts/v1/credential/aws.js";
 
 const token = crypto.randomBytes(3).toString("hex");
 console.log(token);
@@ -116,7 +117,13 @@ app.post('/api/v1/forget-password', async (req, res) => {
     res.status(404).send({message: "email is Requried"})
     return
    }
-   
+   let qurey = 'SELECT * FROM user WHERE email = $1';
+   let value = [email]
+   let userEmail = await db.query(qurey, value);
+   if(!userEmail){
+    res.status(404).send({message: "email not found with this wmail"})
+    return
+   }  
 })
 // logout Api
 app.post("/api/v1/logout", (req, res) => {
