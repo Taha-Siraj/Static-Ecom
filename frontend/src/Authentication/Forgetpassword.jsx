@@ -136,7 +136,7 @@ const ForgetPassword = () => {
         <div className="text-sm text-center text-gray-600">
             <p>
                 Don't have an account?{' '}
-                <a href="/register" className="font-medium text-indigo-600 hover:underline">
+                <a href="/signup" className="font-medium text-indigo-600 hover:underline">
                     Register
                 </a>
             </p>
