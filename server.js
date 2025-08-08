@@ -7,6 +7,10 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import path from  'path'; 
 import { upload } from "./cloudnary/cloudnary.js";
+import crypto from 'crypto'
+
+const token = crypto.randomBytes(10).toString("hex");
+console.log(token);
 
 const app = express();
 app.use(cors({
