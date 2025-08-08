@@ -123,10 +123,10 @@ app.post('/api/v1/forget-password', async (req, res) => {
     let value = [email]
     let userEmail = await db.query(qurey, value);
     if (userEmail.rows.length === 0) {
-      res.status(404).send({ message: "email not found with this wmail" })
+      res.status(404).send({ message: "email not found with this email" })
       return
     }
-    const token = crypto.randomInt(100000, 9999999).toString();
+    const token = crypto.randomInt(100000, 999999).toString();
     const expiry = Date.now() + 10 * 60 * 1000;
     let updatedqurey = 'UPDATE users SET reset_token = $1, reset_token_expiry = $2 where email = $3';
     let updatedvalue = [token, expiry, email]
