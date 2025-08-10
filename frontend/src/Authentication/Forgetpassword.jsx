@@ -46,7 +46,7 @@ const Forgetpassword = () => {
                 password
             })
             console.log(res.data)
-            toast.success(res.data.message)
+            
            
         } catch (error) {
             toast.error(error.response.data.message)
