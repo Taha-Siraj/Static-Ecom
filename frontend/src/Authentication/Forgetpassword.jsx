@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import toast, {Toaster} from 'react-hot-toast'
 import api from '../Api';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const Forgetpassword = () => {
     const [step , setstep] = useState(1);
