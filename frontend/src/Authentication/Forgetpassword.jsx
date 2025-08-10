@@ -8,6 +8,7 @@ const Forgetpassword = () => {
     const [email , setEmail] = useState('');
     const [otp , setOtp] = useState('');
     const [password , setpassword] = useState('');
+    const [loader , setLoader] = useState(false);
     
     const sendOtp = async () => {
         if(!email){
@@ -15,6 +16,7 @@ const Forgetpassword = () => {
             return;
         }
         try {
+            setLoader(true);
             let res = await axios.post('http://localhost:5004/api/v1/forget-password' ,{
                 email
             })
@@ -23,10 +25,13 @@ const Forgetpassword = () => {
         } catch (error) {
             toast.error(error.response.data.message)
             console.log(error.response.data.message)
+        } finally {
+            setLoader(false);   
         }
     }
     const VerifyOtp = async () => {
         try {
+            setLoader(true);
             let res = await axios.post('http://localhost:5004/api/v1/verify-otp', {
                 email,
                 otp
@@ -37,21 +42,24 @@ const Forgetpassword = () => {
         } catch (error) {
             toast.error(error.response.data.message)
             console.log(error.response.data.message)
+        } finally {
+            setLoader(false);
         }
     }
     const updatedpassword = async () => {
         try {
+            setLoader(true);
             let res = await axios.put('http://localhost:5004/api/v1/updated-password', {
                 email,
                 password
             })
-            console.log(res.data)
-            
-           
+            toast.success(res.data.message)
+            setstep(4)
         } catch (error) {
             toast.error(error.response.data.message)
             console.log(error.response.data.message)
-
+        } finally {
+            setLoader(false);
         }
     }
   return (
@@ -76,7 +84,7 @@ const Forgetpassword = () => {
                 placeholder="Email"
               />
               <button onClick={sendOtp} className="bg-blue-500 text-white p-2 rounded-md w-full disabled:opacity-60">
-                {'Send OTP'}
+                {loader ? 'Sending...' : 'Send OTP'}
               </button>
             </div>
           </>
@@ -93,7 +101,7 @@ const Forgetpassword = () => {
                   placeholder="OTP"
                 />
                 <button onClick={VerifyOtp} className="bg-blue-500 text-white p-2 rounded-md w-full disabled:opacity-60">
-                  {'Verify OTP'}
+                    {loader ? 'Verifying...' : 'Verify OTP'}
                 </button>
               </div>
             </>
@@ -112,9 +120,20 @@ const Forgetpassword = () => {
                     <button 
                     onClick={updatedpassword}
                     className="bg-blue-500 text-white p-2 rounded-md w-full">
-                        {'Change Password'}
+                        {loader ? 'Changing...' : 'Change Password'}
                     </button>
                 </div>
+            </div>
+        )}
+        {step === 4 && (
+            <div>
+                <i>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    </svg>
+                </i>
+                <p className="text-sm text-center text-gray-600">Your password has been changed successfully.</p>
+                <Link to="/login" className="text-blue-500 hover:underline">Go to Login</Link>
             </div>
         )}
       </div>
