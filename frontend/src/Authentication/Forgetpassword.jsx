@@ -45,8 +45,13 @@ const Forgetpassword = () => {
                 email,
                 password
             })
+            console.log(res.data)
+            toast.success(res.data.message)
+           
         } catch (error) {
-            
+            toast.error(error.response.data.message)
+            console.log(error.response.data.message)
+
         }
     }
   return (
@@ -104,7 +109,9 @@ const Forgetpassword = () => {
                         className="border border-gray-300 p-2 rounded-md w-full"
                         placeholder="New Password"
                     />
-                    <button className="bg-blue-500 text-white p-2 rounded-md w-full">
+                    <button 
+                    onClick={updatedpassword}
+                    className="bg-blue-500 text-white p-2 rounded-md w-full">
                         {'Change Password'}
                     </button>
                 </div>

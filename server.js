@@ -183,7 +183,7 @@ app.post('/api/v1/verify-otp', async (req, res) => {
 // updated password 
 
 app.put('/api/v1/updated-password', async (req , res) => {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
 
   if (!email) {
     return res.status(400).send({ message: "Email is required" });
