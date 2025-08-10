@@ -174,6 +174,8 @@ app.post('/api/v1/verify-otp', async (req, res) => {
 
     // OTP verified success
     return res.status(200).send({ message: "OTP verified successfully" });
+    let clearQuery = 'UPDATE users SET reset_token = NULL, reset_token_expiry = NULL WHERE email = $1';
+    await db.query(clearQuery, [email]);
 
   } catch (error) {
     console.error(error);
