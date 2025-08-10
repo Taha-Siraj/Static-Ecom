@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import toast, {Toaster} from 'react-hot-toast'
-import api from '../Api';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom'
 
 const Forgetpassword = () => {
     const [step , setstep] = useState(1);
@@ -126,16 +125,17 @@ const Forgetpassword = () => {
                 </div>
             </div>
         )}
-        {step === 4 && (
-            <div>
-                <i>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                    </svg>
-                </i>
-                <p className="text-sm text-center text-gray-600">Your password has been changed successfully.</p>
-                <Link to="/login" className="text-blue-500 hover:underline">Go to Login</Link>
+           {step === 4 && (
+          <div className="text-center space-y-6 py-8">
+            <div className="mx-auto w-20 h-20 flex items-center justify-center bg-green-100 rounded-full">
+                <svg className="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
             </div>
+            <h1 className="text-2xl font-bold text-gray-800">Password Reset!</h1>
+            <p className="text-gray-600">Your password has been changed successfully.</p>
+            <Link to="/login" className="inline-block w-full p-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors">
+              Go to Login
+            </Link>
+          </div>
         )}
       </div>
         
