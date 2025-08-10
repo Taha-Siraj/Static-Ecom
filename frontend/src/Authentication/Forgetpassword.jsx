@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import toast, {Toaster} from 'react-hot-toast'
 import axios from 'axios';
 import {Link} from 'react-router-dom'
+import api from '../api/api';
 
 const Forgetpassword = () => {
     const [step , setstep] = useState(1);
@@ -17,7 +18,7 @@ const Forgetpassword = () => {
         }
         try {
             setLoader(true);
-            let res = await axios.post('http://localhost:5004/api/v1/forget-password' ,{
+            let res = await api.post('/forget-password' ,{
                 email
             })
             setstep(2)
@@ -32,7 +33,7 @@ const Forgetpassword = () => {
     const VerifyOtp = async () => {
         try {
             setLoader(true);
-            let res = await axios.post('http://localhost:5004/api/v1/verify-otp', {
+            let res = await api.post('/verify-otp', {
                 email,
                 otp
             })
@@ -49,7 +50,7 @@ const Forgetpassword = () => {
     const updatedpassword = async () => {
         try {
             setLoader(true);
-            let res = await axios.put('http://localhost:5004/api/v1/updated-password', {
+            let res = await api.put('/updated-password', {
                 email,
                 password
             })
