@@ -160,19 +160,17 @@ app.post('/api/v1/verify-otp', async (req, res) => {
     }
 
     let user = result.rows[0];
-    
+
     if (user.reset_token !== otp) {
       return res.status(400).send({ message: "Invalid OTP" });
     }
 
-    // Expiry check
     if (Date.now() > parseInt(user.reset_token_expiry)) {
       return res.status(400).send({ message: "OTP expired" });
     }
     let clearQuery = 'UPDATE users SET reset_token = NULL, reset_token_expiry = NULL WHERE email = $1';
     await db.query(clearQuery, [email]);
 
-    // OTP verified success
     return res.status(200).send({ message: "OTP verified successfully" });
     
 
@@ -180,6 +178,32 @@ app.post('/api/v1/verify-otp', async (req, res) => {
     console.error(error);
     return res.status(500).send({ message: "Internal server error" });
   }
+})
+
+// updated password 
+
+app.put('/api/v1/updated-password', async (req , res) => {
+    const { email, password } = req.body;
+
+  if (!email) {
+    return res.status(400).send({ message: "Email is required" });
+  }
+  if (!password) {
+    return res.status(400).send({ message: "Password is required" });
+  }
+  try {
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
+    const qurey = 'UPDATE users SET password = $1 WHERE email = $2';
+    const value = [hash , email];
+    await db.query(qurey, value)
+    return res.status(200).send({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({ message: "Internal server error" });
+  }
+  
+
 })
 
 // logout Api

@@ -32,6 +32,7 @@ const Forgetpassword = () => {
             })
             console.log(res.data)
             toast.success(res.data.message)
+            setstep(3)
         } catch (error) {
             toast.error(error.response.data.message)
             console.log(error.response.data.message)
@@ -81,7 +82,21 @@ const Forgetpassword = () => {
               </div>
             </>
         )}
-    
+        {step === 3 && (
+            <div>
+                <p>Enter your new password.</p>
+                <div className="space-y-4">
+                    <input
+                        type="password"
+                        className="border border-gray-300 p-2 rounded-md w-full"
+                        placeholder="New Password"
+                    />
+                    <button className="bg-blue-500 text-white p-2 rounded-md w-full">
+                        {'Change Password'}
+                    </button>
+                </div>
+            </div>
+        )}
       </div>
         
     </div>
