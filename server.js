@@ -160,8 +160,7 @@ app.post('/api/v1/verify-otp', async (req, res) => {
     }
 
     let user = result.rows[0];
-
-    // Token match check
+    
     if (user.reset_token !== otp) {
       return res.status(400).send({ message: "Invalid OTP" });
     }
