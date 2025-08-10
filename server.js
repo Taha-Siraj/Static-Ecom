@@ -123,7 +123,7 @@ app.post('/api/v1/forget-password', async (req, res) => {
     let value = [email]
     let userEmail = await db.query(qurey, value);
     if (userEmail.rows.length === 0) {
-      res.status(404).send({ message: "email not found with this email" })
+      res.status(404).send({ message: "user not found with this email" })
       return
     }
     const token = crypto.randomInt(100000, 999999).toString();
@@ -140,17 +140,47 @@ app.post('/api/v1/forget-password', async (req, res) => {
 })
 
 // verify otp
-app.post('/api/v1/verify-otp', (req, res) => {
-   let {otp} = req.body;
-   if(!otp){
-    return res.status(400).send({message: "otp is Requried"})
-   }
+app.post('/api/v1/verify-otp', async (req, res) => {
+  let { otp, email } = req.body;
+  if (!otp) {
+    return res.status(400).send({ message: "OTP is required" });
+  }
+  if (!email) {
+    return res.status(400).send({ message: "Email is required" });
+  }
+
+  email = email.toLowerCase();
    try {
-   
-   } catch (error) {
-    
-   }
+    // DB se token aur expiry check karo
+    let query = 'SELECT reset_token, reset_token_expiry FROM users WHERE email = $1';
+    let values = [email];
+    let result = await db.query(query, values);
+
+    if (result.rows.length === 0) {
+      return res.status(404).send({ message: "User not found with this email" });
+    }
+
+    let user = result.rows[0];
+
+    // Token match check
+    if (user.reset_token !== otp) {
+      return res.status(400).send({ message: "Invalid OTP" });
+    }
+
+    // Expiry check
+    if (Date.now() > parseInt(user.reset_token_expiry)) {
+      return res.status(400).send({ message: "OTP expired" });
+    }
+
+    // OTP verified success
+    return res.status(200).send({ message: "OTP verified successfully" });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({ message: "Internal server error" });
+  }
 })
+
 // logout Api
 app.post("/api/v1/logout", (req, res) => {
   res.clearCookie('token', {
