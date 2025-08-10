@@ -5,8 +5,9 @@ import axios from 'axios';
 
 const Forgetpassword = () => {
     const [step , setstep] = useState(1);
-    const [email , setEmail] = useState('')
-    const [otp , setOtp] = useState('')
+    const [email , setEmail] = useState('');
+    const [otp , setOtp] = useState('');
+    const [password , setpassword] = useState('');
     
     const sendOtp = async () => {
         if(!email){
@@ -36,6 +37,16 @@ const Forgetpassword = () => {
         } catch (error) {
             toast.error(error.response.data.message)
             console.log(error.response.data.message)
+        }
+    }
+    const updatedpassword = async () => {
+        try {
+            let res = await axios.put('http://localhost:5004/api/v1/updated-password', {
+                email,
+                password
+            })
+        } catch (error) {
+            
         }
     }
   return (
@@ -87,6 +98,8 @@ const Forgetpassword = () => {
                 <p>Enter your new password.</p>
                 <div className="space-y-4">
                     <input
+                        value={password}
+                        onChange={(e) => setpassword(e.target.value)}
                         type="password"
                         className="border border-gray-300 p-2 rounded-md w-full"
                         placeholder="New Password"

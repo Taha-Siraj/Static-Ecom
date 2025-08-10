@@ -191,6 +191,7 @@ app.put('/api/v1/updated-password', async (req , res) => {
   if (!password) {
     return res.status(400).send({ message: "Password is required" });
   }
+  email = email.toLowerCase();
   try {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
