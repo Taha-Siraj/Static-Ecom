@@ -16,4 +16,4 @@ export const sendVerificationEmail = async (email , token) => {
     html: `<h3>Your OTP is: <b>${token}</b></h3>
            <p>This OTP will expire in 10 minutes.</p>`
   });
-};
+}; 
