@@ -109,8 +109,8 @@ const Home = () => {
                                 {homeDisplayProducts.map((product) => (
                                     <>
 
-                                        <div key={product.product_id} className="relative group bg-white rounded-md w-[300px]  border border-gray-100"> 
-                                            <div className='h-full w-full bg-[#000000] absolute  opacity-90 hidden group-hover:block cursor-pointer duration-300' >
+                                        <div key={product.product_id} className="relative duration-500 transition-all delay-150 group bg-white rounded-md w-[300px]  border border-gray-100"> 
+                                            <div className='h-full w-full bg-[#000000] absolute  opacity-75 hidden group-hover:block cursor-pointer ' >
                                                   <div className="flex h-full justify-center flex-col items-center gap-1">
                                                    <button className=' hover:scale-90 duration-300 py-3 px-4 bg-[#bdbdbdde]'> <Link  className='text-black uppercase no-underline font-semibold' to={`/productsdetails/${product.product_id}`}> View product </Link></button>
                                                     <button className="flex items-center gap-1 px-3 py-1 bg-black text-white rounded-md text-sm hover:bg-gray-200 transition">
