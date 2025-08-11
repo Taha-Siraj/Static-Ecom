@@ -7,6 +7,7 @@ import { toast, Toaster } from 'react-hot-toast';
 import Allblogs from '../Blog/Allblogs';
 import Loader from './Loader';
 import api from '../Api';
+import { FiShare2, FiRepeat, FiHeart } from "react-icons/fi"
 
 const Home = () => {
 
@@ -94,7 +95,7 @@ const Home = () => {
                 </div>
             </section>
 
-            <main className="container mx-auto px-4 md:px-8 lg:px-16 py-12">
+            <main className="container mx-auto px-4 md:px-8 xl:px-16 lg:px-12 py-12">
                 <section className="mb-16">
                     <h2 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">Our Featured Products</h2>
                     <p className="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-10">
@@ -102,51 +103,52 @@ const Home = () => {
                     </p>
                     <div>
                         {loading ? (
-                        <Loader className="text-center py-10">Loading amazing products...</Loader>
-                    ) : (
-                        <div className="flex justify-center md:flex-row  gap-x-4 gap-y-4">
-                            {homeDisplayProducts.map((product) => (
-                            <>
-                          
-                             <div
-                                    key={product.product_id}
-                                    className="bg-white rounded-md w-[300px]  overflow-hidden group border border-gray-100"
-                                >
-                                    <div className="relative h-60 w-full overflow-hidden">
-                                        <img
-                                            src={product.product_img || "https://via.placeholder.com/400x300/F3F4F6/9CA3AF?text=No+Image"}
-                                            alt={product.product_name}
-                                            className="w-full h-full object-cover"
-                                            onClick={() => navigate(`/product/${product.product_id}`)}
-                                        />
-                                        {product.category_name && (
-                                            <div className="absolute top-3 left-3 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
-                                                {product.category_name}
-                                            </div>
-                                        )}
+                            <Loader className="text-center py-10">Loading amazing products...</Loader>
+                        ) : (
+                            <div className="flex justify-center md:flex-row  gap-x-4 gap-y-4">
+                                {homeDisplayProducts.map((product) => (
+                                    <>
 
-                                    </div>
-                                    <div className="p-3 flex flex-col gap-2">
-                                        <Link to={`/productsdetails/${product.product_id}`} className="text-[18px] font-semibold text-gray-800 transition-colors capitalize">
-                                            {product.product_name}
-                                        </Link>
-                                        <p className="text-gray-600 m-0 text-sm">{product.description || "High quality product for daily use."}</p>
-                                        <p className="text-xl font-bold mt-2">Rs. {product.price?.toLocaleString()}.00</p>
-                                        <div className=" flex items-center capitalize justify-start w-full">
-                                            <button
-                                                onClick={() => handleAddToCart(product)}
-                                                className=" text-green-100 w-full bg-green-600 flex justify-center items-center gap-x-2 p-2 capitalize rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-100 hover:bg-green-700 hover:text-white"
-                                                aria-label={`Add ${product.product_name} to cart`}
-                                            >
-                                                add to cart<FaLuggageCart className="text-2xl text-white" />
-                                            </button>
+                                        <div key={product.product_id} className="relative group bg-white rounded-md w-[300px]  border border-gray-100"> 
+                                            <div className='h-full w-full bg-[#000000] absolute  delay-100 opacity-75 hidden group-hover:block cursor-pointer duration-300 transition-all' >
+                                                  <div className="flex h-full justify-center flex-col items-center gap-1">
+                                                    <button className="flex items-center gap-1 px-3 py-1 bg-black text-white rounded-md text-sm hover:bg-gray-200 transition">
+                                                        <FiShare2 className="w-4 h-4" />
+                                                        Share
+                                                    </button>
+                                                    <button className="flex items-center gap-1 px-3 py-1 bg-black text-white rounded-md text-sm hover:bg-gray-200 transition">
+                                                        <FiRepeat className="w-4 h-4" />
+                                                        Compare
+                                                    </button>
+                                                    <button className="flex items-center gap-1 px-3 py-1 bg-black text-white rounded-md text-sm hover:bg-gray-200 transition">
+                                                        <FiHeart className="w-4 h-4" />
+                                                        Like
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div className="w-full overflow-hidden">
+                                                <img
+                                                    src={product.product_img || "https://via.placeholder.com/400x300/F3F4F6/9CA3AF?text=No+Image"}
+                                                    alt={product.product_name}
+                                                    className="w-full h-full object-cover"
+                                                    onClick={() => navigate(`/product/${product.product_id}`)}
+                                                />
+                                                
+
+                                            </div>
+                                            <div className="p-3 flex flex-col gap-2">
+                                                <h1 className='text-[20px] font-bold capitalize '>{product.product_name}</h1>
+                                                <p className="text-gray-600 m-0 text-sm">{product.description || "High quality product for daily use."}</p>
+                                                <p className="text-xl font-bold mt-2">Rs. {product.price?.toLocaleString()}.00</p>
+                                                <div className=" flex items-center capitalize justify-start w-full">
+                                    
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                             </div>
-                            </>
-                            ))}
-                        </div>
-                    )}
+                                    </>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     <div className="text-center mt-12">
