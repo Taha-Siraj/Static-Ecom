@@ -1,17 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  IoLocationSharp,
-  IoCallSharp,
-  IoTimeOutline,
-} from "react-icons/io5";
-import { MdOutlineEmail } from "react-icons/md";
-import {
-  FaFacebookF,
-  FaTwitter,
-  FaInstagram,
-  FaLinkedinIn,
-} from "react-icons/fa";
+import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 import { BiSolidUpArrowSquare } from "react-icons/bi";
 
 const socialLinks = [
@@ -50,6 +39,7 @@ const ScrollToTopLink = ({ to, children }) => (
 
 const Footer = () => {
   const [showButton, setShowButton] = useState(false);
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     const handleScroll = () => setShowButton(window.scrollY > 300);
@@ -57,11 +47,21 @@ const Footer = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const handleNewsletterSubmit = (e) => {
+    e.preventDefault();
+    if (!email) {
+      alert("Please enter your email");
+      return;
+    }
+    console.log("Subscribed Email:", email);
+    setEmail("");
+  };
+
   return (
     <footer className="bg-white border-t border-gray-200">
-      <div className="container mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div className="max-w-screen-2xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         
-        {/* Brand */}
+        {/* Brand Info */}
         <div>
           <h1 className="text-3xl font-bold text-black">E-SHOP</h1>
           <p className="text-gray-600 mt-3">
@@ -110,20 +110,26 @@ const Footer = () => {
           </div>
         </div>
         
+        {/* Newsletter */}
         <div>
           <h2 className="text-lg font-semibold text-black mb-3">Newsletter</h2>
           <p className="text-gray-600 mb-3">
             Subscribe for exclusive deals and new arrivals.
           </p>
-          <form className="flex flex-col sm:flex-row gap-2">
+          <form
+            onSubmit={handleNewsletterSubmit}
+            className="flex flex-col sm:flex-row w-full gap-2"
+          >
             <input
               type="email"
               placeholder="Your email"
-              className="flex-1 py-2 px-4 rounded-md border border-gray-300 text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="flex-1 min-w-0 py-2 px-4 rounded-md border border-gray-300 text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black"
             />
             <button
               type="submit"
-              className="bg-black text-white py-2 px-6 rounded-md font-semibold hover:bg-gray-800 transition"
+              className="whitespace-nowrap bg-black text-white py-2 px-6 rounded-md font-semibold hover:bg-gray-800 transition w-full sm:w-auto"
             >
               Go
             </button>
