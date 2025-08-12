@@ -6,6 +6,7 @@ import { MdOutlineStarPurple500 } from "react-icons/md";
 import { MdStarPurple500 } from "react-icons/md";
 import { GlobalContext } from '../Context/Context';
 import api from '../Api';
+
 const Products = () => {
   const navigate = useNavigate();
   const {state } = useContext(GlobalContext)
