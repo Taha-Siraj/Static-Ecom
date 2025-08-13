@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { IoIosLogOut } from "react-icons/io";
+import { IoIosLogIn, IoIosLogOut } from "react-icons/io";
 import { Link, useNavigate } from 'react-router-dom';
 import { GlobalContext } from '../Context/Context';
 import { toast } from 'sonner';
@@ -94,11 +94,18 @@ const Navbar = () => {
                 </span>
               )}
             </Link>
-            {state?.user?.email && (
+            {state?.user?.email ? (
               <IoIosLogOut
                 onClick={handleLogout}
                 className="text-3xl text-gray-600 cursor-pointer hover:text-gray-700"
               />
+            ) : (
+              <Link
+                to="/login"
+                className="text-3xl text-gray-600 cursor-pointer hover:text-gray-700"
+              >
+                <IoIosLogIn />
+              </Link>
             )}
           </div>
         </div>

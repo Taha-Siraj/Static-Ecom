@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { GlobalContext } from '../Context/Context'
-import api from '../Api'
-import { toast, Toaster } from 'react-hot-toast'
-import { FaMinus, FaPlus, FaTrash } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react';
+import { GlobalContext } from '../Context/Context';
+import api from '../Api';
+import { toast, Toaster } from 'react-hot-toast';
+import { FaMinus, FaPlus, FaTrash } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Cart = () => {
   const { state, dispatch } = useContext(GlobalContext)
@@ -17,8 +17,6 @@ const Cart = () => {
       console.log("all cart error", error)
     }
   }
-
-
   console.log("allCartItem" , allCartItem)
   
 
