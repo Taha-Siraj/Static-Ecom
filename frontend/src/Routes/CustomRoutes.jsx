@@ -13,6 +13,7 @@ import Cart from '../Pages/Cart';
 import Loader from '../Pages/Loader';
 import Checkout from '../Pages/Checkout';
 import Forgetpassword from '../Authentication/Forgetpassword';
+import Card from '../Pages/Card';
 
 const CustomRoutes = () => {
   const { state } = useContext(GlobalContext);
@@ -26,6 +27,7 @@ const CustomRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/card" element={<Card />} />
       <Route path="/product" element={<Products />} />
       <Route path="/blog" element={<Allblogs />} />
       <Route path="/forgetpassword" element={<Forgetpassword />} />
