@@ -83,7 +83,7 @@ const Cart = () => {
 
 
   return (
-    <div className='pt-24 font-poppins px-4 md:px-8 lg:px-16 py-8 bg-gray-50 min-h-[calc(100vh-6rem)]'>
+    <div className='fixed top-0 right-0 w-[50%] h-screen pt-24 font-poppins px-4 md:px-8 lg:px-16 py-8 bg-gray-50 min-h-[calc(100vh-6rem)]'>
       <Toaster position="top-center" richColors closeButton />
       <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center md:text-left">Your Shopping Cart</h1>
 

@@ -47,13 +47,11 @@ export default function RealisticCard({
 
   return (
     <div className={`relative p-0 ${className} mt-32 `}>
-      {/* Neon glow border */}
       <div
         className="pointer-events-none absolute -inset-[2px] rounded-2xl blur-sm"
         style={borderStyle}
       />
 
-      {/* Card with motion */}
       <motion.div
         ref={ref}
         onMouseMove={onMove}
@@ -68,10 +66,8 @@ export default function RealisticCard({
         }}
         transition={{ type: "spring", stiffness: 200, damping: 20 }}
       >
-        {/* Soft border */}
         <div className="pointer-events-none absolute inset-0 rounded-2xl border border-white/10" />
 
-        {/* Cursor glow ring */}
         <motion.div
           className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl"
           style={{
@@ -87,7 +83,6 @@ export default function RealisticCard({
           transition={{ duration: 0.2 }}
         />
 
-        {/* Content */}
         <div className="relative">
           <h3 className="text-xl md:text-2xl font-semibold tracking-tight text-white">
             {title}
@@ -103,7 +98,6 @@ export default function RealisticCard({
           </div>
         </div>
 
-        {/* Footer */}
         <div className="mt-5 flex items-center justify-between">
           <span className="text-[11px] uppercase tracking-widest text-white/40">
             powered by <b className="text-white/70">meb</b>
