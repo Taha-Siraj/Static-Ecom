@@ -6,13 +6,12 @@ import { toast } from 'sonner';
 import { CiMenuFries } from "react-icons/ci";
 import { FaLuggageCart, FaRegHeart } from 'react-icons/fa';
 import api from '../Api';
-import Cart from '../Pages/Cart';
 
 const Navbar = () => {
   const { state, dispatch } = useContext(GlobalContext);
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const [cartopen , setcartOpen] = useState(false);
   const navigate = useNavigate();
+  const [cartOpen, setCartOpen] = useState(false);
   console.log()
 
   const navLinks = [
@@ -88,25 +87,15 @@ const Navbar = () => {
 
           <div className="hidden md:flex gap-x-5 items-center">
             <FaRegHeart className="text-2xl hover:text-green-700 text-gray-600" />
-            <div className="relative">
-              {cartopen ? (
-                <Cart>
-                  <FaLuggageCart className="text-2xl hover:text-green-700 text-gray-600" />
-                </Cart>
-              ) : (
-                <FaLuggageCart
-                  className="text-2xl hover:text-green-700 text-gray-600 cursor-pointer"
-                  onClick={() => setcartOpen(!cartopen)}
-                />
-              )}
-
+            <Link to="/cart" className="relative">
+            
+              <FaLuggageCart className="text-2xl hover:text-green-700 text-gray-600" />
               {state.cartCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                   {state.cartCount}
                 </span>
               )}
-            </div>
-
+            </Link>
             {state?.user?.email ? (
               <IoIosLogOut
                 onClick={handleLogout}
