@@ -38,9 +38,9 @@ const Cart = ({ onClose }) => {
     }
   }
   return (
-    <div className="h-screen overflow-scroll font-poppins z-50 fixed top-0 right-0 w-full bg-black/40 flex justify-end">
+    <div className="h-screen overflow-scroll font-poppins z-50 fixed top-0 right-0 w-full bg-black/40 flex justify-end" onClick={onClose}>
       <Toaster position='bottom-right' />
-      <div className="h-full w-[400px] bg-white flex justify-between flex-col">
+      <div onClick={(e) => e.stopPropagation()} className="h-full w-[400px] bg-white flex justify-between flex-col">
         <div>
           <div  className="flex justify-between p-4">
             <h1 className="text-2xl font-bold">Shopping Cart</h1>
