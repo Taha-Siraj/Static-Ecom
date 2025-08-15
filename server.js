@@ -437,7 +437,8 @@ app.get('/api/v1/cart/:user_id', async (req, res) => {
     let qurey = 'SELECT * FROM cart WHERE user_id = $1 ORDER BY cart_id DESC';
     let value = [user_id];
     let response = await db.query(qurey, value);
-    res.status(200).send({ cartItems: response.rows });
+    const grandTotal = response.rows.reduce((sum, item) => sum + Number(item.subtotal), 0);
+    res.status(200).send({ cartItems: response.rows, grandTotal });
   } catch (error) {
     console.log(error)
     res.status(500).send({ message: "internel server error" })
@@ -452,10 +453,12 @@ app.post('/api/v1/cart', async (req, res) => {
     res.status(400).send({ message: "Allfield Requried" });
     return
   }
+  let total = quantity * price_per_item
+  let subTotal = total
   try {
-    let qurey = `INSERT INTO cart( user_id , product_id , quantity , price_per_item, product_name, product_image, product_category)
-     VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *`;
-    let values = [user_id, product_id, quantity, price_per_item, product_name, product_image, product_category];
+    let qurey = `INSERT INTO cart( user_id , product_id , quantity , price_per_item, product_name, product_image, product_category , subtotal)
+     VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`;
+    let values = [user_id, product_id, quantity, price_per_item, product_name, product_image, product_category, subTotal];
     let response = await db.query(qurey, values);
     res.status(201).send({ message: "Item added to cart", cartItems: response.rows[0] });
   } catch (error) {
