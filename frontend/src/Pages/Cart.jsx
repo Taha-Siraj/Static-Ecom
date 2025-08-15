@@ -7,6 +7,7 @@ import { IoMdCloseCircle } from "react-icons/io";
 const Cart = ({ onClose }) => {
   const { state, dispatch } = useContext(GlobalContext);
   const [allCart, setAllCart] = useState([]);
+  const [subtotal , setsubtotal] = useState(0)
   console.log("Caert user", state)
 
   const fetchCart = async () => {
@@ -14,6 +15,8 @@ const Cart = ({ onClose }) => {
       let res = await api.get(`/cart/${state.user.user_id}`);
       console.log(res.data)
       setAllCart(res.data.cartItems)
+      setsubtotal(res.data.grandTotal)
+
     } catch (error) {
       toast.error("Cart fetch error");
       console.log("Cart fetch error:", error)
@@ -37,17 +40,19 @@ const Cart = ({ onClose }) => {
   return (
     <div className="h-screen overflow-scroll font-poppins z-50 fixed top-0 right-0 w-full bg-black/40 flex justify-end">
       <Toaster position='bottom-right' />
-      <div className="h-full w-[450px] bg-white">
-        <div className="flex justify-between p-4">
-          <h1 className="text-2xl font-bold">Shopping Cart</h1>
+      <div className="h-full w-[400px] bg-white flex justify-between flex-col">
+        <div>
+          <div  className="flex justify-between p-4">
+            <h1 className="text-2xl font-bold">Shopping Cart</h1>
           <FaRegWindowClose
             className="text-2xl text-gray-500 cursor-pointer"
             onClick={onClose}
           />
+          </div>
+        <hr />
         </div>
-          <hr className='' />
-        <br />
         <div className='flex flex-col gap-y-3'>
+          {allCart.length === 0 && <div className='text-center py-4'>Your cart is empty</div>}
           {allCart.map((item) =>(
             <div key={item.cart_id} className='flex justify-between items-center px-4 gap-2 w-full'>
               <img src={item.product_image} className='w-[120px] h-[120px]  border  rounded-lg  object-cover' alt="" />
@@ -58,9 +63,14 @@ const Cart = ({ onClose }) => {
                <button onClick={() => deletedCart(item.cart_id)} className='border py-1 rounded-lg text-gray-500  px-1  text-3xl' ><IoMdCloseCircle /></button>
             </div>
           ))}
+          
+
         </div>
 
 
+        <div className='px-10'>
+            <p className='text-md text-black font-bold'>Total: Rs: {subtotal} </p>
+        </div>
       </div>
     </div>
   )
