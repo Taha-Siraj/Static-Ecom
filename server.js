@@ -233,62 +233,62 @@ app.post('/api/v1/upload', upload.single('image'), async (req, res) => {
 
 
 // jwt token
-// app.use('/api/v1/*splat', (req, res, next) => {
-//   if (!req.cookies?.token) {
-//     res.status(401).send({ message: "Unauthorized" })
-//     return;
-//   }
-//   jwt.verify(req.cookies?.token, SECRET, (err, decodedData) => {
-//     if (!err) {
-//       const nowDate = new Date().getTime() / 1000;
-//       if (decodedData?.exp < nowDate) {
-//         res.status(401);
-//         res.cookie('Token', '', {
-//           maxAge: 1,
-//           httpOnly: true,
-//           secure: true
-//         })
-//         res.send({ message: "token expired" })
-//       } else {
-//         console.log("token approved");
-//         req.body = { ...req.body, token: decodedData }
-//         next()
-//       }
-//     }
-//     else {
-//       res.status(401).send({ message: "invalid token" })
-//     }
-//   })
-// })
+app.use('/api/v1/*splat', (req, res, next) => {
+  if (!req.cookies?.token) {
+    res.status(401).send({ message: "Unauthorized" })
+    return;
+  }
+  jwt.verify(req.cookies?.token, SECRET, (err, decodedData) => {
+    if (!err) {
+      const nowDate = new Date().getTime() / 1000;
+      if (decodedData?.exp < nowDate) {
+        res.status(401);
+        res.cookie('Token', '', {
+          maxAge: 1,
+          httpOnly: true,
+          secure: true
+        })
+        res.send({ message: "token expired" })
+      } else {
+        console.log("token approved");
+        req.body = { ...req.body, token: decodedData }
+        next()
+      }
+    }
+    else {
+      res.status(401).send({ message: "invalid token" })
+    }
+  })
+})
 
-// app.get('/api/v1/profile', async (req, res) => {
-//   const userToken = req.body.token;
-//   console.log("userToken id", userToken?.id)
-//   if (!userToken?.id) {
-//     return res.status(401).send({ message: "Invalid token" });
-//   }
+app.get('/api/v1/profile', async (req, res) => {
+  const userToken = req.body.token;
+  console.log("userToken id", userToken?.id)
+  if (!userToken?.id) {
+    return res.status(401).send({ message: "Invalid token" });
+  }
 
-//   let query = `SELECT * FROM users WHERE user_id = $1`;
-//   let value = [userToken.id];
-//   try {
-//     let result = await db.query(query, value);
-//     res.status(200).send({
-//       message: "User Found",
-//       user: {
-//         user_id: result.rows[0].user_id,
-//         first_name: result.rows[0].first_name,
-//         last_name: result.rows[0].last_name,
-//         email: result.rows[0].email,
-//         phone: result.rows[0].phone,
-//         user_role: result.rows[0].user_role,
-//         profile: result.rows[0].profile,
-//       }
-//     });
-//   } catch (error) {
-//     console.log("Error in /profile", error);
-//     res.status(500).send({ message: "Internal Server Error" });
-//   }
-// });
+  let query = `SELECT * FROM users WHERE user_id = $1`;
+  let value = [userToken.id];
+  try {
+    let result = await db.query(query, value);
+    res.status(200).send({
+      message: "User Found",
+      user: {
+        user_id: result.rows[0].user_id,
+        first_name: result.rows[0].first_name,
+        last_name: result.rows[0].last_name,
+        email: result.rows[0].email,
+        phone: result.rows[0].phone,
+        user_role: result.rows[0].user_role,
+        profile: result.rows[0].profile,
+      }
+    });
+  } catch (error) {
+    console.log("Error in /profile", error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
 
 // Upload Api
 
@@ -434,7 +434,7 @@ app.delete('/api/v1/deletedcategory/:id', async (req, res) => {
 app.get('/api/v1/cart/:user_id', async (req, res) => {
   let { user_id } = req.params;
   try {
-    let qurey = 'SELECT * FROM cart WHERE user_id = $1';
+    let qurey = 'SELECT * FROM cart WHERE user_id = $1 ORDER BY cart_id DESC';
     let value = [user_id];
     let response = await db.query(qurey, value);
     res.status(200).send({ cartItems: response.rows });
