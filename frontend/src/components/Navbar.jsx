@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { CiMenuFries } from "react-icons/ci";
 import { FaLuggageCart, FaRegHeart } from 'react-icons/fa';
 import api from '../Api';
-import Cart from '../Pages/Cart';
+import Cart from '../Pages/Cartbar';
 
 const Navbar = () => {
   const { state, dispatch } = useContext(GlobalContext);
