@@ -67,8 +67,8 @@ const Navbar = () => {
             >
               <CiMenuFries />
             </button>
-            <Link to="/" className="text-3xl text-green-600 uppercase font-bold">
-              <span className="text-black">E-</span>Shop
+            <Link to="/" className="text-[30px] no-underline  uppercase  font-bold">
+              <span className="text-black"><img src="navlogo.png" className='w-28' alt="" /></span>
             </Link>
           </div>
 
