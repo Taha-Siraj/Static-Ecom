@@ -116,7 +116,7 @@ const Home = () => {
                                             </div>
                                             <div className="p-3 flex flex-col gap-2">
                                                 <h1 className='text-[20px] font-bold capitalize '>{product.product_name}</h1>
-                                                <p className="text-gray-600 m-0 text-sm">{product.description || "High quality product for daily use."}</p>
+                                                <p className="text-gray-600 m-0 text-sm line-clamp-5">{product.description || "High quality product for daily use."}</p>
                                                 <p className="text-xl font-bold mt-2">Rs. {product.price?.toLocaleString()}.00</p>
                                                 <div className=" flex items-center capitalize justify-start w-full">
                                     
