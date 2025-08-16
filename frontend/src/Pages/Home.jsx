@@ -55,34 +55,12 @@ const Home = () => {
         fetchProductsAndCategories();
     }, []);
 
-    const handleAddToCart = async (product) => {
-        if (!state?.user?.user_id) {
-            toast.error("Please login to add products to your cart.");
-            navigate("/login");
-            return;
-        }
-        try {
-            await api.post(`/cart`, {
-                user_id: state.user.user_id,
-                product_id: product.product_id,
-                price_per_item: product.price,
-                quantity: 1,
-                product_name: product.product_name,
-                product_image: product.product_img,
-                product_category: product.category_name,
-            });
-            dispatch({ type: "SET_CART_COUNT", payload: state.cartCount + 1 });
-            toast.success(`${product.product_name} added to cart!`);
-        } catch (error) {
-            console.error("Error adding to cart:", error);
-            toast.error('Failed to add to cart.');
-        }
-    };
+
 
     return (
         <div className="font-poppins bg-white  pt-20 overflow-hidden">
             <Toaster position="bottom-right" richColors closeButton />
-            <section className="h-screen mb-12 relative">
+            <section className="h-screen mb-12 relative cursor-auto overflow-hidden">
                 {images.map((img , index) => (
                     <img src={img} alt="" key={index} className={`absolute top-0 h-full w-full ${index === current ? "opacity-100" : "opacity-0"} transition-opacity duration-1000`} />
                 ))}
