@@ -94,6 +94,11 @@ const Home = () => {
 
                 </div>
             </section>
+            <div className='flex justify-between px-5'>
+                <img src="airbuds.jpg" className='rounded-md w-[400px] ' alt="" />
+                <img src="airbuds.jpg" className='rounded-md w-[400px] ' alt="" />
+                <img src="airbuds.jpg" className='rounded-md w-[400px] ' alt="" />
+            </div>
 
             <main className="container mx-auto px-4 md:px-8 xl:px-16 lg:px-12 py-12">
                 <section className="mb-16">
