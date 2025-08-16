@@ -41,7 +41,6 @@ const Navbar = () => {
    useEffect(() => {
   const fetchCart = async () => {
     if (!state?.isLogin || !state?.user?.user_id) return;
-
     try {
       const res = await api.get(`/cart/${state.user.user_id}`);
       const items = res.data?.cartItems || [];
