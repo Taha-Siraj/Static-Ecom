@@ -16,6 +16,16 @@ const Home = () => {
     const [homeDisplayProducts, setHomeDisplayProducts] = useState([]);
     const [popularCategories, setPopularCategories] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [current , setCurrent] = useState(0);
+    const images =  [ "hero4.jpg", "hero3.jpg", "hero2.jpg" ];
+
+    useEffect(() => {
+     const timer  = setInterval(() => {
+        setCurrent((prev) => (prev + 1) % images.length)
+     }, 4000)
+    return () => clearInterval(timer);
+    } , [images.length]);
+
     const fetchProductsAndCategories = async () => {
         try {
             setLoading(true);
@@ -70,34 +80,18 @@ const Home = () => {
     };
 
     return (
-        <div className="font-poppins bg-white pt-20 overflow-hidden">
+        <div className="font-poppins bg-white  pt-20 overflow-hidden">
             <Toaster position="bottom-right" richColors closeButton />
-            <section className="px-4 md:px-8 lg:px-16 mb-12">
-                <div className="bg-gradient-to-r from-teal-500 to-green-600 w-full rounded-2xl p-6 sm:p-10 md:p-16 flex flex-col md:flex-row justify-between items-center text-white relative overflow-hidden shadow-2xl">
-                    <div className="flex flex-col justify-center items-center md:items-start gap-4 max-w-lg text-center md:text-left z-10">
-                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight tracking-tight drop-shadow-lg animate-fade-in-up">
-                            Unbeatable Deals! <br />
-                            <span className="text-yellow-300">Save Up To 50%</span> on Premium Smart watches & Headphones
-                        </h1>
-                        <p className="text-lg sm:text-xl text-gray-100 mb-4 animate-fade-in-up delay-200">
-                            Experience crystal-clear audio and deep bass. Limited time offer!
-                        </p>
-                        <Link
-                            to="/product"
-                            className="bg-white outline-none text-green-800 py-3 px-8 rounded-full font-bold text-lg hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-xl animate-fade-in-up delay-400">
-                            Shop Headphones Now!
-                        </Link>
-                    </div>
-                    <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-                        <img src="banner.webp" alt="Abstract Background" className="w-full h-full object-cover" />
-                    </div>
-
-                </div>
+            <section className="h-screen mb-12 relative">
+                {images.map((img , index) => (
+                    <img src={img} alt="" key={index} className={`absolute top-0 h-full w-full ${index === current ? "opacity-100" : "opacity-0"} transition-opacity duration-1000`} />
+                ))}
             </section>
-            <div className='flex justify-between px-5'>
-                <img src="airbuds.jpg" className='rounded-md w-[400px] ' alt="" />
-                <img src="airbuds.jpg" className='rounded-md w-[400px] ' alt="" />
-                <img src="airbuds.jpg" className='rounded-md w-[400px] ' alt="" />
+
+            <div className='flex justify-center gap-5 px-5'>
+                <img src="smartwatches.jpg" className='rounded-md hover:brightness-75  hover:scale-105 duration-300 w-[350px]  cursor-pointer ' alt="" />
+                <img src="headphone.avif" className='rounded-md w-[350px] hover:brightness-75 hover:scale-105 duration-300  cursor-pointer ' alt="" />
+                <img src="airbuds.jpg" className='rounded-md w-[350px] hover:brightness-75 hover:scale-105 duration-300  cursor-pointer ' alt="" />
             </div>
 
             <main className="container mx-auto px-4 md:px-8 xl:px-16 lg:px-12 py-12">
@@ -114,8 +108,8 @@ const Home = () => {
                                 {homeDisplayProducts.map((product) => (
                                     <>
 
-                                        <div key={product.product_id} className="relative duration-500 transition-all delay-150 group bg-white rounded-md w-[300px]  border border-gray-100"> 
-                                            <div className='h-full w-full bg-[#000000] absolute  opacity-75 hidden group-hover:block cursor-pointer ' >
+                                        <div key={product.product_id} className="relative duration-300 transition-all delay-150 group bg-white rounded-md w-[300px]  border border-gray-100"> 
+                                            <div className='h-full w-full bg-[#000000] absolute duration-300 delay-75  opacity-65 hidden group-hover:block cursor-pointer ' >
                                                   <div className="flex h-full justify-center flex-col items-center gap-1">
                                                    <button className=' hover:scale-90 duration-300 py-3 px-4 bg-[#bdbdbdde]'> <Link  className='text-black uppercase no-underline font-semibold' to={`/productsdetails/${product.product_id}`}> View product </Link></button>
                                                     <button className="flex items-center gap-1 px-3 py-1 bg-black text-white rounded-md text-sm hover:bg-gray-200 transition">
