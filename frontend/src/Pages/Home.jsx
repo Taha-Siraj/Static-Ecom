@@ -65,6 +65,10 @@ const Home = () => {
                     <img src={img} alt="" key={index} className={`absolute top-0 h-full w-full ${index === current ? "opacity-100" : "opacity-0"} transition-opacity duration-1000`} />
                 ))}
             </section>
+             <h2 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">Our Featured Products</h2>
+                    <p className="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-10">
+                        Explore our handpicked selection of top-quality products, designed to enhance your lifestyle. From trendy fashion to essential tech, find your next favorite item here.
+                    </p>
 
             <div className='flex justify-center gap-5 px-5'>
                 <img src="smartwatches.jpg" className='rounded-md hover:brightness-75  hover:scale-105 duration-300 w-[350px]  cursor-pointer ' alt="" />
@@ -74,10 +78,8 @@ const Home = () => {
 
             <main className="container mx-auto px-4 md:px-8 xl:px-16 lg:px-12 py-12">
                 <section className="mb-16">
-                    <h2 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">Our Featured Products</h2>
-                    <p className="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-10">
-                        Explore our handpicked selection of top-quality products, designed to enhance your lifestyle. From trendy outfits to essential tech, find your next favorite item here.
-                    </p>
+                    <h2 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">Our Products</h2>
+                    
                     <div>
                         {loading ? (
                             <Loader className="text-center py-10">Loading amazing products...</Loader>
