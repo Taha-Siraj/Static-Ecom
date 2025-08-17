@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../Context/Context';
 import { useNavigate, Link } from 'react-router-dom';
-import { MdStarPurple500, MdOutlineStarPurple500 } from 'react-icons/md';
-import { FaLuggageCart } from 'react-icons/fa';
 import { toast, Toaster } from 'react-hot-toast';
 import Allblogs from '../Blog/Allblogs';
 import Loader from './Loader';
