@@ -9,7 +9,6 @@ const Productsdetail = () => {
         <p className='text-xl font-semibold text-black capitalize'>Product Detailed Page</p>
       </div>
       <div>
-        
       </div>
     </div>
   )
