@@ -24,7 +24,7 @@ const Productsdetail = () => {
   useEffect(() => {
     fetchproductdetails()
   }, [])
-
+ console.log(Productsdetail)
   return (
     <div className='pt-24 font-poppins w-full'>
       {/* Breadcrumb */}
@@ -96,6 +96,9 @@ const Productsdetail = () => {
             <button className='bg-black text-white font-semibold px-4 py-2 rounded-md w-full sm:w-auto'>
               Add to cart
             </button>
+          </div>
+          <div>
+         <p>Category:  {Productsdetail?.category_name}</p>
           </div>
             
         </div>
