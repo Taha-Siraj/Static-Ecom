@@ -32,11 +32,16 @@ const Productsdetail = () => {
         <p className='text-gray-400 text-xl flex justify-center items-center gap-x-3' >Shop <FaGreaterThan className='text-xl text-black' /></p>
         <p className='text-xl font-semibold text-black capitalize'>Product Detailed Page</p>
       </div>
-      <div className='px-10 w-full py-10 flex justify-center gap-x-10 items-center'>
-        <div className='w-full'>
-          <img src={Productsdetail?.product_img} className='w-[450px] border rounded-md' alt="" />
+      <div className='px-20 w-full py-10 flex items-center justify-center '>
+        <div className='w-full flex gap-x-3'>
+          <div>
+            {[...Array(4)].map((img , index) => (
+              <img src={Productsdetail?.product_img} className='hover:border-black border-2 cursor-pointer w-[100px] bg-[#F9F1E7]  rounded-md' alt="" />
+            ) ) }
+          </div>
+          <img src={Productsdetail?.product_img} className='bg-[#F9F1E7] w-[450px] border rounded-md' alt="" />
         </div>
-        <div>
+        <div className='w-full'>
           <h1 className='text-2xl font-bold'>{Productsdetail?.product_name}</h1>
           <h1 className='text-2xl  font-bold '>RS: {Productsdetail?.price}</h1>
           <div className='gap-x-3 flex'>
