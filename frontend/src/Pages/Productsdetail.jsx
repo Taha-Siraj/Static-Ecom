@@ -4,7 +4,7 @@ import api from '../Api'
 import { useParams } from 'react-router-dom';
 import { GlobalContext } from '../Context/Context';
 import { MdOutlineStarPurple500 } from "react-icons/md";
-import axios from 'axios';
+import {toast , Toaster} from 'react-hot-toast'
 
 const Productsdetail = () => {
   const { state, dispatch } = useContext(GlobalContext)
@@ -35,7 +35,7 @@ const Productsdetail = () => {
         product_category: Productsdetail.category_name,
         price_per_item: Productsdetail.price,
       })
-      console.log(res.data)
+     toast.success("Product added to cart successfully");
     } catch (error) {
       console.log(error.response.data.message)
     }
@@ -47,6 +47,7 @@ const Productsdetail = () => {
   console.log(Productsdetail)
   return (
     <div className='pt-24 font-poppins w-full'>
+      <Toaster position='top-right' />
       {/* Breadcrumb */}
       <div className='bg-[#F9F1E7] h-28 w-full flex px-4 md:px-10 justify-start gap-x-5 items-center'>
         <p className='text-gray-400 text-sm md:text-xl flex items-center gap-x-2' >
