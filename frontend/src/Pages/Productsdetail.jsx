@@ -4,6 +4,7 @@ import api from '../Api'
 import { useParams } from 'react-router-dom';
 import { GlobalContext } from '../Context/Context';
 import { MdOutlineStarPurple500 } from "react-icons/md";
+import axios from 'axios';
 
 const Productsdetail = () => {
   const { state, dispatch } = useContext(GlobalContext)
@@ -18,6 +19,25 @@ const Productsdetail = () => {
       setproductdetails(matchproduct)
     } catch (error) {
       console.log(error)
+    }
+  }
+
+
+  const addtocart = async () => {
+      
+    try {
+      let res = await api.post('/cart',{
+        user_id: state.user.user_id,
+        product_id: Productsdetail.product_id,
+        quantity: counter,
+        product_name: Productsdetail.product_name,
+        product_image: Productsdetail.product_img,
+        product_category: Productsdetail.category_name,
+        price_per_item: Productsdetail.price,
+      })
+      console.log(res.data)
+    } catch (error) {
+      console.log(error.response.data.message)
     }
   }
 
@@ -93,7 +113,7 @@ const Productsdetail = () => {
                 onClick={() => setcounter(counter + 1)}
               >+</span>
             </div>
-            <button className='bg-black  text-white font-semibold px-4 py-2 rounded-md w-full sm:w-auto'>
+            <button onClick={addtocart} className='bg-black  text-white font-semibold px-4 py-2 rounded-md w-full sm:w-auto'>
               Add to cart
             </button>
           </div>
