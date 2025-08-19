@@ -87,12 +87,8 @@ const Navbar = () => {
 
           <div className="hidden md:flex gap-x-5 items-center">
             <FaRegHeart className="text-2xl hover:text-green-700 text-gray-600" />
-
-
               <FaLuggageCart onClick={() => setCartOpen(true)} className="text-2xl hover:text-green-700 text-gray-600" />
               {cartOpen ? <Cart onClose={() => setCartOpen(false)} /> : null}
-            
-          
             {state?.user?.email ? (
               <IoIosLogOut
                 onClick={handleLogout}
