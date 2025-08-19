@@ -81,7 +81,7 @@ const Productsdetail = () => {
           <p className='text-sm md:text-base'>{Productsdetail?.description}</p>
 
           {/* Counter & Button */}
-          <div className='flex flex-col sm:flex-row gap-3 border-b pb-6'>
+          <div className='flex flex-col sm:flex-row gap-3 border-b pb-6 w-full'>
             <div className='border rounded-md flex justify-center items-center gap-x-2'>
               <span
                 className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'
@@ -93,7 +93,7 @@ const Productsdetail = () => {
                 onClick={() => setcounter(counter + 1)}
               >+</span>
             </div>
-            <button className='bg-black text-white font-semibold px-4 py-2 rounded-md w-full sm:w-auto'>
+            <button className='bg-black  text-white font-semibold px-4 py-2 rounded-md w-full sm:w-auto'>
               Add to cart
             </button>
           </div>
