@@ -57,7 +57,7 @@ const Productsdetail = () => {
           {/* Main image */}
           <img 
             src={Productsdetail?.product_img} 
-            className='bg-[#F9F1E7] w-full md:w-[400px] lg:w-[450px] h-[300px] md:h-[400px] object-contain border rounded-md' 
+            className='bg-[#F9F1E7] w-full md:w-[400px] lg:w-[450px] h-[350px] md:h-[450px] object-contain border rounded-md' 
             alt="" 
           />
         </div>
@@ -81,7 +81,7 @@ const Productsdetail = () => {
           <p className='text-sm md:text-base'>{Productsdetail?.description}</p>
 
           {/* Counter & Button */}
-          <div className='flex flex-col sm:flex-row gap-3'>
+          <div className='flex flex-col sm:flex-row gap-3 border-b pb-6'>
             <div className='border rounded-md flex justify-center items-center gap-x-2'>
               <span 
                 className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer' 
@@ -97,6 +97,7 @@ const Productsdetail = () => {
               Add to cart
             </button>
           </div>
+            
         </div>
       </div>
     </div>
