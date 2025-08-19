@@ -24,7 +24,10 @@ const Productsdetail = () => {
 
 
   const addtocart = async () => {
-      
+      if (counter === 0) {
+        toast.error("Please select a quantity");
+        return;
+      }
     try {
       let res = await api.post('/cart',{
         user_id: state.user.user_id,
