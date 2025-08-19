@@ -34,9 +34,9 @@ const Productsdetail = () => {
       </div>
       <div className='px-20 w-full py-10 flex items-center justify-center '>
         <div className='w-full flex gap-x-3'>
-          <div>
+          <div className='space-y-5'>
             {[...Array(4)].map((img , index) => (
-              <img src={Productsdetail?.product_img} className='hover:border-black border-2 cursor-pointer w-[100px] bg-[#F9F1E7]  rounded-md' alt="" />
+              <img key={index} src={Productsdetail?.product_img} className='hover:border-black border-2 cursor-pointer w-[100px] bg-[#F9F1E7]  rounded-md' alt="" />
             ) ) }
           </div>
           <img src={Productsdetail?.product_img} className='bg-[#F9F1E7] w-[450px] border rounded-md' alt="" />
