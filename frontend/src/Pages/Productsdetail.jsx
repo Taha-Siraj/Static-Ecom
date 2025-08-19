@@ -74,7 +74,7 @@ const Productsdetail = () => {
                 <MdOutlineStarPurple500 key={i} className='text-lg md:text-xl text-[#FACC15]' />
               ))}
             </div>
-            <p className='text-sm md:text-base'>{Productsdetail?.customer_reviews} Customer Reviews</p>
+            <p className='text-sm md:text-base m-0'>5 Customer Reviews</p>
           </div>
 
           {/* Description */}
