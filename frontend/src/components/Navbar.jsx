@@ -92,7 +92,7 @@ const Navbar = () => {
             {state?.user?.email ? (
               <IoIosLogOut
                 onClick={handleLogout}
-                className="text-3xl text-gray-600 cursor-pointer hover:text-gray-700"
+                className="text-3xl text-red-500  cursor-pointer hover:text-red-600"
               />
             ) : (
               <Link
