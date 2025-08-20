@@ -109,8 +109,7 @@ const Productsdetail = () => {
             <div className='border rounded-md flex justify-center items-center gap-x-2'>
               <span
                 className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'
-                onClick={() => setcounter(counter > 0 ? counter - 1 : 0)}
-              >-</span>
+                 >-</span>
               {counter}
               <span
                 className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'
