@@ -69,7 +69,7 @@ const Navbar = () => {
               <CiMenuFries />
             </button>
             <Link to="/" className="text-[30px] no-underline  uppercase  font-bold">
-              <span className="text-black"><img src="navlogo.png" className='w-28' alt="" /></span>
+              <span className="text-green-800">E_SHOP</span>
             </Link>
           </div>
 
@@ -92,7 +92,7 @@ const Navbar = () => {
               {state.cartCount > 0 && (
                 <span className='bg-red-500 absolute bottom-3 font-semibold left-3 rounded-full text-white px-2'>{state.cartCount}</span>
               )}
-              <FaCartShopping onClick={() => setCartOpen(true)} className="text-2xl hover:text-green-700 text-gray-600" />
+              <FaCartShopping onClick={() => setCartOpen(true)} className="text-2xl hover:text-green-700 text-gray-600 cursor-pointer" />
             </div>
             {cartOpen ? <Cart onClose={() => setCartOpen(false)} /> : null}
             {state?.user?.email && (
