@@ -5,6 +5,7 @@ import { GlobalContext } from '../Context/Context';
 import { toast } from 'sonner';
 import { CiMenuFries } from "react-icons/ci";
 import { FaLuggageCart, FaRegHeart } from 'react-icons/fa';
+import { FaCartShopping } from "react-icons/fa6";
 import api from '../Api';
 import Cart from '../Pages/Cartbar';
 
@@ -91,7 +92,7 @@ const Navbar = () => {
               {state.cartCount > 0 && (
                 <span className='bg-red-500 absolute bottom-3 font-semibold left-3 rounded-full text-white px-2'>{state.cartCount}</span>
               )}
-              <FaLuggageCart onClick={() => setCartOpen(true)} className="text-2xl hover:text-green-700 text-gray-600" />
+              <FaCartShopping onClick={() => setCartOpen(true)} className="text-2xl hover:text-green-700 text-gray-600" />
             </div>
             {cartOpen ? <Cart onClose={() => setCartOpen(false)} /> : null}
             {state?.user?.email && (
