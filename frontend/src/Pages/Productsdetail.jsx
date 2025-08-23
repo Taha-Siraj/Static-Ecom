@@ -43,8 +43,10 @@ const Productsdetail = () => {
         price_per_item: Productsdetail.price,
       })
      toast.success("Product added to cart successfully");
+     dispatch({type: "SET_CART_COUNT", payload: state.cartCount + counter });
+     console.log(state.cartCount)
     } catch (error) {
-      console.log(error.response.data.message)
+      console.log(error)
     }
   }
 
@@ -67,7 +69,11 @@ const Productsdetail = () => {
       </div>
 
       {/* Main Section */}
-      {loader   ?  <LoaderIcon/> : <div className='px-4 md:px-20 w-full py-10 flex flex-col lg:flex-row items-start gap-10'>
+      {loader   ? 
+       <div className='flex h-screen justify-center items-center'>
+         <LoaderIcon className='animate-spin' />
+       </div>
+       : <div className='px-4 md:px-20 w-full py-10 flex flex-col lg:flex-row items-start gap-10'>
 
         {/* Left Images */}
         <div className='w-full lg:w-1/2 flex flex-col md:flex-row gap-5'>
