@@ -19,7 +19,7 @@ const Navbar = () => {
     { title: 'Home', path: '/' },
     { title: 'Shop', path: '/product' },
     { title: 'Blog', path: '/blog' },
-    { title: 'Hot Deal', path: '/hotdeal' },
+    { title: 'Contact', path: '/contact' },
     ...(state?.user?.user_role === 1 ? [
       { title: 'Add Product', path: '/addproduct' },
       { title: 'Add Categories', path: '/AddCategories' },
@@ -87,14 +87,20 @@ const Navbar = () => {
 
           <div className="hidden md:flex gap-x-5 items-center">
             <FaRegHeart className="text-2xl hover:text-green-700 text-gray-600" />
+            <div className='relative'>
+              {state.cartCount > 0 && (
+                <span className='bg-red-500 absolute bottom-3 font-semibold left-3 rounded-full text-white px-2'>{state.cartCount}</span>
+              )}
               <FaLuggageCart onClick={() => setCartOpen(true)} className="text-2xl hover:text-green-700 text-gray-600" />
-              {cartOpen ? <Cart onClose={() => setCartOpen(false)} /> : null}
-            {state?.user?.email ? (
+            </div>
+            {cartOpen ? <Cart onClose={() => setCartOpen(false)} /> : null}
+            {state?.user?.email && (
               <IoIosLogOut
                 onClick={handleLogout}
                 className="text-3xl text-red-500  cursor-pointer hover:text-red-600"
               />
-            ) : (
+            )}
+            {!state?.user?.email && (
               <Link
                 to="/login"
                 className="text-3xl text-gray-600 cursor-pointer hover:text-gray-700"
