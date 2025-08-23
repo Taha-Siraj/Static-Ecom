@@ -106,6 +106,7 @@ const Productsdetail = () => {
           </div>
 
           {/* Description */}
+          
           <p className='text-sm md:text-base'>{Productsdetail?.description}</p>
 
           {/* Counter & Button */}
