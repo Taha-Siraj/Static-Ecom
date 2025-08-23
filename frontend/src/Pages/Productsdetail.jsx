@@ -56,7 +56,7 @@ const Productsdetail = () => {
   console.log(Productsdetail)
   return (
     <div className='pt-24 font-poppins w-full'>
-      <Toaster position='top-right' />
+      <Toaster position='bottom-right' />
       {/* Breadcrumb */}
       <div className='bg-[#F9F1E7] h-28 w-full flex px-4 md:px-10 justify-start gap-x-5 items-center'>
         <p className='text-gray-400 text-sm md:text-xl flex items-center gap-x-2' >
