@@ -114,24 +114,24 @@ const Navbar = () => {
 
         {isMenuOpen && (
           <div className="lg:hidden border-t border-gray-200">
-            <div className="px-4 py-3 space-y-2 text-center">
+            <div className="px-4 py-3 space-y-2 text-start">
               {navLinks.map((link) => (
                 <Link
                   key={link.title}
                   to={link.path}
                   onClick={() => setMenuOpen(false)}
-                  className="block text-gray-700 hover:bg-indigo-500 hover:text-white px-3 py-2 rounded-md transition"
+                  className="block text-gray-700  hover:text-black px-3 py-2 rounded-md transition"
                 >
                   {link.title}
                 </Link>
               ))}
-              <div className="pt-4 pb-2">
+              <div className="pt-4 pb-2 ">
                 {state?.user?.email ? (
                   <button
                     onClick={handleLogout}
-                    className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md"
+                    className="bg-red-500 text-2xl hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md"
                   >
-                    Logout
+                    <IoIosLogOut />
                   </button>
                 ) : (
                   <Link
