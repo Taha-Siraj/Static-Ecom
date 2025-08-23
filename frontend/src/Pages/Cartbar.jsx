@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from "react";
 import { FaRegWindowClose } from "react-icons/fa";
-import { GlobalContext } from '../Context/Context';
-import api from '../Api';
-import { Toaster, toast } from 'react-hot-toast';
+import { GlobalContext } from "../Context/Context";
+import api from "../Api";
+import { toast } from "react-hot-toast"; // ✅ Toaster hata diya
 import { IoMdCloseCircle } from "react-icons/io";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const Cart = ({ onClose }) => {
   const { state } = useContext(GlobalContext);
@@ -17,8 +17,7 @@ const Cart = ({ onClose }) => {
       setAllCart(res.data.cartItems || []);
       setSubtotal(res.data.grandTotal || 0);
     } catch (error) {
-      toast.error("Cart fetch error");
-      console.log("Cart fetch error:", error)
+      console.log("Cart fetch error:", error);
     }
   };
 
@@ -29,19 +28,19 @@ const Cart = ({ onClose }) => {
   const deletedCart = async (cart_id) => {
     try {
       await api.delete(`/deletedcart/${cart_id}`);
-      toast.success("Cart deleted successfully");
+      toast.success("Cart deleted successfully")
       fetchCart();
     } catch (error) {
-      toast.error("Cart delete error");
-      console.log("Cart delete error:", error)
+      toast.error("Cart delete error", { id: "delete-cart" });
+      console.log("Cart delete error:", error);
     }
   };
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
     return () => {
-    document.body.style.overflow = "auto";
-    }
+      document.body.style.overflow = "auto";
+    };
   }, []);
 
   return (
@@ -49,7 +48,6 @@ const Cart = ({ onClose }) => {
       className="h-screen fixed top-0 right-0 w-full bg-black/40 z-50 flex justify-end"
       onClick={onClose}
     >
-      <Toaster position="bottom-right" />
       <div
         onClick={(e) => e.stopPropagation()}
         className="h-full w-full sm:w-[400px] bg-white flex flex-col"
@@ -99,10 +97,9 @@ const Cart = ({ onClose }) => {
         </div>
 
         <div className="px-6 py-3 border-t">
-          <p className="text-md text-black font-bold">
-            Total: Rs: {subtotal}
-          </p>
+          <p className="text-md text-black font-bold">Total: Rs: {subtotal}</p>
         </div>
+
         {allCart.length > 0 && (
           <div className="p-4 flex flex-col sm:flex-row items-center gap-3">
             <Link
