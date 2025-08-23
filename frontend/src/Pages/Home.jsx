@@ -58,8 +58,8 @@ const Home = () => {
       <Toaster position="bottom-right" richColors closeButton />
 
       {/* Hero Section */}
-      <section className="flex flex-col md:flex-row justify-between items-center bg-[#FCF0E4] px-5 md:px-10 py-8 md:h-[300px]">
-        <div className="text-center md:text-left space-y-4">
+      <section className="flex flex-col my-10 md:flex-row justify-between items-center bg-[#FCF0E4] px-5 md:px-10 py-8 md:h-[300px]">
+        <div className="text-start md:text-center space-y-4">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-green-800 break-words">
             Grab Upto 50% Off on <br className="hidden sm:block" />
             Selected headphones
@@ -93,17 +93,17 @@ const Home = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 px-4 md:px-10 mb-12">
         <img
           src="smartwatches.jpg"
-          className="rounded-md hover:brightness-75 hover:scale-105 duration-300 cursor-pointer w-full h-64 object-cover"
+          className="rounded-md hover:brightness-75 hover:scale-105 duration-300 cursor-pointer w-full h-full object-cover"
           alt=""
         />
         <img
           src="headphone.avif"
-          className="rounded-md hover:brightness-75 hover:scale-105 duration-300 cursor-pointer w-full h-64 object-cover"
+          className="rounded-md hover:brightness-75 hover:scale-105 duration-300 cursor-pointer w-full h-full object-cover"
           alt=""
         />
         <img
           src="airbuds.jpg"
-          className="rounded-md hover:brightness-75 hover:scale-105 duration-300 cursor-pointer w-full h-64 object-cover"
+          className="rounded-md hover:brightness-75 hover:scale-105 duration-300 cursor-pointer w-full h-full object-cover"
           alt=""
         />
       </div>
@@ -124,10 +124,10 @@ const Home = () => {
               {homeDisplayProducts.map((product) => (
                 <div
                   key={product.product_id}
-                  className="relative group bg-white rounded-md border border-gray-100 shadow-sm hover:shadow-lg transition duration-300"
+                  className="relative group bg-white rounded-md border border-gray-100 shadow-sm hover:shadow-lg transition duration-300 hover:scale-105"
                 >
                   {/* Overlay */}
-                  <div className="absolute inset-0 bg-black/60 hidden group-hover:flex flex-col items-center justify-center gap-2 transition">
+                  <div className="absolute inset-0 bg-black/60 hidden group-hover:flex flex-col items-center justify-center gap-2">
                     <button className="py-2 px-4 bg-white text-black rounded-md font-semibold hover:scale-95 duration-200">
                       <Link className='no-underline text-black capitalize' to={`/productsdetails/${product.product_id}`}>
                         View product
