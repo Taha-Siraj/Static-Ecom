@@ -64,9 +64,9 @@ const Home = () => {
             Grab Upto 50% Off on <br className="hidden sm:block" />
             Selected headphones
           </h1>
-          <button className="px-4 py-2 rounded-md font-semibold hover:scale-95 duration-200 transition-all bg-green-800 text-white">
+          <Link to={'/product'} className="no-underline px-4 py-2 rounded-md font-semibold hover:scale-95 duration-200 transition-all bg-green-800 text-white">
             Shop Now
-          </button>
+          </Link>
         </div>
 
         <div className="mt-6 md:mt-0">
