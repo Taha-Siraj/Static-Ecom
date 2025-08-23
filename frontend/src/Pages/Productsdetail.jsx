@@ -10,7 +10,7 @@ const Productsdetail = () => {
   const { state, dispatch } = useContext(GlobalContext)
   let { id } = useParams()
   const [Productsdetail, setproductdetails] = useState([])
-  const [counter, setcounter] = useState(0);
+  const [counter, setcounter] = useState(1);
   const [loader , setLoader] = useState(false);
 
   const fetchproductdetails = async () => {
@@ -106,7 +106,7 @@ const Productsdetail = () => {
           </div>
 
           {/* Description */}
-          
+
           <p className='text-sm md:text-base'>{Productsdetail?.description}</p>
 
           {/* Counter & Button */}
@@ -114,7 +114,7 @@ const Productsdetail = () => {
             <div className='border rounded-md flex justify-center items-center gap-x-2'>
               <span
                 className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'
-                onClick={() => setcounter(counter - 1)}
+                onClick={() => {counter > 1 && setcounter(counter - 1)}}
               >-</span>
               {counter}
               <span
