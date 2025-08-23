@@ -25,6 +25,7 @@
     "formik": "^2.4.6",
     "framer-motion": "^12.23.12",
     "gsap": "^3.13.0",
+    "nprogress": "^0.2.0",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",

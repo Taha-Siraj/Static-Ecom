@@ -4,21 +4,25 @@ import api from '../Api'
 import { useParams } from 'react-router-dom';
 import { GlobalContext } from '../Context/Context';
 import { MdOutlineStarPurple500 } from "react-icons/md";
-import {toast , Toaster} from 'react-hot-toast'
+import {LoaderIcon, toast , Toaster} from 'react-hot-toast'
 
 const Productsdetail = () => {
   const { state, dispatch } = useContext(GlobalContext)
   let { id } = useParams()
   const [Productsdetail, setproductdetails] = useState([])
-  const [counter, setcounter] = useState(0)
+  const [counter, setcounter] = useState(0);
+  const [loader , setLoader] = useState(false);
 
   const fetchproductdetails = async () => {
     try {
+      setLoader(true);
       let res = await api.get('/allproducts');
       let matchproduct = res.data.products.find((item) => String(item.product_id) === String(id))
       setproductdetails(matchproduct)
     } catch (error) {
       console.log(error)
+    } finally {
+      setLoader(false);
     }
   }
 
@@ -63,7 +67,7 @@ const Productsdetail = () => {
       </div>
 
       {/* Main Section */}
-      <div className='px-4 md:px-20 w-full py-10 flex flex-col lg:flex-row items-start gap-10'>
+      {loader   ?  <LoaderIcon/> : <div className='px-4 md:px-20 w-full py-10 flex flex-col lg:flex-row items-start gap-10'>
 
         {/* Left Images */}
         <div className='w-full lg:w-1/2 flex flex-col md:flex-row gap-5'>
@@ -109,7 +113,8 @@ const Productsdetail = () => {
             <div className='border rounded-md flex justify-center items-center gap-x-2'>
               <span
                 className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'
-                 >-</span>
+                onClick={() => setcounter(counter - 1)}
+              >-</span>
               {counter}
               <span
                 className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'
@@ -125,7 +130,7 @@ const Productsdetail = () => {
           </div>
 
         </div>
-      </div>
+      </div>}
     </div>
   )
 }
