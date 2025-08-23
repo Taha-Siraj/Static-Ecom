@@ -58,16 +58,26 @@ const Home = () => {
       <Toaster position="bottom-right" richColors closeButton />
 
       {/* Hero Section */}
-      <section className="flex justify-between px-10 items-center bg-[#FCF0E4] h-[300px]">
-        <div>
-          <h1 className='text-4xl font-bold break-words  text-green-800'>Grab Upto 50% Off on <br />
-            Selected headphones</h1>
-            <button className='px-4 py-2 rounded-md font-semibold hover:scale-95 duration-200 transition-all bg-green-800 text-white'>Shop Now</button>
+      <section className="flex flex-col md:flex-row justify-between items-center bg-[#FCF0E4] px-5 md:px-10 py-8 md:h-[300px]">
+        <div className="text-center md:text-left space-y-4">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-green-800 break-words">
+            Grab Upto 50% Off on <br className="hidden sm:block" />
+            Selected headphones
+          </h1>
+          <button className="px-4 py-2 rounded-md font-semibold hover:scale-95 duration-200 transition-all bg-green-800 text-white">
+            Shop Now
+          </button>
         </div>
-        <div>
-          <img src="banner.webp" className='w-[450px] object-cover' alt="" />
+
+        <div className="mt-6 md:mt-0">
+          <img
+            src="banner.webp"
+            className="w-[250px] sm:w-[350px] md:w-[450px] object-contain mx-auto"
+            alt="banner"
+          />
         </div>
       </section>
+
 
       {/* Featured Products */}
       <h2 className="text-2xl md:text-4xl font-extrabold text-gray-900 mb-6 text-center">
