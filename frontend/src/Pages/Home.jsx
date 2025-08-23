@@ -58,8 +58,15 @@ const Home = () => {
       <Toaster position="bottom-right" richColors closeButton />
 
       {/* Hero Section */}
-      <section className="bg-[#FCF0E4] h-[300px] mx-10 my-6 relative overflow-hidden">
-
+      <section className="flex justify-between px-10 items-center bg-[#FCF0E4] h-[300px]">
+        <div>
+          <h1 className='text-4xl font-bold break-words  text-green-800'>Grab Upto 50% Off on <br />
+            Selected headphones</h1>
+            <button className='px-4 py-2 rounded-md font-semibold hover:scale-95 duration-200 transition-all bg-green-800 text-white'>Shop Now</button>
+        </div>
+        <div>
+          <img src="banner.webp" className='w-[450px] object-cover' alt="" />
+        </div>
       </section>
 
       {/* Featured Products */}
@@ -120,7 +127,7 @@ const Home = () => {
                       <FiShare2 className="w-4 h-4" />
                       Share
                     </button>
-                   
+
                     <button className="flex items-center gap-1 px-3 py-1 bg-black text-white rounded-md text-sm hover:bg-gray-200 hover:text-black transition">
                       <FiHeart className="w-4 h-4" />
                       Like
