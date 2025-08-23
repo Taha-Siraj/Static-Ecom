@@ -108,7 +108,7 @@ const Home = () => {
         />
       </div>
 
-      <main className="container mx-auto px-4 md:px-8 xl:px-16 lg:px-12 py-12">
+      <main className="container mx-auto px-4 md:px-8 xl:px-10 lg:px-12 py-12">
         {/* Products */}
         <section className="mb-16">
           <h2 className="text-2xl md:text-4xl font-extrabold text-gray-900 mb-6 text-center">
