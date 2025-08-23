@@ -31,7 +31,7 @@ const Home = () => {
       const res = await api.get(`/allproducts`);
       const fetchedProducts = res.data.products;
       setAllProducts(fetchedProducts);
-      setHomeDisplayProducts(fetchedProducts.slice(0, 12));
+      setHomeDisplayProducts(fetchedProducts.slice(0, 10));
       const uniqueCategories = [];
       const categoryMap = new Map();
       fetchedProducts.forEach(p => {
@@ -58,17 +58,8 @@ const Home = () => {
       <Toaster position="bottom-right" richColors closeButton />
 
       {/* Hero Section */}
-      <section className="h-[70vh] md:h-screen mb-12 relative overflow-hidden">
-        {images.map((img, index) => (
-          <img
-            src={img}
-            alt=""
-            key={index}
-            className={`absolute top-0 left-0 h-full w-full object-cover ${
-              index === current ? "opacity-100" : "opacity-0"
-            } transition-opacity duration-1000`}
-          />
-        ))}
+      <section className="bg-[#FCF0E4] h-[300px] mx-10 my-6 relative overflow-hidden">
+
       </section>
 
       {/* Featured Products */}
