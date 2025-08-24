@@ -93,7 +93,6 @@ const Products = () => {
           </div>
         </div>
       </div>
-
       {loading ? (
         <Loader />
       ) : (
