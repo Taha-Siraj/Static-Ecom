@@ -32,7 +32,7 @@ const Home = () => {
       const res = await api.get(`/allproducts`);
       const fetchedProducts = res.data.products;
       setAllProducts(fetchedProducts);
-      setHomeDisplayProducts(fetchedProducts.slice(0, 10));
+      setHomeDisplayProducts(fetchedProducts.slice(0, 12));
       const uniqueCategories = [];
       const categoryMap = new Map();
       fetchedProducts.forEach(p => {

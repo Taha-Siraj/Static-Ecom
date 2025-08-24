@@ -93,13 +93,13 @@ const Products = () => {
       <div className="pt-20 w-full">
         <div className="relative">
           <img
-            src="hero3.jpg"
+            src="hero2.jpg"
             className="object-cover w-full h-[300px] md:h-[350px]"
             alt=""
           />
 
-          <div className="absolute top-0 left-0 w-full h-full bg-[#E4E2DF]/60 backdrop-blur-sm flex flex-col justify-center items-center text-center px-4">
-            <h1 className="text-4xl md:text-6xl font-bold text-black mb-4">
+          <div className="absolute top-0 left-0 w-full h-full bg-[#E4E2DF]/40 backdrop-blur-sm flex flex-col justify-center items-center text-center px-4">
+            <h1 className="text-4xl md:text-6xl font-semibold text-black mb-4">
               Shop
             </h1>
 
