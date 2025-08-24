@@ -27,7 +27,6 @@ const Cart = () => {
   useEffect(() => {
     fetchCart();
   }, []);
-   
 
   const deletedCart =  async (eachCart) => {
     try {
