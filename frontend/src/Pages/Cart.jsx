@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { FaGreaterThan } from 'react-icons/fa'
 
 const Cart = () => {
-  const [counter , setCounter] = useState(0)
+  const [counter , setCounter] = useState()
   return (
     <>
       <div className="pt-20 w-full">
@@ -39,10 +39,10 @@ const Cart = () => {
             <div>
               <p>$199.99</p>
             </div>
-            <div className='border py-2 px-3 flex justify-between gap-x-4 items-center  rounded-md'>
-              <span className='text-xl hover:bg-gray-400 cursor-pointer h-full w-full'>-</span>
-               <span>{counter}</span>
-              <span className='text-xl hover:bg-gray-400 cursor-pointer h-full w-full '>+</span>
+            <div className='border text-xl flex justify-between gap-x-1 items-center  rounded-md'>
+              <span onClick={() => {counter > 0 ? setCounter(counter - 1) : null}} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>-</span>
+              {counter}
+              <span onClick={() => setCounter(counter + 1)} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>+</span>
             </div>
           </div>
         </div>
