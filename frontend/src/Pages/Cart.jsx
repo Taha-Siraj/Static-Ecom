@@ -1,13 +1,31 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FaGreaterThan } from 'react-icons/fa'
 import { MdDelete } from "react-icons/md";
+import { GlobalContext } from '../Context/Context';
+import api from '../Api';
 
 const Cart = () => {
+
+  const {state , dispatch} = useContext(GlobalContext)
   const [counter, setCounter] = useState(1);
+  const [allCart , setallCart] = useState([])
+
    
 
 
+  const fetchCart = async () => {
+      try {
+        let res = await api.get(`/cart/${state.user.user_id}`);
+        setallCart(res.data.cartItems)
+        console.log(res.data)
+      } catch (error) {
+        console.log("Cart fetch error:", error);
+      }
+    };
   
+    useEffect(() => {
+      fetchCart();
+    }, []);
 
 
   
@@ -42,37 +60,47 @@ const Cart = () => {
               <li className='list-none'>Quantity</li>
             </div>
 
-            <div className='flex items-center justify-between border-b pb-2'>
+
+            {allCart.map((eachCat) => (
+                <div className='flex items-center justify-between border-b pb-2'>
+              
               <div className='flex justify-center gap-x-2 items-center'>
-                <img src="hero2.jpg " width={100} className='rounded-md' alt="" />
-                <p className='m-0'>Smart watches</p>
+                <img src={eachCat.product_image} width={100} className='rounded-md' alt="" />
+                <p className='m-0'>{eachCat.product_name}</p>
               </div>
               <div>
-                <p>$199.99</p>
+                <p>RS: {eachCat.price_per_item}</p>
               </div>
               <div className='border text-xl flex justify-between gap-x-1 items-center  rounded-md'>
                 <span onClick={() => { counter > 1 ? setCounter(counter - 1) : null }} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>-</span>
-                {counter}
+                {eachCat.quantity}
                 <span onClick={() => setCounter(counter + 1)} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>+</span>
               </div>
               <div className='flex'>
                 <MdDelete className='text-3xl text-[#000000]' />
               </div>
             </div>
+              ))}
+
+            
           </div>
 
         </div>
-        <div className='bg-[#F9F1E7] flex flex-col rounded-md justify-center  px-3 w-full capitalize'>
-          <h1 className='text-xl  pt-3 text-center font-semibold'>Cart Totals</h1>
+         <div className='bg-[#F9F1E7] flex flex-col rounded-md justify-center  px-3 w-full capitalize'>
+       {allCart.map((eachCat) => (
+          <div>
+            <h1 className='text-xl  pt-3 text-center font-semibold'>Cart Totals</h1>
           <div className=''>
-            <p className='flex justify-between'>Bold Nest <span>$260 X 1</span>  </p>
-            <p className='flex justify-between'>Wood Chair <span>$260 X 1</span> </p>
+            <p className='flex justify-between'>{eachCat.product_name} <span>{Math.floor(eachCat.price_per_item)} X {eachCat.quantity} </span>  </p>
           </div>
           <div className='border-t py-2'>
-            <p className='flex justify-between'>Total <span>$$360</span> </p>
+            <p className='flex justify-between'>Total <span>RS: {Math.floor(eachCat.total_price)}</span> </p>
             <button className='w-full py-2 px-1 bg-white rounded-md text-xl font-semibold border text-black  '>Check Out</button>
           </div>
+            </div>
+       ))}
         </div>
+
       </div>
     </>
   )
