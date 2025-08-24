@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { FaGreaterThan } from 'react-icons/fa'
+import { MdDelete } from "react-icons/md";
 
 const Cart = () => {
-  const [counter , setCounter] = useState()
+  const [counter , setCounter] = useState(1)
   return (
     <>
       <div className="pt-20 w-full">
@@ -25,7 +26,7 @@ const Cart = () => {
         </div>
 
         <div className='flex p-10 justify-between flex-col gap-y-5 gap-x-10'>
-          <div className='bg-[#F9F1E7]  h-16 px-10 text-xl font-semibold flex w-full items-center justify-between'>
+          <div className='bg-[#F9F1E7]  h-16 px-10 text-xl font-semibold flex w-full items-center justify-start text-start gap-x-[300px]'>
             <li className='list-none'>Product</li>
             <li className='list-none'>Price</li>
             <li className='list-none'>Quantity</li>
@@ -40,12 +41,18 @@ const Cart = () => {
               <p>$199.99</p>
             </div>
             <div className='border text-xl flex justify-between gap-x-1 items-center  rounded-md'>
-              <span onClick={() => {counter > 0 ? setCounter(counter - 1) : null}} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>-</span>
+              <span onClick={() => {counter > 1 ? setCounter(counter - 1) : null}} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>-</span>
               {counter}
               <span onClick={() => setCounter(counter + 1)} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>+</span>
             </div>
+            <div className='flex'>
+            <MdDelete className='text-3xl text-[#000000]'/>
           </div>
+          </div>
+          
         </div>
+
+        
 
       </div>
     </>
