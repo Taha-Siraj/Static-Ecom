@@ -11,6 +11,10 @@ const Cart = () => {
   const [counter, setCounter] = useState(1);
   const [allCart, setallCart] = useState([])
   const [TotalPrice, setTotalPrice] = useState("")
+  const [updatedCart , setUpdatedCart] = useState({
+   quantity:  "",
+   price_per_item: ""
+  })
 
 
   const fetchCart = async () => {
@@ -36,6 +40,18 @@ const Cart = () => {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  const updatedProductCart =  async (updatedCart) => {
+    // try {
+
+    //   let res = await api.put(`/updatedcart/:id`)
+    // }catch(error){
+
+    // }
+
+    console.log("updatedCart", updatedCart)
+
   }
 
 
@@ -82,9 +98,9 @@ const Cart = () => {
                   <p>RS: {eachCat.price_per_item}</p>
                 </div>
                 <div className='border text-xl flex justify-between gap-x-1 items-center  rounded-md'>
-                  <span onClick={() => { counter > 1 ? setCounter(counter - 1) : null }} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>-</span>
-                  {eachCat.quantity}
-                  <span onClick={() => setCounter(counter + 1)} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>+</span>
+                  <span onClick={() => { updatedProductCart(eachCat) , counter > 1 ? setCounter(counter - 1) : null }} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>-</span>
+                  {counter}
+                  <span onClick={() => setCounter(  updatedProductCart(eachCat) , counter + 1)} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>+</span>
                 </div>
                 <div className='flex'>
                   <MdDelete onClick={() => {deletedCart(eachCat)}} className='hover:cursor-pointer hover:scale-110 duration-300 text-3xl text-[#000000]' />
