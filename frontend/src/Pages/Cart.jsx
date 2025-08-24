@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FaGreaterThan } from 'react-icons/fa'
 
 const Cart = () => {
+  const [counter , setCounter] = useState(0)
   return (
     <>
       <div className="pt-20 w-full">
@@ -20,6 +21,29 @@ const Cart = () => {
             <p className="text-gray-700 text-sm md:text-xl flex items-center gap-x-2">
               Home <FaGreaterThan /> <span>Cart</span>
             </p>
+          </div>
+        </div>
+
+        <div className='flex p-10 justify-between flex-col gap-y-5 gap-x-10'>
+          <div className='bg-[#F9F1E7]  h-16 px-10 text-xl font-semibold flex w-full items-center justify-between'>
+            <li className='list-none'>Product</li>
+            <li className='list-none'>Price</li>
+            <li className='list-none'>Quantity</li>
+          </div>
+
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center'>
+              <img src="hero2.jpg " width={100} className='rounded-md' alt="" /> 
+            <p>Smart watches</p>
+            </div>
+            <div>
+              <p>$199.99</p>
+            </div>
+            <div className='border py-2 px-3 flex justify-between gap-x-4 items-center  rounded-md'>
+              <span className='text-xl hover:bg-gray-400 cursor-pointer h-full w-full'>-</span>
+               <span>{counter}</span>
+              <span className='text-xl hover:bg-gray-400 cursor-pointer h-full w-full '>+</span>
+            </div>
           </div>
         </div>
 
