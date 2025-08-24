@@ -18,6 +18,7 @@ const Products = () => {
   const [loading, setloading] = useState(true);
   const [Page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [nextPage, setNextPage] = useState(null);
 
   const getProduct = async (page = 1, append = false) => {
     try {
@@ -81,7 +82,7 @@ const Products = () => {
   };
 
   const handleLoadMore = () => {
-    const nextPage = Page + 1;
+    setNextPage(Page + 1);
     setPage(nextPage);
     setLoadingMore(true);
     getProduct(nextPage, true);
