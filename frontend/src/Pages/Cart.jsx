@@ -9,6 +9,7 @@ const Cart = () => {
   const {state , dispatch} = useContext(GlobalContext)
   const [counter, setCounter] = useState(1);
   const [allCart , setallCart] = useState([])
+  const [TotalPrice , setTotalPrice] = useState("")
 
    
 
@@ -18,6 +19,7 @@ const Cart = () => {
         let res = await api.get(`/cart/${state.user.user_id}`);
         setallCart(res.data.cartItems)
         console.log(res.data)
+        setTotalPrice(res.data.grandTotal)
       } catch (error) {
         console.log("Cart fetch error:", error);
       }
@@ -86,21 +88,18 @@ const Cart = () => {
           </div>
 
         </div>
-         <div className='bg-[#F9F1E7] flex flex-col rounded-md justify-center  px-3 w-full capitalize'>
-       {allCart.map((eachCat) => (
-          <div>
-            <h1 className='text-xl  pt-3 text-center font-semibold'>Cart Totals</h1>
+        <div className='bg-[#F9F1E7] flex flex-col rounded-md justify-center  px-3 w-full capitalize'>
+          <h1 className='text-xl  pt-3 text-center font-semibold'>Cart Totals</h1>
           <div className=''>
-            <p className='flex justify-between'>{eachCat.product_name} <span>{Math.floor(eachCat.price_per_item)} X {eachCat.quantity} </span>  </p>
+            {allCart.map((eachcat) => (
+              <p className='flex justify-between'>{eachcat.product_name}<span>{Math.floor(eachcat.price_per_item)} X {eachcat.quantity}</span>  </p>
+            ))}
           </div>
           <div className='border-t py-2'>
-            <p className='flex justify-between'>Total <span>RS: {Math.floor(eachCat.total_price)}</span> </p>
+            <p className='flex justify-between'>Total <span>{TotalPrice}</span> </p>
             <button className='w-full py-2 px-1 bg-white rounded-md text-xl font-semibold border text-black  '>Check Out</button>
           </div>
-            </div>
-       ))}
         </div>
-
       </div>
     </>
   )
