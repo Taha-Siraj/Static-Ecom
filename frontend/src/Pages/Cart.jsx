@@ -3,6 +3,7 @@ import { FaGreaterThan } from 'react-icons/fa'
 import { MdDelete } from "react-icons/md";
 import { GlobalContext } from '../Context/Context';
 import api from '../Api';
+import { Toaster , toast } from 'react-hot-toast';
 
 const Cart = () => {
 
@@ -31,11 +32,11 @@ const Cart = () => {
   const deletedCart =  async (eachCart) => {
     try {
       let res = await api.delete(`deletedcart/${eachCart.cart_id}`)
+      console.log(res.data)
+      fetchCart();
     } catch (error) {
-      
+      console.log(error)
     }
-
-
   }
 
 
@@ -43,14 +44,14 @@ const Cart = () => {
 
   return (
     <>
+    <Toaster position='bottom-right' />
       <div className="pt-20 w-full font-poppins">
         <div className="relative">
           <img
             src="hero2.jpg"
             className="object-cover w-full h-[300px] md:h-[350px]"
-            alt=""
-          />
-
+            alt="" />
+            
           <div className="absolute top-0 left-0 w-full h-full bg-[#E4E2DF]/40 backdrop-blur-sm flex flex-col justify-center items-center text-center px-4">
             <h1 className="text-4xl md:text-6xl font-semibold text-black mb-4">
               Cart
