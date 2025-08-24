@@ -70,6 +70,9 @@ const Products = () => {
   return (
     <>
       <Toaster position="top-center" richColors />
+      <div className='pt-20'>
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum maiores itaque ad nihil dolores vitae hic nisi pariatur nulla corporis fugit, fugiat similique? Quia quidem tempora fugiat quam, explicabo ab?        
+      </div>
       {loading ? (
         <Loader />
       ) : (
