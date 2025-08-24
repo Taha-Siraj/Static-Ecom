@@ -17,14 +17,9 @@ const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [loading, setloading] = useState(true);
   const baseUrl = state.baseUrl;
-  const [pagination, setPagination] = useState({
-    totalPage: "",
-    nextPage: "",
-    prevPage: "",
-    currentPage: "",
-    totalProduct: ""
-  })
-  console.log(pagination)
+  const [page , setpage] = useState(1)
+  const [loadingMore, setLoadingMore] = useState(false);
+  
   const getProduct = async (page = 1) => {
     try {
       const [productsRes, categoriesRes] = await Promise.all([
@@ -35,13 +30,7 @@ const Products = () => {
       setAllProduct(productsRes.data.products);
       setFilteredProduct(productsRes.data.products);
       setAllcategory(categoriesRes.data);
-      setPagination({
-        totalPage: productsRes.data.totalPage,
-        nextPage: productsRes.data.nextPage,
-        prevPage: productsRes.data.prevPage,
-        currentPage: productsRes.data.page,
-        totalProduct: productsRes.data.totalProduct
-      })
+      
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to fetch data');
     }
@@ -86,8 +75,8 @@ const Products = () => {
               Home <FaGreaterThan className='text-black' />
               <span>Shop</span>
             </p>
-          
-            
+
+
           </div>
         </div>
       </div>
@@ -170,34 +159,9 @@ const Products = () => {
               ))}
             </div>
           </div>
-          <div className="flex justify-center items-center gap-4 mt-6">
-            <button
-              disabled={!pagination.prevPage}
-              onClick={() => getProduct(pagination.prevPage)}
-              className={`px-4 py-2 rounded ${pagination.prevPage
-                ? "bg-green-500 text-white hover:bg-green-600"
-                : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                }`}
-            >
-              Prev
-            </button>
-
-            <span className="text-sm text-gray-600">
-              Page {pagination.currentPage} of {pagination.totalPage}
-            </span>
-
-            <button
-              disabled={!pagination.nextPage}
-              onClick={() => getProduct(pagination.nextPage)}
-              className={`px-4 py-2 rounded ${pagination.nextPage
-                ? "bg-green-500 text-white hover:bg-green-600"
-                : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                }`}
-            >
-              Next
-            </button>
+          <div className="flex justify-center items-center gap-4 py-8">
+           <button className=' py-2 px-4 text-xl text-black font-semibold hover:scale-105 duration-300 border '>Load More</button>
           </div>
-
         </div>
       )}
     </>
