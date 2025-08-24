@@ -14,7 +14,7 @@ const Products = () => {
   const [allProduct, setAllProduct] = useState([]);
   const [filteredProduct, setFilteredProduct] = useState([]);
   const [category, setAllcategory] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState([]); // ✅ array use kiya
+  const [selectedCategory, setSelectedCategory] = useState([]);
   const [loading, setloading] = useState(true);
   const [Page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -28,7 +28,7 @@ const Products = () => {
       ]);
 
       const newProduct = productsRes.data.products || [];
-
+      setNextPage(productsRes.data.nextPage);
       if (append) {
         setAllProduct((prev) => [...prev, ...newProduct]);
         setFilteredProduct((prev) => [...prev, ...newProduct]);
@@ -49,7 +49,6 @@ const Products = () => {
     getProduct().finally(() => setloading(false));
   }, []);
 
-  // ✅ Category change fix
   const handleCategoryChange = (e) => {
     const selected = e.target.value;
     const checked = e.target.checked;
@@ -213,7 +212,7 @@ const Products = () => {
 
           {/* ✅ Load More button */}
           <div className="flex justify-center items-center gap-4 py-8">
-            {nextPage && filteredProduct.length > 0 && (  // ✅ sirf tab dikhayega jab nextPage hai
+            {nextPage && filteredProduct.length > 0 && (  
               <button
                 className="py-2 px-4 text-xl text-black font-semibold hover:scale-105 duration-300 border"
                 disabled={loadingMore}
