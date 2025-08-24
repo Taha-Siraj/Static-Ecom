@@ -11,9 +11,7 @@ const Cart = () => {
   const [allCart , setallCart] = useState([])
   const [TotalPrice , setTotalPrice] = useState("")
 
-   
-
-
+  
   const fetchCart = async () => {
       try {
         let res = await api.get(`/cart/${state.user.user_id}`);
