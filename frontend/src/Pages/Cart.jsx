@@ -88,7 +88,7 @@ const Cart = () => {
 
 
             {allCart.map((eachCat) => (
-              <div className='flex items-center justify-between border-b pb-2'>
+              <div key={eachCat?.cart_id} className='flex items-center justify-between border-b pb-2'>
 
                 <div className='flex justify-center gap-x-2 items-center'>
                   <img src={eachCat.product_image} width={100} className='rounded-md' alt="" />
