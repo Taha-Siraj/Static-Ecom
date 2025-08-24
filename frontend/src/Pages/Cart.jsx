@@ -32,7 +32,7 @@ const Cart = () => {
   const deletedCart =  async (eachCart) => {
     try {
       let res = await api.delete(`deletedcart/${eachCart.cart_id}`)
-      console.log(res.data)
+      toast.success(res?.data?.message)
       fetchCart();
     } catch (error) {
       console.log(error)
@@ -51,7 +51,7 @@ const Cart = () => {
             src="hero2.jpg"
             className="object-cover w-full h-[300px] md:h-[350px]"
             alt="" />
-            
+
           <div className="absolute top-0 left-0 w-full h-full bg-[#E4E2DF]/40 backdrop-blur-sm flex flex-col justify-center items-center text-center px-4">
             <h1 className="text-4xl md:text-6xl font-semibold text-black mb-4">
               Cart
