@@ -73,14 +73,12 @@ const Products = () => {
       <Toaster position="top-center" richColors />
       <div className='pt-20 w-full'>
         <div className='relative'>
-          {/* Background Image */}
           <img
             src="hero3.jpg"
             className='object-cover w-full h-[300px] md:h-[350px]'
             alt=""
           />
 
-          {/* Overlay */}
           <div className='absolute top-0 left-0 w-full h-full bg-[#E4E2DF]/60 backdrop-blur-sm flex flex-col justify-center items-center text-center px-4'>
             <h1 className='text-4xl md:text-6xl font-bold text-black mb-4'>Shop</h1>
 
