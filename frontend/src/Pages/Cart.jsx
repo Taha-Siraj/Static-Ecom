@@ -5,6 +5,7 @@ import { MdDelete } from "react-icons/md";
 const Cart = () => {
   const [counter, setCounter] = useState(1);
 
+
   return (
     <>
       <div className="pt-20 w-full font-poppins">
@@ -65,12 +66,6 @@ const Cart = () => {
             <button className='w-full py-2 px-1 bg-white rounded-md text-xl font-semibold border text-black  '>Check Out</button>
           </div>
         </div>
-
-
-
-
-
-
       </div>
     </>
   )
