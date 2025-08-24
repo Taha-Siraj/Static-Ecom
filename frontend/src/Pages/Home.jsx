@@ -5,9 +5,10 @@ import { toast, Toaster } from 'react-hot-toast';
 import Allblogs from '../Blog/Allblogs';
 import Loader from './Loader';
 import api from '../Api';
-import { FiShare2, FiRepeat, FiHeart } from "react-icons/fi";
+import { FiShare2, FiHeart } from "react-icons/fi";
 
 const Home = () => {
+  
   const { state, dispatch } = useContext(GlobalContext);
   const [allProducts, setAllProducts] = useState([]);
   const [homeDisplayProducts, setHomeDisplayProducts] = useState([]);
@@ -59,7 +60,7 @@ const Home = () => {
 
       {/* Hero Section */}
       <section className="flex flex-col my-10 md:flex-row justify-between items-center bg-[#FCF0E4] px-5 md:px-10 py-8 md:h-[300px]">
-        <div className="text-start md:text-center space-y-4">
+        <div className="text-start md:text-center flex items-start gap-y-2 flex-col">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-green-800 break-words">
             Grab Upto 50% Off on <br className="hidden sm:block" />
             Selected headphones
@@ -175,7 +176,7 @@ const Home = () => {
           <div className="text-center mt-10">
             <Link
               to="/product"
-              className="bg-green-700 text-white py-3 px-8 rounded-full font-bold text-lg hover:bg-green-800 transition transform hover:scale-105 shadow-xl"
+              className="bg-green-700 no-underline text-white py-3 px-8 rounded-full font-bold text-lg hover:bg-green-800 transition transform hover:scale-105 shadow-xl"
             >
               View All Products
             </Link>
@@ -202,7 +203,7 @@ const Home = () => {
                     ?.toLowerCase()
                     .replace(/\s+/g, "-")}`}
                   key={product.category_id || product.product_id}
-                  className="h-32 sm:h-36 flex items-center gap-6 p-4 bg-gray-100 rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 cursor-pointer group"
+                  className="h-32 no-underline sm:h-36 flex items-center gap-6 p-4 bg-gray-100 rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 cursor-pointer group"
                 >
                   <img
                     src={
