@@ -43,7 +43,7 @@ const Productsdetail = () => {
         price_per_item: Productsdetail.price,
       })
      toast.success("Product added to cart successfully");
-     dispatch({type: "SET_CART_COUNT", payload: state.cartCount + counter });
+     dispatch({type: "SET_CART_COUNT", payload: state.cartCount + 1});
      console.log(state.cartCount)
     } catch (error) {
       console.log(error)
