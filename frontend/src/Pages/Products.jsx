@@ -6,6 +6,7 @@ import { MdOutlineStarPurple500 } from "react-icons/md";
 import { MdStarPurple500 } from "react-icons/md";
 import { GlobalContext } from '../Context/Context';
 import api from '../Api';
+import { FaGreaterThan } from 'react-icons/fa';
 
 const Products = () => {
   const navigate = useNavigate();
@@ -71,12 +72,32 @@ const Products = () => {
     <>
       <Toaster position="top-center" richColors />
       <div className='pt-20 w-full'>
-        <img src="hero3.jpg" className='object-cover w-full h-[400px]' alt="" />
+        <div className='relative'>
+          {/* Background Image */}
+          <img
+            src="hero3.jpg"
+            className='object-cover w-full h-[300px] md:h-[350px]'
+            alt=""
+          />
+
+          {/* Overlay */}
+          <div className='absolute top-0 left-0 w-full h-full bg-[#E4E2DF]/60 backdrop-blur-sm flex flex-col justify-center items-center text-center px-4'>
+            <h1 className='text-4xl md:text-6xl font-bold text-black mb-4'>Shop</h1>
+
+            <p className='text-gray-700 text-sm md:text-xl flex items-center gap-x-2'>
+              Home <FaGreaterThan className='text-black' />
+              <span>Shop</span>
+            </p>
+          
+            
+          </div>
+        </div>
       </div>
+
       {loading ? (
         <Loader />
       ) : (
-        <div className='font-poppins bg-[#FFFFFF]  px-10 '>
+        <div className='font-poppins bg-[#FFFFFF] pt-5  px-10 '>
           <div className='flex justify-between items-center'>
             <h1 className='text-2xl lg:text-3xl font-semibold text-gray-800 text-start md:text-left'>
               Get the products as your needs
