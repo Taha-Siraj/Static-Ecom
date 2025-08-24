@@ -4,6 +4,13 @@ import { MdDelete } from "react-icons/md";
 
 const Cart = () => {
   const [counter, setCounter] = useState(1);
+   
+
+
+  
+
+
+  
 
 
   return (
@@ -28,17 +35,17 @@ const Cart = () => {
         </div>
 
         <div className='flex p-10 gap-x-1'>
-          <div className='flex  justify-between flex-col gap-y-5 gap-x-10'>
-            <div className='bg-[#F9F1E7]  h-16 px-10 text-xl font-semibold flex w-full items-center justify-start text-start gap-x-[300px]'>
+          <div className='flex w-full  justify-between flex-col gap-y-5 gap-x-10'>
+            <div className='bg-[#F9F1E7]  h-16 px-10 text-xl font-semibold flex w-full items-center justify-between '>
               <li className='list-none'>Product</li>
               <li className='list-none'>Price</li>
               <li className='list-none'>Quantity</li>
             </div>
 
             <div className='flex items-center justify-between border-b pb-2'>
-              <div className='flex items-center'>
+              <div className='flex justify-center gap-x-2 items-center'>
                 <img src="hero2.jpg " width={100} className='rounded-md' alt="" />
-                <p>Smart watches</p>
+                <p className='m-0'>Smart watches</p>
               </div>
               <div>
                 <p>$199.99</p>
