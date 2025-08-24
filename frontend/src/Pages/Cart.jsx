@@ -6,29 +6,29 @@ import api from '../Api';
 
 const Cart = () => {
 
-  const {state , dispatch} = useContext(GlobalContext)
+  const { state, dispatch } = useContext(GlobalContext)
   const [counter, setCounter] = useState(1);
-  const [allCart , setallCart] = useState([])
-  const [TotalPrice , setTotalPrice] = useState("")
+  const [allCart, setallCart] = useState([])
+  const [TotalPrice, setTotalPrice] = useState("")
 
-  
+
   const fetchCart = async () => {
-      try {
-        let res = await api.get(`/cart/${state.user.user_id}`);
-        setallCart(res.data.cartItems)
-        console.log(res.data)
-        setTotalPrice(res.data.grandTotal)
-      } catch (error) {
-        console.log("Cart fetch error:", error);
-      }
-    };
-  
-    useEffect(() => {
-      fetchCart();
-    }, []);
+    try {
+      let res = await api.get(`/cart/${state.user.user_id}`);
+      setallCart(res.data.cartItems)
+      console.log(res.data)
+      setTotalPrice(res.data.grandTotal)
+    } catch (error) {
+      console.log("Cart fetch error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCart();
+  }, []);
 
 
-  
+
 
 
   return (
@@ -62,27 +62,27 @@ const Cart = () => {
 
 
             {allCart.map((eachCat) => (
-                <div className='flex items-center justify-between border-b pb-2'>
-              
-              <div className='flex justify-center gap-x-2 items-center'>
-                <img src={eachCat.product_image} width={100} className='rounded-md' alt="" />
-                <p className='m-0'>{eachCat.product_name}</p>
-              </div>
-              <div>
-                <p>RS: {eachCat.price_per_item}</p>
-              </div>
-              <div className='border text-xl flex justify-between gap-x-1 items-center  rounded-md'>
-                <span onClick={() => { counter > 1 ? setCounter(counter - 1) : null }} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>-</span>
-                {eachCat.quantity}
-                <span onClick={() => setCounter(counter + 1)} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>+</span>
-              </div>
-              <div className='flex'>
-                <MdDelete className='text-3xl text-[#000000]' />
-              </div>
-            </div>
-              ))}
+              <div className='flex items-center justify-between border-b pb-2'>
 
-            
+                <div className='flex justify-center gap-x-2 items-center'>
+                  <img src={eachCat.product_image} width={100} className='rounded-md' alt="" />
+                  <p className='m-0'>{eachCat.product_name}</p>
+                </div>
+                <div>
+                  <p>RS: {eachCat.price_per_item}</p>
+                </div>
+                <div className='border text-xl flex justify-between gap-x-1 items-center  rounded-md'>
+                  <span onClick={() => { counter > 1 ? setCounter(counter - 1) : null }} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>-</span>
+                  {eachCat.quantity}
+                  <span onClick={() => setCounter(counter + 1)} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>+</span>
+                </div>
+                <div className='flex'>
+                  <MdDelete className='text-3xl text-[#000000]' />
+                </div>
+              </div>
+            ))}
+
+
           </div>
 
         </div>
