@@ -8,7 +8,7 @@ import api from '../Api';
 import { FiShare2, FiHeart } from "react-icons/fi";
 
 const Home = () => {
-  
+
   const { state, dispatch } = useContext(GlobalContext);
   const [allProducts, setAllProducts] = useState([]);
   const [homeDisplayProducts, setHomeDisplayProducts] = useState([]);
@@ -55,7 +55,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="font-poppins bg-white pt-20 overflow-hidden">
+    <div className="font-poppins bg-white pt-20 ">
       <Toaster position="bottom-right" richColors closeButton />
 
       {/* Hero Section */}
@@ -91,28 +91,29 @@ const Home = () => {
       </p>
 
       {/* Banners */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 px-4 md:px-8 mb-12">
+      <div className="flex justify-center gap-6 items-center px-4 flex-wrap md:flex-row">
         <img
           src="smartwatches.jpg"
-          className="rounded-md hover:brightness-75 hover:scale-105 duration-300 cursor-pointer w-full h-full object-cover"
+          className="rounded-md max-w-[370px] w-full h-auto hover:brightness-75 hover:scale-105 duration-300 cursor-pointer object-cover"
           alt=""
         />
         <img
           src="headphone.avif"
-          className="rounded-md hover:brightness-75 hover:scale-105 duration-300 cursor-pointer w-full h-full object-cover"
+          className="rounded-md max-w-[370px] w-full h-auto hover:brightness-75 hover:scale-105 duration-300 cursor-pointer object-cover"
           alt=""
         />
         <img
           src="airbuds.jpg"
-          className="rounded-md hover:brightness-75 hover:scale-105 duration-300 cursor-pointer w-full h-full object-cover"
+          className="rounded-md max-w-[370px] w-full h-auto hover:brightness-75 hover:scale-105 duration-300 cursor-pointer object-cover"
           alt=""
         />
       </div>
 
+
       <main className="container mx-auto px-4 md:px-8 xl:px-1 lg:px-12 py-12">
         {/* Products */}
         <section className="mb-16">
-          <h2 className="text-2xl md:text-4xl font-extrabold text-gray-900 mb-6 text-center">
+          <h2 className="text-2xl md:text-4xl  font-extrabold text-gray-900 mb-6 text-center">
             Our Products
           </h2>
 
