@@ -94,17 +94,15 @@ const Products = () => {
         <div className="relative">
           <img
             src="hero2.jpg"
-            className="object-cover w-full h-[300px] md:h-[350px]"
+            className="object-cover w-full h-[250px] md:h-[300px] rounded-lg"
             alt=""
           />
-
-          <div className="absolute top-0 left-0 w-full h-full bg-[#E4E2DF]/40 backdrop-blur-sm flex flex-col justify-center items-center text-center px-4">
-            <h1 className="text-4xl md:text-6xl font-semibold text-black mb-4">
-              Shop
+          <div className="absolute top-0 left-0 w-full h-full bg-black/40 backdrop-blur-sm flex flex-col justify-center items-center text-center px-4 rounded-lg">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-2">
+             Your Shop
             </h1>
-
-            <p className="text-gray-700 text-sm md:text-xl flex items-center gap-x-2">
-              Home <FaGreaterThan className="text-black" /> <span>Shop</span>
+            <p className="text-gray-200 text-sm md:text-lg flex items-center gap-x-2">
+              Home <FaGreaterThan /> <span>Shop</span>
             </p>
           </div>
         </div>
@@ -212,7 +210,7 @@ const Products = () => {
 
           {/* ✅ Load More button */}
           <div className="flex justify-center items-center gap-4 py-8">
-            {nextPage && filteredProduct.length > 0 && (  
+            {nextPage && filteredProduct.length > 0 && (
               <button
                 className="py-2 px-4 text-xl text-black font-semibold hover:scale-105 duration-300 border"
                 disabled={loadingMore}
