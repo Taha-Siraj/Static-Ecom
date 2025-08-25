@@ -1,4 +1,5 @@
 import React from 'react'
+import { FaGreaterThan } from 'react-icons/fa';
 import { MdDateRange } from "react-icons/md";
 
 
@@ -36,6 +37,23 @@ const Allblogs = () => {
     ]
   return (
     <div className='mt-24 font-poppins'>
+      <div className="w-full">
+              <div className="relative">
+                <img
+                  src="hero2.jpg"
+                  className="object-cover w-full h-[250px] md:h-[300px] rounded-lg"
+                  alt=""
+                />
+                <div className="absolute top-0 left-0 w-full h-full bg-black/40 backdrop-blur-sm flex flex-col justify-center items-center text-center px-4 rounded-lg">
+                  <h1 className="text-4xl md:text-6xl font-bold text-white mb-2">
+                   Your Shop
+                  </h1>
+                  <p className="text-gray-200 text-sm md:text-lg flex items-center gap-x-2">
+                    Home <FaGreaterThan /> <span>Shop</span>
+                  </p>
+                </div>
+              </div>
+            </div>
       <h1 className='text-2xl  px-10'>Our Blogs</h1>
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4 py-10">
     {blogs.map((blog) => (
