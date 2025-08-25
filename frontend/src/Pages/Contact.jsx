@@ -37,11 +37,7 @@ const Contact = () => {
             </p>
           </div>
 
-          <img
-            src="elctronics.webp"
-            alt="Contact illustration"
-            className="rounded-lg shadow-md hidden sm:block"
-          />
+         
         </div>
 
         <div className="bg-white shadow-lg rounded-lg p-6 sm:p-8">
@@ -49,12 +45,12 @@ const Contact = () => {
           <form className="flex flex-col gap-4">
             <input
               type="text"
-              placeholder="Your Name"
+              placeholder="ex.Taha Siraj"
               className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-600 outline-none"
             />
             <input
               type="email"
-              placeholder="Your Email"
+              placeholder="ex. tahaSiraj610@gmail.com"
               className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-600 outline-none"
             />
             <textarea
