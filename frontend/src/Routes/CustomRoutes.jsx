@@ -26,7 +26,7 @@ const CustomRoutes = () => {
   }
 
   return (
-    <Routes>
+     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/card" element={<Card />} />
       <Route path="/product" element={<Products />} />
