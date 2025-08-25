@@ -8,21 +8,15 @@ import { Toaster , toast } from 'react-hot-toast';
 const Cart = () => {
 
   const { state, dispatch } = useContext(GlobalContext)
-  const [counter, setCounter] = useState(1);
   const [allCart, setallCart] = useState([])
-  const [TotalPrice, setTotalPrice] = useState("")
-  const [updatedCart , setUpdatedCart] = useState({
-   quantity:  "",
-   price_per_item: ""
-  })
-
+  const [grandTotal , setgrandTotal] = useState()
 
   const fetchCart = async () => {
     try {
       let res = await api.get(`/cart/${state.user.user_id}`);
       setallCart(res.data.cartItems)
       console.log(res.data)
-      setTotalPrice(res.data.grandTotal)
+      
     } catch (error) {
       console.log("Cart fetch error:", error);
     }
@@ -48,8 +42,9 @@ const Cart = () => {
         quantity: newQuantity,
         price_per_item: price_per_item
        })
-      toast.success("Updated Cart")
-      fetchCart()
+       fetchCart()
+      toast.success("Updated Cart");
+      setgrandTotal(res.data.grandTotal)
       }catch(error){
       console.log(error)
     }}
@@ -121,7 +116,7 @@ const Cart = () => {
             ))}
           </div>
           <div className='border-t py-2'>
-            <p className='flex justify-between'>Total <span>{TotalPrice}</span> </p>
+            <p className='flex justify-between'>Total <span>{grandTotal}</span> </p>
             <button className='w-full py-2 px-1 bg-white rounded-md text-xl font-semibold border text-black  '>Check Out</button>
           </div>
         </div>
