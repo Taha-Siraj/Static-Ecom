@@ -42,17 +42,17 @@ const Cart = () => {
     }
   }
 
-  const updatedProductCart =  async (updatedCart) => {
-    // try {
-
-    //   let res = await api.put(`/updatedcart/:id`)
-    // }catch(error){
-
-    // }
-
-    console.log("updatedCart", updatedCart)
-
-  }
+  const updatedProductCart =  async (cart_id, newQuantity, price_per_item ) => {
+    try {
+       let res = await api.put(`/updatedcart/${cart_id}` ,{
+        quantity: newQuantity,
+        price_per_item: price_per_item
+       })
+      toast.success("Updated Cart")
+      fetchCart()
+      }catch(error){
+      console.log(error)
+    }}
 
 
 
@@ -98,9 +98,12 @@ const Cart = () => {
                   <p>RS: {eachCat.price_per_item}</p>
                 </div>
                 <div className='border text-xl flex justify-between gap-x-1 items-center  rounded-md'>
-                  <span onClick={() => { updatedProductCart(eachCat) , counter > 1 ? setCounter(counter - 1) : null }} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>-</span>
-                  {counter}
-                  <span onClick={() => setCounter(  updatedProductCart(eachCat))} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>+</span>
+                  <span 
+                  onClick={() => {   if(eachCat.quantity) {
+                    updatedProductCart(eachCat.cart_id, eachCat.quantity - 1, eachCat.price_per_item )
+                  }}} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>-</span>
+                  {eachCat.quantity}
+                  <span onClick={() => {updatedProductCart(eachCat.cart_id, eachCat.quantity + 1, eachCat.price_per_item)}} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>+</span>
                 </div>
                 <div className='flex'>
                   <MdDelete onClick={() => {deletedCart(eachCat)}} className='hover:cursor-pointer hover:scale-110 duration-300 text-3xl text-[#000000]' />
