@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 import { BiSolidUpArrowSquare } from "react-icons/bi";
@@ -10,36 +10,23 @@ const socialLinks = [
   { icon: <FaLinkedinIn />, url: "https://linkedin.com", label: "LinkedIn" },
 ];
 
-const quickLinks = [
+const pageLinks = [
   { to: "/", label: "Home" },
   { to: "/product", label: "Shop" },
-  { to: "/blog", label: "Blogs" },
+  { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
-  { to: "/faq", label: "FAQ" },
 ];
 
-const categoryLinks = [
-  { to: "/product", label: "Computer Accessories" },
-  { to: "/product", label: "Shoes Collection" },
-  { to: "/product", label: "Men's Fashion" },
-  { to: "/product", label: "Watches" },
-  { to: "/product", label: "Women's Fashion" },
-  { to: "/product", label: "Electronics" },
+const infoLinks = [
+  { to: "/payment", label: "Payment Options" },
+  { to: "/returns", label: "Returns" },
+  { to: "/privacy", label: "Privacy Policies" },
+  { to: "/newsletter", label: "Newsletter" },
 ];
-
-const ScrollToTopLink = ({ to, children }) => (
-  <Link
-    to={to}
-    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-    className="text-gray-600 hover:text-black transition"
-  >
-    {children}
-  </Link>
-);
 
 const Footer = () => {
-  const [showButton, setShowButton] = useState(false);
   const [email, setEmail] = useState("");
+  const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setShowButton(window.scrollY > 300);
@@ -49,10 +36,7 @@ const Footer = () => {
 
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
-    if (!email) {
-      alert("Please enter your email");
-      return;
-    }
+    if (!email) return alert("Please enter your email");
     console.log("Subscribed Email:", email);
     setEmail("");
   };
@@ -65,8 +49,8 @@ const Footer = () => {
         <div>
           <h1 className="text-3xl font-bold text-black">E-SHOP</h1>
           <p className="text-gray-600 mt-3">
-            Discover curated outfits and cutting-edge electronics. We blend
-            style and innovation to elevate your everyday.
+            Discover curated outfits and cutting-edge electronics. 
+            We blend style and innovation to elevate your everyday.
           </p>
           <div className="flex gap-4 mt-4">
             {socialLinks.map((link, i) => (
@@ -84,41 +68,47 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Quick Links */}
+        {/* Pages */}
         <div>
-          <h2 className="text-lg font-semibold text-black mb-3">Quick Links</h2>
+          <h2 className="text-lg font-semibold text-black mb-3">Pages</h2>
           <div className="flex flex-col gap-2">
-            {quickLinks.map((link, i) => (
-              <ScrollToTopLink key={i} to={link.to}>
+            {pageLinks.map((link, i) => (
+              <Link
+                key={i}
+                to={link.to}
+                className="text-gray-600 hover:text-black transition"
+              >
                 {link.label}
-              </ScrollToTopLink>
+              </Link>
             ))}
           </div>
         </div>
 
-        {/* Categories */}
+        {/* Info */}
         <div>
-          <h2 className="text-lg font-semibold text-black mb-3">
-            Top Categories
-          </h2>
+          <h2 className="text-lg font-semibold text-black mb-3">Information</h2>
           <div className="flex flex-col gap-2">
-            {categoryLinks.map((link, i) => (
-              <ScrollToTopLink key={i} to={link.to}>
+            {infoLinks.map((link, i) => (
+              <Link
+                key={i}
+                to={link.to}
+                className="text-gray-600 hover:text-black transition"
+              >
                 {link.label}
-              </ScrollToTopLink>
+              </Link>
             ))}
           </div>
         </div>
-        
+
         {/* Newsletter */}
         <div>
           <h2 className="text-lg font-semibold text-black mb-3">Newsletter</h2>
           <p className="text-gray-600 mb-3">
-            Subscribe for exclusive deals and new arrivals.
+            Enter Your Email Address
           </p>
           <form
             onSubmit={handleNewsletterSubmit}
-            className="flex flex-col sm:flex-row w-full gap-2"
+            className="flex flex-col sm:flex-row gap-2"
           >
             <input
               type="email"
@@ -129,9 +119,9 @@ const Footer = () => {
             />
             <button
               type="submit"
-              className="whitespace-nowrap bg-black text-white py-2 px-6 rounded-md font-semibold hover:bg-gray-800 transition w-full sm:w-auto"
+              className="bg-black text-white py-2 px-6 rounded-md font-semibold hover:bg-gray-800 transition w-full sm:w-auto"
             >
-              Go
+              SUBSCRIBE
             </button>
           </form>
         </div>
