@@ -16,6 +16,11 @@ const Cart = () => {
       let res = await api.get(`/cart/${state.user.user_id}`);
       setallCart(res.data.cartItems)
       console.log(res.data)
+
+      let total  = res.data.cartItems.reduce((sum , item) => (
+        sum + (item.price_per_item * item.quantity)
+      ) , 0);
+      setgrandTotal(total)
       
     } catch (error) {
       console.log("Cart fetch error:", error);
@@ -44,7 +49,8 @@ const Cart = () => {
        })
        fetchCart()
       toast.success("Updated Cart");
-      setgrandTotal(res.data.grandTotal)
+
+      // setgrandTotal(res.data.grandTotal)
       }catch(error){
       console.log(error)
     }}

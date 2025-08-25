@@ -495,15 +495,11 @@ app.put('/api/v1/updatedcart/:id', async (req, res) => {
     let qurey = 'UPDATE cart SET quantity = $1, price_per_item = $2 WHERE cart_id = $3 RETURNING *';
     let values = [quantity, price_per_item, id];
     let result = await db.query(qurey, values);
-
-    let grandTotal = result.rows.reduce((sum , item) => {
-      return sum + (item.quantity * item.price_per_item)
-    } , 0);
-
+    
     if (result.rowCount === 0) {
       return res.status(404).send({ message: "Cart item not found" });
     }
-    res.status(201).send({ message: "Cart updated", updatedCart: result.rows[0] ,  grandTotal: grandTotal});
+    res.status(201).send({ message: "Cart updated", updatedCart: result.rows[0] });
   } catch (error) {
     console.error("Update Error:", error);
     res.status(500).send({ message: "Internal Server Error" });
