@@ -14,6 +14,7 @@ import Loader from '../Pages/Loader';
 import Checkout from '../Pages/Checkout';
 import Forgetpassword from '../Authentication/Forgetpassword';
 import Card from '../Pages/Card';
+import Contact from '../Pages/Contact';
 
 const CustomRoutes = () => {
   const { state } = useContext(GlobalContext);
@@ -32,6 +33,7 @@ const CustomRoutes = () => {
       <Route path="/blog" element={<Allblogs />} />
       <Route path="/forgetpassword" element={<Forgetpassword />} />
       <Route path="/cart" element={<Cart />} />
+      <Route path="/contact" element={<Contact />} />
       <Route path="/productsdetails/:id" element={<Productsdetail />} />
 
       {!state.isLogin && (
