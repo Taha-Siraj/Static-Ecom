@@ -1,27 +1,27 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { FaGreaterThan } from 'react-icons/fa'
+import React, { useContext, useEffect, useState } from "react";
+import { FaGreaterThan } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { GlobalContext } from '../Context/Context';
-import api from '../Api';
-import { Toaster , toast } from 'react-hot-toast';
+import { GlobalContext } from "../Context/Context";
+import api from "../Api";
+import { Toaster, toast } from "react-hot-toast";
 
 const Cart = () => {
+  const { state } = useContext(GlobalContext);
+  const [allCart, setAllCart] = useState([]);
+  const [grandTotal, setGrandTotal] = useState(0);
 
-  const { state, dispatch } = useContext(GlobalContext)
-  const [allCart, setallCart] = useState([])
-  const [grandTotal , setgrandTotal] = useState()
-
+  // Fetch Cart
   const fetchCart = async () => {
     try {
       let res = await api.get(`/cart/${state.user.user_id}`);
-      setallCart(res.data.cartItems)
-      console.log(res.data)
+      setAllCart(res.data.cartItems);
 
-      let total  = res.data.cartItems.reduce((sum , item) => (
-        sum + (item.price_per_item * item.quantity)
-      ) , 0);
-      setgrandTotal(total)
-      
+      // frontend se calculate
+      const total = res.data.cartItems.reduce(
+        (sum, item) => sum + item.quantity * item.price_per_item,
+        0
+      );
+      setGrandTotal(total);
     } catch (error) {
       console.log("Cart fetch error:", error);
     }
@@ -31,104 +31,159 @@ const Cart = () => {
     fetchCart();
   }, []);
 
-  const deletedCart =  async (eachCart) => {
+  // Delete cart item
+  const deleteCart = async (cart) => {
     try {
-      let res = await api.delete(`deletedcart/${eachCart.cart_id}`)
-      toast.success(res?.data?.message)
+      let res = await api.delete(`/deletedcart/${cart.cart_id}`);
+      toast.success(res?.data?.message);
       fetchCart();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-  const updatedProductCart =  async (cart_id, newQuantity, price_per_item ) => {
+  // Update cart item
+  const updateCart = async (cart_id, newQty, price) => {
     try {
-       let res = await api.put(`/updatedcart/${cart_id}` ,{
-        quantity: newQuantity,
-        price_per_item: price_per_item
-       })
-       fetchCart()
-      toast.success("Updated Cart");
-
-      // setgrandTotal(res.data.grandTotal)
-      }catch(error){
-      console.log(error)
-    }}
-
-
-
+      if (newQty < 1) return;
+      await api.put(`/updatedcart/${cart_id}`, {
+        quantity: newQty,
+        price_per_item: price,
+      });
+      fetchCart();
+      toast.success("Cart updated");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
-    <Toaster position='bottom-right' />
+      <Toaster position="bottom-right" />
       <div className="pt-20 w-full font-poppins">
+        {/* Banner */}
         <div className="relative">
           <img
             src="hero2.jpg"
-            className="object-cover w-full h-[300px] md:h-[350px]"
-            alt="" />
-
-          <div className="absolute top-0 left-0 w-full h-full bg-[#E4E2DF]/40 backdrop-blur-sm flex flex-col justify-center items-center text-center px-4">
-            <h1 className="text-4xl md:text-6xl font-semibold text-black mb-4">
-              Cart
+            className="object-cover w-full h-[250px] md:h-[300px] rounded-lg"
+            alt=""
+          />
+          <div className="absolute top-0 left-0 w-full h-full bg-black/40 backdrop-blur-sm flex flex-col justify-center items-center text-center px-4 rounded-lg">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-2">
+              Your Cart
             </h1>
-
-            <p className="text-gray-700 text-sm md:text-xl flex items-center gap-x-2">
+            <p className="text-gray-200 text-sm md:text-lg flex items-center gap-x-2">
               Home <FaGreaterThan /> <span>Cart</span>
             </p>
           </div>
         </div>
 
-        <div className='flex p-10 gap-x-1'>
-          <div className='flex w-full  justify-between flex-col gap-y-5 gap-x-10'>
-            <div className='bg-[#F9F1E7]  h-16 px-10 text-xl font-semibold flex w-full items-center justify-between '>
-              <li className='list-none'>Product</li>
-              <li className='list-none'>Price</li>
-              <li className='list-none'>Quantity</li>
+        {/* Cart Section */}
+        <div className="flex flex-col md:flex-row gap-6 px-6 py-10">
+          {/* Cart Items */}
+          <div className="flex-1 bg-white shadow-md rounded-lg p-4 md:p-6">
+            {/* Header Row */}
+            <div className="hidden md:flex justify-between font-semibold text-lg border-b pb-2 mb-4">
+              <span className="w-1/3">Product</span>
+              <span className="w-1/6 text-center">Price</span>
+              <span className="w-1/6 text-center">Quantity</span>
+              <span className="w-1/6 text-center">Action</span>
             </div>
 
+            {allCart.length === 0 ? (
+              <p className="text-center text-gray-600 py-10">
+                Your cart is empty 🛒
+              </p>
+            ) : (
+              allCart.map((item) => (
+                <div
+                  key={item.cart_id}
+                  className="flex flex-col md:flex-row items-center justify-between border-b py-4 gap-4"
+                >
+                  {/* Product */}
+                  <div className="flex items-center gap-4 w-full md:w-1/3">
+                    <img
+                      src={item.product_image}
+                      alt={item.product_name}
+                      className="w-20 h-20 object-cover rounded-md shadow-sm"
+                    />
+                    <p className="font-medium">{item.product_name}</p>
+                  </div>
 
-            {allCart.map((eachCat) => (
-              <div key={eachCat?.cart_id} className='flex items-center justify-between border-b pb-2'>
+                  {/* Price */}
+                  <div className="w-full md:w-1/6 text-center text-gray-700 font-semibold">
+                    Rs {item.price_per_item}
+                  </div>
 
-                <div className='flex justify-center gap-x-2 items-center'>
-                  <img src={eachCat.product_image} width={100} className='rounded-md' alt="" />
-                  <p className='m-0'>{eachCat.product_name}</p>
+                  {/* Quantity */}
+                  <div className="flex items-center justify-center gap-2 w-full md:w-1/6">
+                    <button
+                      onClick={() =>
+                        updateCart(
+                          item.cart_id,
+                          item.quantity - 1,
+                          item.price_per_item
+                        )
+                      }
+                      className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-300"
+                    >
+                      -
+                    </button>
+                    <span className="px-2">{item.quantity}</span>
+                    <button
+                      onClick={() =>
+                        updateCart(
+                          item.cart_id,
+                          item.quantity + 1,
+                          item.price_per_item
+                        )
+                      }
+                      className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-300"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  {/* Delete */}
+                  <div className="w-full md:w-1/6 flex justify-center">
+                    <MdDelete
+                      onClick={() => deleteCart(item)}
+                      className="cursor-pointer text-2xl text-red-500 hover:scale-110 transition"
+                    />
+                  </div>
                 </div>
-                <div>
-                  <p>RS: {eachCat.price_per_item}</p>
-                </div>
-                <div className='border text-xl flex justify-between gap-x-1 items-center  rounded-md'>
-                  <span 
-                  onClick={() => {   if(eachCat.quantity) {
-                    updatedProductCart(eachCat.cart_id, eachCat.quantity - 1, eachCat.price_per_item )
-                  }}} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>-</span>
-                  {eachCat.quantity}
-                  <span onClick={() => {updatedProductCart(eachCat.cart_id, eachCat.quantity + 1, eachCat.price_per_item)}} className='text-xl md:text-2xl hover:bg-gray-200 duration-300 py-2 px-3 cursor-pointer'>+</span>
-                </div>
-                <div className='flex'>
-                  <MdDelete onClick={() => {deletedCart(eachCat)}} className='hover:cursor-pointer hover:scale-110 duration-300 text-3xl text-[#000000]' />
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
 
-        </div>
-        <div className='bg-[#F9F1E7] flex flex-col rounded-md justify-center  px-3 w-full capitalize'>
-          <h1 className='text-xl  pt-3 text-center font-semibold'>Cart Totals</h1>
-          <div className=''>
-            {allCart.map((eachcat) => (
-              <p className='flex justify-between'>{eachcat.product_name}<span>{Math.floor(eachcat.price_per_item)} X {eachcat.quantity}</span>  </p>
-            ))}
-          </div>
-          <div className='border-t py-2'>
-            <p className='flex justify-between'>Total <span>{grandTotal}</span> </p>
-            <button className='w-full py-2 px-1 bg-white rounded-md text-xl font-semibold border text-black  '>Check Out</button>
+          {/* Cart Totals */}
+          <div className="w-full md:w-1/3 bg-[#F9F1E7] shadow-md rounded-lg p-6">
+            <h2 className="text-xl font-bold text-center mb-4">Cart Totals</h2>
+            <div className="space-y-3">
+              {allCart.map((item) => (
+                <div
+                  key={item.cart_id}
+                  className="flex justify-between text-gray-700"
+                >
+                  <span>{item.product_name}</span>
+                  <span>
+                    {item.quantity} × {Math.floor(item.price_per_item)}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div className="border-t mt-4 pt-4 flex justify-between font-semibold text-lg">
+              <span>Total</span>
+              <span>Rs {grandTotal}</span>
+            </div>
+            <button className="mt-5 w-full py-2 rounded-lg bg-black text-white font-semibold hover:bg-gray-800 transition">
+              Proceed to Checkout
+            </button>
           </div>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Cart
+export default Cart;
