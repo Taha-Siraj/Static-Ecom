@@ -4,6 +4,7 @@ import { MdDelete } from "react-icons/md";
 import { GlobalContext } from "../Context/Context";
 import api from "../Api";
 import { Toaster, toast } from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const { state } = useContext(GlobalContext);
@@ -177,7 +178,7 @@ const Cart = () => {
               <span>Rs {grandTotal}</span>
             </div>
             <button className="mt-5 w-full py-2 rounded-lg bg-black text-white font-semibold hover:bg-gray-800 transition">
-              Proceed to Checkout
+              <Link to={'/checkout'} >Proceed to Checkout</Link>
             </button>
           </div>
         </div>
