@@ -527,9 +527,9 @@ app.get('/items' , async (req , res) => {
 })
 
 
-// const __dirname = path.resolve();
-// app.use('/', express.static(path.join(__dirname, './frontend/dist')));
-// app.use("/*splat" , express.static(path.join(__dirname, './frontend/dist')));
+const __dirname = path.resolve();
+app.use('/', express.static(path.join(__dirname, './frontend/dist')));
+app.use("/*splat" , express.static(path.join(__dirname, './frontend/dist')));
 
 app.listen(5004, () => {
   console.log("server Is running 5004");
