@@ -1,19 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import api from "../Api";
 import { GlobalContext } from "../Context/Context";
+import { FaGreaterThan } from "react-icons/fa";
 
 const Checkout = () => {
-  const {state } = useContext(GlobalContext)
+  const { state } = useContext(GlobalContext)
   const [allCart, setAllCart] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
-  const [formData, setFormData] = useState({
-    name: "",
-    address: "",
-    phone: "",
-    payment: "cod", 
-  });
 
-  // Fetch cart
+
   const fetchCart = async () => {
     try {
       let res = await api.get(`/cart/${state.user.user_id}`);
@@ -28,100 +23,33 @@ const Checkout = () => {
     fetchCart();
   }, []);
 
-  // Handle input change
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  // Pay Now click
-  const handlePayNow = async () => {
-    try {
-      const orderData = {
-        user_id: state.user.user_id,
-        cartItems: allCart,
-        subtotal,
-        customer: formData,
-      };
-
-      let res = await api.post("/orders", orderData);
-
-      if (res.data.success) {
-        alert("Payment Successful & Order Placed!");
-        window.location.href = "/thank-you";
-      } else {
-        alert("Something went wrong!");
-      }
-    } catch (error) {
-      console.log("Order error:", error);
-      alert("Order failed, try again.");
-    }
-  };
-
   return (
-    <div className="min-h-screen  py-28 bg-gray-100 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl">
-        <h2 className="text-2xl font-bold mb-4">Checkout</h2>
-
-        {/* Cart Summary */}
-        <div className="mb-6">
-          <h3 className="font-semibold mb-2">Order Summary</h3>
-          {allCart.map((item) => (
-            <div
-              key={item._id}
-              className="flex justify-between border-b py-2 text-gray-700"
-            >
-              <p>{item.productName} (x{item.quantity})</p>
-              <p>Rs. {item.price * item.quantity}</p>
-            </div>
-          ))}
-          <div className="flex justify-between font-bold text-lg mt-3">
-            <p>Total:</p>
-            <p>Rs. {subtotal}</p>
-          </div>
+    <div className="py-20">
+      <div className="relative">
+        <img
+          src="hero2.jpg"
+          className="object-cover w-full h-[250px] md:h-[300px] rounded-lg"
+          alt=""
+        />
+        <div className="absolute top-0 left-0 w-full h-full bg-black/40 backdrop-blur-sm flex flex-col justify-center items-center text-center px-4 rounded-lg">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-2">
+            Checkout
+          </h1>
+          <p className="text-gray-200 text-sm md:text-lg flex items-center gap-x-2">
+            Home <FaGreaterThan /> <span>Checkout</span>
+          </p>
         </div>
-
-        {/* Customer Info */}
-        <div className="space-y-3">
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            className="w-full p-2 border rounded"
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="address"
-            placeholder="Address"
-            className="w-full p-2 border rounded"
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="phone"
-            placeholder="Phone"
-            className="w-full p-2 border rounded"
-            onChange={handleChange}
-          />
-          <select
-            name="payment"
-            className="w-full p-2 border rounded"
-            onChange={handleChange}
-          >
-            <option value="cod">Cash on Delivery</option>
-            <option value="card">Credit/Debit Card</option>
-            <option value="paypal">PayPal</option>
-          </select>
-        </div>
-
-        {/* Pay Now Button */}
-        <button
-          onClick={handlePayNow}
-          className="mt-6 w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700"
-        >
-          Pay Now
-        </button>
       </div>
+
+      <div className="flex py-10 justify-center w-full items-center">
+        <div className="w-[40vw]">
+        <div className="flex w-full  justify-between">
+          <p className="text-2xl font-semibold text-black">Product</p>
+          <p className="text-2xl font-semibold text-black">Total</p>
+        </div>
+        </div>
+      </div>
+
     </div>
   );
 };
