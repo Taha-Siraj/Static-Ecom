@@ -508,12 +508,28 @@ app.put('/api/v1/updatedcart/:id', async (req, res) => {
 });
 
 
+app.get('/orders' , async (req , res) => {
+  try {
+    let ressult = await db.query("SELECT * FROM orders");
+    res.status(200).send({message: ressult.fields})
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+app.get('/items' , async (req , res) => {
+  try {
+    let ressult = await db.query("SELECT * FROM items");
+    res.status(200).send({message: ressult.fields})
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 
-
-const __dirname = path.resolve();
-app.use('/', express.static(path.join(__dirname, './frontend/dist')));
-app.use("/*splat" , express.static(path.join(__dirname, './frontend/dist')));
+// const __dirname = path.resolve();
+// app.use('/', express.static(path.join(__dirname, './frontend/dist')));
+// app.use("/*splat" , express.static(path.join(__dirname, './frontend/dist')));
 
 app.listen(5004, () => {
   console.log("server Is running 5004");
