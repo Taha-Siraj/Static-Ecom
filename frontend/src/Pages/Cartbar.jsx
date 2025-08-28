@@ -21,6 +21,7 @@ const Cart = ({ onClose }) => {
     }
   };
 
+
   useEffect(() => {
     fetchCart();
   }, []);
