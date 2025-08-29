@@ -63,7 +63,6 @@ const Cart = ({ onClose }) => {
           </div>
           <hr />
         </div>
-
         <div className="flex-1 overflow-y-auto flex flex-col gap-y-3 py-3">
           {allCart.length === 0 && (
             <div className="text-center py-4">Your cart is empty</div>
