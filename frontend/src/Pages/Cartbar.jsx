@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { FaRegWindowClose } from "react-icons/fa";
 import { GlobalContext } from "../Context/Context";
 import api from "../Api";
-import { toast } from "react-hot-toast"; // ✅ Toaster hata diya
+import { toast } from "react-hot-toast"; 
 import { IoMdCloseCircle } from "react-icons/io";
 import { Link } from "react-router-dom";
 
