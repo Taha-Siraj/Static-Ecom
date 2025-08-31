@@ -9,6 +9,7 @@ import path from 'path';
 import { upload } from "./cloudnary/cloudnary.js";
 import crypto from 'crypto'
 import { sendVerificationEmail } from "./utils/nodemailer.js";
+import Stripe from "stripe"
 
 
 const app = express();
@@ -21,7 +22,7 @@ app.use(cookieParser());
 app.use(express.json());
 const isDev = process.env.NODE_ENV !== "production";
 let SECRET = process.env.SECRET_key;
-
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 app.get('/get-user', async (req, res) => {
   try {
@@ -150,7 +151,7 @@ app.post('/api/v1/verify-otp', async (req, res) => {
   }
 
   email = email.toLowerCase();
-   try {
+  try {
     let query = 'SELECT reset_token, reset_token_expiry FROM users WHERE email = $1';
     let values = [email];
     let result = await db.query(query, values);
@@ -172,7 +173,7 @@ app.post('/api/v1/verify-otp', async (req, res) => {
     await db.query(clearQuery, [email]);
 
     return res.status(200).send({ message: "OTP verified successfully" });
-    
+
 
   } catch (error) {
     console.error(error);
@@ -182,8 +183,8 @@ app.post('/api/v1/verify-otp', async (req, res) => {
 
 // updated password 
 
-app.put('/api/v1/updated-password', async (req , res) => {
-    let { email, password } = req.body;
+app.put('/api/v1/updated-password', async (req, res) => {
+  let { email, password } = req.body;
 
   if (!email) {
     return res.status(400).send({ message: "Email is required" });
@@ -196,14 +197,14 @@ app.put('/api/v1/updated-password', async (req , res) => {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
     const qurey = 'UPDATE users SET password = $1 WHERE email = $2';
-    const value = [hash , email];
+    const value = [hash, email];
     await db.query(qurey, value)
     return res.status(200).send({ message: "Password updated successfully" });
   } catch (error) {
     console.error(error);
     return res.status(500).send({ message: "Internal server error" });
   }
-  
+
 
 })
 
@@ -453,7 +454,7 @@ app.post('/api/v1/cart', async (req, res) => {
     res.status(400).send({ message: "Allfield Requried" });
     return
   }
-  let total = quantity * price_per_item
+  let total = Number(quantity * price_per_item)
   let subTotal = total
   try {
     let qurey = `INSERT INTO cart( user_id , product_id , quantity , price_per_item, product_name, product_image, product_category , subtotal)
@@ -495,7 +496,7 @@ app.put('/api/v1/updatedcart/:id', async (req, res) => {
     let qurey = 'UPDATE cart SET quantity = $1, price_per_item = $2 WHERE cart_id = $3 RETURNING *';
     let values = [quantity, price_per_item, id];
     let result = await db.query(qurey, values);
-    
+
     if (result.rowCount === 0) {
       return res.status(404).send({ message: "Cart item not found" });
     }
@@ -508,27 +509,68 @@ app.put('/api/v1/updatedcart/:id', async (req, res) => {
 });
 
 
-app.get('/orders' , async (req , res) => {
+app.get('/orders', async (req, res) => {
   try {
     let ressult = await db.query("SELECT * FROM orders");
-    res.status(200).send({message: ressult.fields})
+    res.status(200).send({ message: ressult.fields })
   } catch (error) {
     console.log(error)
   }
 })
 
-app.get('/items' , async (req , res) => {
+app.get('/items', async (req, res) => {
   try {
     let ressult = await db.query("SELECT * FROM items");
-    res.status(200).send({message: ressult.fields})
+    res.status(200).send({ message: ressult.fields })
   } catch (error) {
     console.log(error)
   }
+})
+
+
+
+// payment stripe 
+
+
+app.post("/create-checkout-seession", async (req, res) => {
+  const { item } = req.body;
+  const seession = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    line_items: item.map(item => ({
+      price_date: {
+        currency: 'usd',
+        product_data: {
+          name: item.name,
+        },
+        unit_amount: item.price * 100, // amount in cents
+      },
+      quantity: item.quantity,
+    })),
+    mode: "payment",
+    success_url: "http://localhost:5173/success",
+    cancel_url: "http://localhost:5173/cancel"
+  })
+  res.json({id: seession.id})
+})
+
+
+app.post('/create-payment-intent', (req, res) =>{
+  const {amount} = req.body;
+  const paymentIntent = stripe.paymentIntents.create({
+    amount,
+    currency: 'usd',
+   automatic_payment_methods:{
+    enabled: true
+   } 
+  })
+  res.send({
+    clientSecret: paymentIntent.client_secret
+  })
 })
 
 const __dirname = path.resolve();
 app.use('/', express.static(path.join(__dirname, './frontend/dist')));
-app.use("/*splat" , express.static(path.join(__dirname, './frontend/dist')));
+app.use("/*splat", express.static(path.join(__dirname, './frontend/dist')));
 
 app.listen(5004, () => {
   console.log("server Is running 5004");
