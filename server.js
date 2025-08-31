@@ -534,7 +534,8 @@ app.get('/items', async (req, res) => {
 
 app.post("/create-checkout-seession", async (req, res) => {
   const { item } = req.body;
-  const seession = await stripe.checkout.sessions.create({
+ try {
+   const seession = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     line_items: item.map(item => ({
       price_date: {
@@ -551,6 +552,10 @@ app.post("/create-checkout-seession", async (req, res) => {
     cancel_url: "http://localhost:5173/cancel"
   })
   res.json({id: seession.id})
+
+ } catch (error) {
+  console.log(error)
+ }
 })
 
 

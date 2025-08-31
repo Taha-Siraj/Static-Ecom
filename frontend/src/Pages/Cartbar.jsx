@@ -6,10 +6,13 @@ import { toast } from "react-hot-toast";
 import { IoMdCloseCircle } from "react-icons/io";
 import { Link } from "react-router-dom";
 
+
 const Cart = ({ onClose }) => {
   const { state } = useContext(GlobalContext);
   const [allCart, setAllCart] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
+
+
 
   const fetchCart = async () => {
     try {
@@ -43,6 +46,7 @@ const Cart = ({ onClose }) => {
       document.body.style.overflow = "auto";
     };
   }, []);
+  
 
   return (
     <div

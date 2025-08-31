@@ -5,11 +5,15 @@ import { GlobalContext } from "../Context/Context";
 import api from "../Api";
 import { Toaster, toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
 
 const Cart = () => {
   const { state } = useContext(GlobalContext);
   const [allCart, setAllCart] = useState([]);
   const [grandTotal, setGrandTotal] = useState(0);
+
+  const stripePromise = loadStripe("pk_test_51S293iQkpFjYP5DYmCWGBvib1eTruyo160qmt2wZpIE9xYEgOnUO7QSHGtRErrHCi2oCpI41F8RoaLhNuNc7EoED0021Yqat9i"); // publishable key
 
   // Fetch Cart
   const fetchCart = async () => {
@@ -57,6 +61,22 @@ const Cart = () => {
       console.log(error);
     }
   };
+
+
+  const handleCheckout = async () => {
+    try {
+      const response = await api.post('/create-checkout-seession', {
+        item: allCart
+      });
+      const session = await response.json();
+      const stripe = await stripePromise;
+      await stripe.redirectToCheckout({ sessionId: session.id });
+      console.log(response.data)
+    } catch (error) {
+      console.log(error , "checkout error")
+    }
+  };
+
 
   return (
     <>
@@ -178,7 +198,7 @@ const Cart = () => {
               <span>Rs {grandTotal}</span>
             </div>
             <button className="mt-5 no-underline w-full py-2 rounded-lg bg-black text-white font-semibold hover:bg-gray-800 transition">
-              <Link to={'/checkout'} className="no-underline text-white" >Proceed to Checkout</Link>
+              <Link to={'/checkout'} onClick={handleCheckout} className="no-underline text-white" >Proceed to Checkout</Link>
             </button>
           </div>
         </div>
