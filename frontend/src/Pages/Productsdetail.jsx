@@ -46,6 +46,7 @@ const Productsdetail = () => {
      dispatch({type: "SET_CART_COUNT", payload: state.cartCount + 1});
      console.log(state.cartCount)
     } catch (error) {
+      toast.error(error.response?.data?.message)
       console.log(error)
     }
   }
