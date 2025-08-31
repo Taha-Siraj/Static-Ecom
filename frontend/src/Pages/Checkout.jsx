@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { FaGreaterThan } from "react-icons/fa";
 import { GlobalContext } from "../Context/Context";
-import api from "../Api"; // Aapka API instance
+import api from "../Api"; 
 
 const Checkout = () => {
   const { state } = useContext(GlobalContext);
@@ -21,6 +21,7 @@ const Checkout = () => {
         setLoading(true);
         const res = await api.get(`/cart/${state.user.user_id}`);
         setAllCart(res.data.cartItems || []);
+        console.log(res.data)
         setSubtotal(res.data.grandTotal || 0);
         setError(null);
       } catch (err) {
