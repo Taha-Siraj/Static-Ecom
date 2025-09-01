@@ -15,6 +15,7 @@ import Checkout from '../Pages/Checkout';
 import Forgetpassword from '../Authentication/Forgetpassword';
 import Card from '../Pages/Card';
 import Contact from '../Pages/Contact';
+import Success from '../Pages/Success';
 
 const CustomRoutes = () => {
   const { state } = useContext(GlobalContext);
@@ -35,6 +36,7 @@ const CustomRoutes = () => {
       <Route path="/cart" element={<Cart />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/productsdetails/:id" element={<Productsdetail />} />
+       <Route path="/success" element={<Success />} />
 
       {!state.isLogin && (
         <>

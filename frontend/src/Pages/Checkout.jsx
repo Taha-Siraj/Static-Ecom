@@ -2,6 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { FaGreaterThan } from "react-icons/fa";
 import { GlobalContext } from "../Context/Context";
 import api from "../Api"; 
+import { useNavigate } from "react-router-dom";
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
 
 const Checkout = () => {
   const { state } = useContext(GlobalContext);
@@ -9,6 +12,9 @@ const Checkout = () => {
   const [subtotal, setSubtotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  let navigate = useNavigate();
+    const stripePromise = loadStripe("pk_test_51S293iQkpFjYP5DYmCWGBvib1eTruyo160qmt2wZpIE9xYEgOnUO7QSHGtRErrHCi2oCpI41F8RoaLhNuNc7EoED0021Yqat9i"); // publishable key
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -34,29 +40,35 @@ const Checkout = () => {
     fetchCart();
   }, [state.user]);
 
-  // Button click par order details console mein show karega
-  const handlePlaceOrder = () => {
-    const orderDetails = {
-        user_id: state.user.user_id,
-        order_items: allCart,
-        grand_total: subtotal,
+  const handleCheckout = async () => {
+      try {
+        const response = await api.post('/create-checkout-session', {
+          items: allCart
+        });
+        const sessionId = response.data.id;
+        const stripe = await stripePromise;
+        await stripe.redirectToCheckout({ sessionId });
+  
+        console.log(response.data, "checkout response");
+        navigate('/success');
+      } catch (error) {
+        console.log(error, "checkout error");
+     
+      }
     };
 
-    console.log("Placing Order with these details:", orderDetails);
-    alert("Order placed! Details console mein check karein.");
-  };
+  
+    
 
   if (loading) {
     return <div className="py-20 text-center">Loading...</div>;
   }
-
   if (error) {
     return <div className="py-20 text-center text-red-500">{error}</div>;
   }
 
   return (
     <div className="py-20 bg-gray-50">
-      {/* --- Hero Section --- */}
       <div className="relative mb-12">
         <img src="hero2.jpg" className="object-cover w-full h-[250px] md:h-[300px]" alt="Checkout Banner" />
         <div className="absolute top-0 left-0 w-full h-full bg-black/50 flex flex-col justify-center items-center text-center px-4">
@@ -90,9 +102,9 @@ const Checkout = () => {
             </div>
             <div className="mt-8">
               <button
-                onClick={handlePlaceOrder}
+                onClick={handleCheckout}
                 className="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700"
-              >
+               >
                 Buy Now
               </button>
             </div>

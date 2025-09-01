@@ -530,48 +530,59 @@ app.get('/items', async (req, res) => {
 
 
 // payment stripe 
+app.post("/api/v1/create-checkout-session", async (req, res) => {
+  const { items } = req.body;
 
+  try {
+    const validItems = items.filter(item => {
+      const priceNum = Number(item.price_per_item);
+      return !isNaN(priceNum) && priceNum > 0 && Number.isInteger(priceNum * 100);
+    });
 
-app.post("/create-checkout-seession", async (req, res) => {
-  const { item } = req.body;
- try {
-   const seession = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    line_items: item.map(item => ({
-      price_date: {
-        currency: 'usd',
-        product_data: {
-          name: item.name,
+    if (validItems.length === 0) {
+      return res.status(400).json({ error: "No valid items with proper prices." });
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: validItems.map(item => ({
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: item.product_name,
+            images: [item.product_image],
+          },
+          unit_amount: Math.round(Number(item.price_per_item) * 100), // ensured integer cents
         },
-        unit_amount: item.price * 100, // amount in cents
-      },
-      quantity: item.quantity,
-    })),
-    mode: "payment",
-    success_url: "http://localhost:5173/success",
-    cancel_url: "http://localhost:5173/cancel"
-  })
-  res.json({id: seession.id})
+        quantity:  item.quantity,
+      })),
+      mode: "payment",
+      success_url: "http://localhost:5173/success",
+      cancel_url: "http://localhost:5173/cancel"
+    });
 
- } catch (error) {
-  console.log(error)
- }
-})
+    res.status(200).json({ id: session.id });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 
-app.post('/create-payment-intent', (req, res) =>{
-  const {amount} = req.body;
-  const paymentIntent = stripe.paymentIntents.create({
-    amount,
-    currency: 'usd',
-   automatic_payment_methods:{
-    enabled: true
-   } 
-  })
-  res.send({
-    clientSecret: paymentIntent.client_secret
-  })
-})
+// app.post('/create-payment-intent', (req, res) => {
+//   const { amount } = req.body;
+//   const paymentIntent = stripe.paymentIntents.create({
+//     amount,
+//     currency: 'usd',
+//     automatic_payment_methods: {
+//       enabled: true
+//     }
+//   })
+//   res.send({
+//     clientSecret: paymentIntent.client_secret
+//   })
+// })
 
 const __dirname = path.resolve();
 app.use('/', express.static(path.join(__dirname, './frontend/dist')));
