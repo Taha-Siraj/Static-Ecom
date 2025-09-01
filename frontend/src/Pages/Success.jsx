@@ -1,4 +1,4 @@
-// Success.jsx
+
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -11,12 +11,7 @@ const Success = () => {
       <p className="text-lg text-green-900 mb-6">
         Thank you for your purchase. Your order has been confirmed.
       </p>
-      <Link
-        to="/"
-        className="bg-green-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-800 transition"
-      >
-        Back to Home
-      </Link>
+
     </div>
   );
 };
