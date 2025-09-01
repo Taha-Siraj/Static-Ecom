@@ -532,27 +532,24 @@ app.get('/items', async (req, res) => {
 // payment stripe 
 app.post("/api/v1/create-checkout-session", async (req, res) => {
   const { items } = req.body;
-
   try {
     const validItems = items.filter(item => {
       const priceNum = Number(item.price_per_item);
       return !isNaN(priceNum) && priceNum > 0 && Number.isInteger(priceNum * 100);
     });
-
     if (validItems.length === 0) {
       return res.status(400).json({ error: "No valid items with proper prices." });
     }
-
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: validItems.map(item => ({
         price_data: {
-          currency: 'usd',
+          currency: 'pkr',
           product_data: {
             name: item.product_name,
             images: [item.product_image],
           },
-          unit_amount: Math.round(Number(item.price_per_item) * 100), // ensured integer cents
+          unit_amount: Math.round(Number(item.price_per_item) * 100),
         },
         quantity:  item.quantity,
       })),
@@ -570,19 +567,16 @@ app.post("/api/v1/create-checkout-session", async (req, res) => {
 });
 
 
-// app.post('/create-payment-intent', (req, res) => {
-//   const { amount } = req.body;
-//   const paymentIntent = stripe.paymentIntents.create({
-//     amount,
-//     currency: 'usd',
-//     automatic_payment_methods: {
-//       enabled: true
-//     }
-//   })
-//   res.send({
-//     clientSecret: paymentIntent.client_secret
-//   })
-// })
+app.post('/webhook', express.raw({type: 'application/json'}) , async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+try {
+  event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_SECRET_KEY )
+} catch (error) {
+  
+}
+})
 
 const __dirname = path.resolve();
 app.use('/', express.static(path.join(__dirname, './frontend/dist')));
