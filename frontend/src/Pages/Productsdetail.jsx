@@ -4,7 +4,7 @@ import api from '../Api'
 import { useParams } from 'react-router-dom';
 import { GlobalContext } from '../Context/Context';
 import { MdOutlineStarPurple500 } from "react-icons/md";
-import {LoaderIcon, toast , Toaster} from 'react-hot-toast'
+import {LoaderIcon, toast , Toaster} from 'react-hot-toast';
 
 const Productsdetail = () => {
   const { state, dispatch } = useContext(GlobalContext)
@@ -32,6 +32,10 @@ const Productsdetail = () => {
         toast.error("Please select a quantity");
         return;
       }
+      if(state.isLogin === false) {
+        toast.error("Please login to add items to cart");
+        return;
+      }
     try {
       let res = await api.post('/cart',{
         user_id: state.user.user_id,
@@ -53,7 +57,9 @@ const Productsdetail = () => {
 
   useEffect(() => {
     fetchproductdetails()
-  }, [])
+  }, []);
+
+
   console.log(Productsdetail)
   return (
     <div className='pt-24 font-poppins w-full'>

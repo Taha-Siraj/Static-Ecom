@@ -234,7 +234,7 @@ app.post('/api/v1/upload', upload.single('image'), async (req, res) => {
 
 
 // jwt token
-app.use('/api/v1/*splat', (req, res, next) => {
+const auth = (req, res, next) => {
   if (!req.cookies?.token) {
     res.status(401).send({ message: "Unauthorized" })
     return;
@@ -260,7 +260,7 @@ app.use('/api/v1/*splat', (req, res, next) => {
       res.status(401).send({ message: "invalid token" })
     }
   })
-})
+}
 
 app.get('/api/v1/profile', async (req, res) => {
   const userToken = req.body.token;
@@ -291,7 +291,6 @@ app.get('/api/v1/profile', async (req, res) => {
   }
 });
 
-// Upload Api
 
 
 
@@ -432,7 +431,7 @@ app.delete('/api/v1/deletedcategory/:id', async (req, res) => {
 })
 
 //cart Api
-app.get('/api/v1/cart/:user_id', async (req, res) => {
+app.get('/api/v1/cart/:user_id',  async (req, res) => {
   let { user_id } = req.params;
   try {
     let qurey = 'SELECT * FROM cart WHERE user_id = $1 ORDER BY cart_id DESC';
@@ -447,7 +446,7 @@ app.get('/api/v1/cart/:user_id', async (req, res) => {
   }
 })
 
-app.post('/api/v1/cart', async (req, res) => {
+app.post('/api/v1/cart',  async (req, res) => {
   console.log("req.body", req.body)
   let { user_id, product_id, quantity, price_per_item, product_name, product_image, product_category } = req.body;
   if (!user_id || !product_id || !quantity || !price_per_item || !product_name || !product_image || !product_category) {
@@ -530,7 +529,7 @@ app.get('/items', async (req, res) => {
 
 
 // payment stripe 
-app.post("/api/v1/create-checkout-session", async (req, res) => {
+app.post("/api/v1/create-checkout-session", auth ,  async (req, res) => {
   const { items } = req.body;
   try {
     const validItems = items.filter(item => {
