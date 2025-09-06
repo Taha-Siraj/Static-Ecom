@@ -34,6 +34,7 @@ app.get('/get-user', async (req, res) => {
   }
 })
 
+
 // Signup api
 app.post('/api/v1/signup', async (req, res) => {
   let { firstName, lastName, email, password } = req.body;
