@@ -19,9 +19,8 @@ import Success from '../Pages/Success';
 
 const CustomRoutes = () => {
   const { state } = useContext(GlobalContext);
-  const isAdmin = state.isLogin && state.user?.user_role === 1;
-  const isUser = state.isLogin && state.user?.user_role === 4;
 
+  
   if (state.loading || state.isLogin === null) {
     return <Loader />;
   }
@@ -36,7 +35,6 @@ const CustomRoutes = () => {
       <Route path="/cart" element={<Cart />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/productsdetails/:id" element={<Productsdetail />} />
-       <Route path="/success" element={<Success />} />
 
       {!state.isLogin && (
         <>
@@ -51,13 +49,8 @@ const CustomRoutes = () => {
           state.isLogin ? <Checkout /> : <Navigate to="/login" replace />
         }
       />
+      <Route path="/success" element={state.isLogin ? <Success /> : <Navigate to="/login" replace />} />
 
-      {isAdmin && (
-        <>
-          <Route path="/addproduct" element={<AddProducts />} />
-          <Route path="/addcategories" element={<AddCategories />} />
-        </>
-      )}
 
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
