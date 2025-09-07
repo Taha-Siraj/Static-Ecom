@@ -5,6 +5,7 @@ import api from "../Api";
 import { toast } from "react-hot-toast"; 
 import { IoMdCloseCircle } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { json } from "body-parser";
 
 
 const Cart = ({ onClose }) => {
@@ -15,6 +16,15 @@ const Cart = ({ onClose }) => {
 
 
   const fetchCart = async () => {
+
+    if(!state.isLogin) {
+      let cart = JSON.parse(localStorage.getItem('cart') || []);
+      setAllCart(cart)
+      let total = cart.reduce((acc, item) => acc + item.price_per_item * item.quantity, 0);
+      setSubtotal(total);
+      return
+    };
+
     try {
       let res = await api.get(`/cart/${state.user.user_id}`);
       setAllCart(res.data.cartItems || []);
@@ -30,6 +40,15 @@ const Cart = ({ onClose }) => {
   }, []);
 
   const deletedCart = async (cart_id) => {
+
+      if(!state.isLogin) {
+        let cart = JSON.parse(localStorage.getItem('cart') || []);
+        cart = cart.filter(item => item.cart_id !== cart_id);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        fetchCart();
+        return;
+      }
+      
     try {
       await api.delete(`/deletedcart/${cart_id}`);
       toast.success("Cart deleted successfully")
