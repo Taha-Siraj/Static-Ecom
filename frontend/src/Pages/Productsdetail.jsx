@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { GlobalContext } from '../Context/Context';
 import { MdOutlineStarPurple500 } from "react-icons/md";
 import { LoaderIcon, toast, Toaster } from 'react-hot-toast';
+import { json } from 'body-parser';
 
 const Productsdetail = () => {
   const { state, dispatch } = useContext(GlobalContext)
@@ -33,14 +34,27 @@ const Productsdetail = () => {
 
 
   const addtocart = async () => {
-
-
     if (counter === 0) {
       toast.error("Please select a quantity");
       return;
     }
-    if (state.isLogin === false) {
-      return;
+    if (!state.isLogin) {
+      let cart = JSON.parse(localStorage.get('cart')) || [];
+
+      let existingcart = cart.find((item) => item.product_id === Productsdetail.product_id);
+      if (existingcart) {
+        existingcart.quantity += counter;
+        toast.success("Product quantity updated in cart");
+      } else {
+        cart.push({
+          product_id: Productsdetail.product_id,
+          product_name: Productsdetail.product_name,
+          product_image: Productsdetail.product_img,
+          product_category: Productsdetail.category_name,
+          price_per_item: Productsdetail.price,
+          quantity: counter,
+        })
+      }
     }
 
     try {
