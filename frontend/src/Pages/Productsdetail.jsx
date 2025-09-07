@@ -28,7 +28,6 @@ const Productsdetail = () => {
 
 
   if (state.isLogin === false) {
-    // toast.error("Please login to add items to cart");
     return;
   }
 
