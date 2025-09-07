@@ -5,7 +5,6 @@ import { useParams } from 'react-router-dom';
 import { GlobalContext } from '../Context/Context';
 import { MdOutlineStarPurple500 } from "react-icons/md";
 import { LoaderIcon, toast, Toaster } from 'react-hot-toast';
-import { json } from 'body-parser';
 
 const Productsdetail = () => {
   const { state, dispatch } = useContext(GlobalContext)
@@ -18,7 +17,6 @@ const Productsdetail = () => {
     try {
       setLoader(true);
       let res = await api.get('/allproducts');
-
       let matchproduct = res.data.products.find((item) => String(item.product_id) === String(id))
       setproductdetails(matchproduct)
     } catch (error) {
@@ -39,7 +37,7 @@ const Productsdetail = () => {
       return;
     }
     if (!state.isLogin) {
-      let cart = JSON.parse(localStorage.get('cart')) || [];
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
       let existingcart = cart.find((item) => item.product_id === Productsdetail.product_id);
       if (existingcart) {
@@ -55,6 +53,9 @@ const Productsdetail = () => {
           quantity: counter,
         })
       }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      toast.success("Product added to cart successfully");
+      return
     }
 
     try {
