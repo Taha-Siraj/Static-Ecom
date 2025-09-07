@@ -1,12 +1,10 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from '../Authentication/Login';
 import Signup from '../Authentication/Signup';
 import Home from '../Pages/Home';
 import { GlobalContext } from '../Context/Context';
 import Products from '../Pages/Products';
-import AddProducts from '../admin/AddProducts';
-import AddCategories from '../admin/AddCategories';
 import Productsdetail from '../Pages/Productsdetail';
 import Allblogs from '../Blog/Allblogs';
 import Cart from '../Pages/Cart';
