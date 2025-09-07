@@ -17,6 +17,7 @@ const Productsdetail = () => {
     try {
       setLoader(true);
       let res = await api.get('/allproducts');
+
       let matchproduct = res.data.products.find((item) => String(item.product_id) === String(id))
       setproductdetails(matchproduct)
     } catch (error) {
@@ -27,37 +28,40 @@ const Productsdetail = () => {
   }
 
 
-  if (state.isLogin === false) {
-    return;
+
+
+
+
+  const addtocart = async () => {
+
+
+    if (counter === 0) {
+      toast.error("Please select a quantity");
+      return;
+    }
+    if (state.isLogin === false) {
+      return;
+    }
+
+    try {
+      let res = await api.post('/cart', {
+        user_id: state.user.user_id,
+        product_id: Productsdetail.product_id,
+        quantity: counter,
+        product_name: Productsdetail.product_name,
+        product_image: Productsdetail.product_img,
+        product_category: Productsdetail.category_name,
+        price_per_item: Productsdetail.price,
+      })
+      toast.success("Product added to cart successfully");
+      dispatch({ type: "SET_CART_COUNT", payload: state.cartCount + 1 });
+      console.log(state.cartCount)
+    } catch (error) {
+      toast.error(error.response?.data?.message)
+      console.log(error)
+    }
   }
 
-
-
-    const addtocart = async () => {
-      if (counter === 0) {
-        toast.error("Please select a quantity");
-        return;
-      }
-
-      try {
-        let res = await api.post('/cart', {
-          user_id: state.user.user_id,
-          product_id: Productsdetail.product_id,
-          quantity: counter,
-          product_name: Productsdetail.product_name,
-          product_image: Productsdetail.product_img,
-          product_category: Productsdetail.category_name,
-          price_per_item: Productsdetail.price,
-        })
-        toast.success("Product added to cart successfully");
-        dispatch({ type: "SET_CART_COUNT", payload: state.cartCount + 1 });
-        console.log(state.cartCount)
-      } catch (error) {
-        toast.error(error.response?.data?.message)
-        console.log(error)
-      }
-    }
-  
 
 
 
@@ -116,6 +120,7 @@ const Productsdetail = () => {
 
             {/* Ratings */}
             <div className='flex items-center gap-x-3'>
+
               <div className='flex'>
                 {[...Array(5)].map((_, i) => (
                   <MdOutlineStarPurple500 key={i} className='text-lg md:text-xl text-[#FACC15]' />
